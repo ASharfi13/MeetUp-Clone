@@ -1,5 +1,29 @@
 {
   "dependencies": {
     "express-validator": "^7.0.1"
-  }
+  },
+  "name": "meetup-clone",
+  "description": "<!--!!START SILENT --> # Ahmed Meetup Clone <!--!!END --> <!--!!ADD --> <!-- # `<name of application here>` --> <!--!!END_ADD -->",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "install": "npm --prefix backend install backend",
+    "dev:backend": "npm install --prefix backend start",
+    "sequelize": "npm run --prefix backend sequelize",
+    "sequelize-cli": "npm run --prefix backend sequelize-cli",
+    "start": "npm start --prefix backend",
+    "build": "npm run --prefix backend build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ASharfi13/MeetUp-Clone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ASharfi13/MeetUp-Clone/issues"
+  },
+  "homepage": "https://github.com/ASharfi13/MeetUp-Clone#readme"
 }
