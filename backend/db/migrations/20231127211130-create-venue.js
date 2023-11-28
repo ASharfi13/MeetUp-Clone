@@ -10,22 +10,29 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       groupId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Groups",
+          key: "id"
+        }
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       state: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       lat: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.NUMERIC(3, 7)
       },
       lng: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.NUMERIC(3, 7)
       },
       createdAt: {
         allowNull: false,

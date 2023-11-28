@@ -10,16 +10,30 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       venueId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Venues',
+          key: 'id'
+        }
       },
       groupId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Groups',
+          key: 'id'
+        }
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          len: [5, 400]
+        }
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       type: {
         type: Sequelize.STRING
@@ -28,7 +42,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.NUMERIC(3, 2)
       },
       startDate: {
         type: Sequelize.DATEONLY

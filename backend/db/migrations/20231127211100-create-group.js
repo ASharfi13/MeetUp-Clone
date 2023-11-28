@@ -10,10 +10,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       organizerId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id"
+        }
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(60),
       },
       about: {
         type: Sequelize.TEXT
@@ -25,10 +29,12 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       state: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

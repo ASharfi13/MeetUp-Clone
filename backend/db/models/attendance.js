@@ -16,7 +16,17 @@ module.exports = (sequelize, DataTypes) => {
   Attendance.init({
     eventId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        isValidStatus(value) {
+          validStatuses = ['waitlist', 'pending', 'attending'];
+          if (!validStatuses.includes(value)) {
+            throw new Error('Invalid Attendance Status')
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Attendance',
