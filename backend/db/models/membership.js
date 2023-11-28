@@ -16,7 +16,14 @@ module.exports = (sequelize, DataTypes) => {
   Membership.init({
     userId: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        isValidMembership(value) {
+          validMemberships = ['pending', 'co-host', 'member']
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Membership',
