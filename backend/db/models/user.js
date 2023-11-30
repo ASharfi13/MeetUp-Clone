@@ -18,13 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       User.hasMany(models.Group, {
-        foreignKey: "organizerId"
+        foreignKey: "organizerId",
+        as: "GroupsOrganized"
       })
 
-      User.belongsToMany(models.Membership, {
+      User.belongsToMany(models.Group, {
         through: models.Membership,
         foreignKey: "userId",
-        otherKey: "groupId"
+        otherKey: "groupId",
+        as: "GroupsJoined"
       })
     }
   }

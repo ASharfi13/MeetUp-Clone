@@ -22,15 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       Group.belongsToMany(models.User, {
         through: models.Membership,
         foreignKey: "groupId",
-        otherKey: "userId"
+        otherKey: "userId",
+        as: "members"
       })
 
       Group.belongsTo(models.User, {
-        foreignKey: "organizerId"
+        foreignKey: "organizerId", as: "Organizer"
       })
 
       Group.hasMany(models.Event, {
-        foreignKey: "groupId"
+        foreignKey: "groupId",
+        onDelete: "CASCADE",
+        hooks: true
       })
     }
   }
@@ -51,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         isValidType(value) {
-          validTypes = ['Online', 'In person']
+          const validTypes = ['Online', 'In person']
           if (!validTypes.includes(value)) {
             throw new Error('Invalid Group Type. Please specifiy if Online or In person. ')
           }

@@ -12,22 +12,28 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Event.hasMany(models.EventImage, {
-        foreignKey: "eventId"
+        foreignKey: "eventId",
+        onDelete: "CASCADE",
+        hooks: true
       })
 
       Event.belongsToMany(models.User, {
         through: models.Attendance,
         foreignKey: "eventId",
-        otherKey: "userId"
+        otherKey: "userId",
+        onDelete: "CASCADE",
+        hooks: true
       })
 
       Event.belongsTo(models.Venue, {
-        foreignKey: "venueId"
+        foreignKey: "venueId",
+        onDelete: 'SET NULL',
+        hooks: true
       })
 
       Event.belongsTo(models.Group, {
         foreignKey: "groupId",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
         hooks: true
       })
     }
@@ -69,7 +75,11 @@ module.exports = (sequelize, DataTypes) => {
     endDate: {
       type: DataTypes.DATEONLY,
       validate: {
-        isAfter: this.startDate
+        isAfterStartDate() {
+          if (this.endDate && this.startDate && this.endDate < this.startDate) {
+            throw new Error("Invalid EndDate! Please enter EndDate after Start Date!")
+          }
+        }
       }
     }
   }, {
