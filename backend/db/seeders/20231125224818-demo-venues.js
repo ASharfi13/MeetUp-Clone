@@ -24,24 +24,24 @@ module.exports = {
         address: "aksjbgasjgsa",
         city: "asgasg",
         state: "FG",
-        lat: parseFloat(12.3478235.toFixed(7)),
-        lng: parseFloat(54.2124432.toFixed(7))
+        lat: 12.3478235,
+        lng: 54.2124432
       },
       {
         groupId: 2,
         address: "bgasjgsa",
         city: "gasg",
         state: "LP",
-        lat: parseFloat(33.3424235.toFixed(7)),
-        lng: parseFloat(105.5114432.toFixed(7))
+        lat: 33.3424235,
+        lng: 105.5114432
       },
       {
         groupId: 3,
         address: "akgasjgsa",
         city: "asgag",
         state: "IS",
-        lat: parseFloat(123.7621635.toFixed(7)),
-        lng: parseFloat(58.2124438.toFixed(7))
+        lat: 123.7621635,
+        lng: 58.2124438
       },
     ])
   },
