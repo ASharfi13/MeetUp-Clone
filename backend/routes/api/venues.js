@@ -5,6 +5,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const {
     Venue,
     Group,
+    Membership
 } = require('../../db/models');
 
 const { check } = require("express-validator");
@@ -23,6 +24,7 @@ router.get("/", async (req, res) => {
 //Edit a Venue based on Id
 
 router.put("/:venueId", requireAuth, async (req, res) => {
+    const user = req.user;
     const { venueId } = req.params;
     const targetVenue = await Venue.findByPk(venueId);
     const { groupId, address, city, state, lat, lng } = req.body;
@@ -30,6 +32,22 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     if (!targetVenue) return res.status(404).json({
         message: "Venue couldn't be found"
     })
+
+    const targetGroup = await Group.findByPk(targetVenue.groupId);
+
+    const cohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: targetVenue.groupId,
+            status: "co-host"
+        }
+    })
+
+    if (targetGroup.organizerId !== user.id && !cohost) {
+        return res.status(403).json({
+            message: "Not Allowed to Edit Venue!"
+        })
+    }
 
     targetVenue.groupId = groupId || targetVenue.groupId;
     targetVenue.address = address || targetVenue.address;

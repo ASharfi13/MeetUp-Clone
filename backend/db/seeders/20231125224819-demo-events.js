@@ -55,6 +55,17 @@ module.exports = {
         startDate: '2023-11-12',
         endDate: '2023-5-2'
       },
+      {
+        venueId: 3,
+        groupId: 3,
+        name: "Get Funky With Us",
+        description: "You cannot escape the funk so don't even try, like please stop fr. The funk is coming to get you, it knows where you live so just be prepared :).",
+        type: "In person",
+        capacity: 500,
+        price: 10.00,
+        startDate: '2023-5-12',
+        endDate: '2023-6-2'
+      },
     ])
   },
 

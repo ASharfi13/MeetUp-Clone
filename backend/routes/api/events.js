@@ -6,7 +6,8 @@ const {
     Venue,
     Group,
     EventImage,
-    Attendance
+    Attendance,
+    Membership
 
 } = require('../../db/models');
 
@@ -56,6 +57,7 @@ router.get("/:eventId", async (req, res) => {
 
 //Create and Add an Image to an Event based on Event's Id
 router.post("/:eventId/images", requireAuth, async (req, res) => {
+    const user = req.user;
     const { eventId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
     const { url, preview } = req.body
@@ -63,6 +65,22 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
     })
+
+    const targetGroup = await Group.findByPk(targetEvent.groupId);
+
+    const cohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: targetEvent.groupId,
+            status: "co-host"
+        }
+    })
+
+    if (targetGroup.organizerId !== user.id && !cohost) {
+        return res.status(403).json({
+            message: "Not Allowed to Add an Image to this Event!"
+        })
+    }
 
     const newEventImage = await EventImage.create({
         eventId: eventId,
@@ -75,6 +93,7 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
 
 //Edit and Event based on Event's Id
 router.put("/:eventId", requireAuth, async (req, res) => {
+    const user = req.user;
     const { eventId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
@@ -84,9 +103,27 @@ router.put("/:eventId", requireAuth, async (req, res) => {
         message: "Event couldn't be found"
     })
 
-    if (!targetVenue) return res.status(404).json({
-        message: "Venue couldn't be found"
+    if (venueId) {
+        if (!targetVenue) return res.status(404).json({
+            message: "Venue couldn't be found"
+        })
+    }
+
+    const targetGroup = await Group.findByPk(targetEvent.groupId);
+
+    const cohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: targetEvent.groupId,
+            status: "co-host"
+        }
     })
+
+    if (targetGroup.organizerId !== user.id && !cohost) {
+        return res.status(403).json({
+            message: "Not Allowed to Edit this Event!"
+        })
+    }
 
     targetEvent.venueId = venueId || targetEvent.venueId;
     targetEvent.name = name || targetEvent.name;
@@ -104,12 +141,29 @@ router.put("/:eventId", requireAuth, async (req, res) => {
 
 //Delete an Event Specified by Id
 router.delete("/:eventId", requireAuth, async (req, res) => {
+    const user = req.user;
     const { eventId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
 
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
     })
+
+    const targetGroup = await Group.findByPk(targetEvent.groupId);
+
+    const cohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: targetEvent.groupId,
+            status: "co-host"
+        }
+    })
+
+    if (targetGroup.organizerId !== user.id && !cohost) {
+        return res.status(403).json({
+            message: "Not Allowed to Delete this Event!"
+        })
+    }
 
     await targetEvent.destroy();
 
@@ -139,10 +193,22 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
     const { eventId } = await req.params;
     const user = req.user;
     const targetEvent = await Event.findByPk(eventId);
+    const userCurrentMember = await Membership.findOne({
+        where: {
+            groupId: targetEvent.groupId,
+            userId: user.id
+        }
+    })
 
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
     })
+
+    if (!userCurrentMember) {
+        return res.status(403).json({
+            message: "Not Member of Group Hosting Event. Cannot Request Attendance."
+        })
+    }
 
     const eventAttendees = await targetEvent.getAttendees();
 
@@ -175,6 +241,11 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
     const { eventId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
     const { userId, status } = req.body;
+    const organizer = await Group.findOne({
+        where: {
+            organizerId: userId
+        }
+    })
 
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
@@ -195,6 +266,22 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
         message: "Attendance between the user and the event does not exist"
     })
 
+    //Can you even edit it lil bruh?
+
+    const cohost = await Membership.findOne({
+        where: {
+            userId: userId,
+            groupId: targetEvent.groupId,
+            status: "co-host"
+        }
+    })
+
+    if (!organizer || !cohost) {
+        return res.status(403).json({
+            message: "Not Allowed to Change Your Membership Stupid! You. Are. Not. Valid."
+        })
+    }
+
     targetAttendee.status = status;
 
     await targetAttendee.save();
@@ -208,6 +295,26 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
     const { eventId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
     const { userId } = req.body;
+
+    if (!userId) {
+        const userCurrentMember = await Attendance.findOne({
+            where: {
+                userId: user.id,
+                eventId: eventId
+            }
+        })
+
+        if (userCurrentMember) {
+            await userCurrentMember.destroy();
+            return res.status(200).json({
+                message: "Successfully deleted your attendance from event"
+            })
+        } else {
+            return res.status(400).json({
+                message: "Delete Failed. If Co-Host or Organizer, please enter userId of User whose attendance you wish to delete"
+            })
+        }
+    }
 
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
@@ -224,14 +331,22 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
         message: "Attendance does not exist for this User"
     })
 
-    const organizer = await Group.findOne({
+    const userOrganizer = await Group.findOne({
         where: {
             organizerId: user.id,
             id: targetEvent.groupId
         }
     })
 
-    if (user.id !== userId && !organizer) {
+    const userCohost = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: targetEvent.groupId,
+            status: "co-host"
+        }
+    })
+
+    if (!userOrganizer || !userCohost) {
         return res.status(403).json({
             message: "Only the User or Organizer may delete an Attendance"
         })
@@ -240,7 +355,7 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
     await targetAttendee.destroy();
 
     return res.status(200).json({
-        message: "Successfully deleted attendance from the event"
+        message: "Successfully deleted User Attendance from the event"
     });
 });
 

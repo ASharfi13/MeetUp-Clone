@@ -35,6 +35,11 @@ module.exports = {
         url: "https://mple.edu/da",
         preview: true
       },
+      {
+        eventId: 3,
+        url: "https://oragamimple.edu/da",
+        preview: true
+      }
     ])
   },
 

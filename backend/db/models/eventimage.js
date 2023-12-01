@@ -12,9 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       EventImage.belongsTo(models.Event, {
-        foreignKey: "eventId",
-        onDelete: "CASCADE",
-        hooks: true
+        foreignKey: "eventId"
       })
     }
   }

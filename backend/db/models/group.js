@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Group.hasMany(models.GroupImage, {
-        foreignKey: "groupId"
+        foreignKey: "groupId",
+        onDelete: "CASCADE",
+        hooks: true
       })
 
       Group.belongsToMany(models.User, {
@@ -27,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Group.belongsTo(models.User, {
-        foreignKey: "organizerId", as: "Organizer"
+        foreignKey: "organizerId",
+        as: "Organizer"
       })
 
       Group.hasMany(models.Event, {
