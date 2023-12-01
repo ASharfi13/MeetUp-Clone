@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
         isUppercase: true
       }
     },
-    lat: DataTypes.NUMERIC(3, 7),
-    lng: DataTypes.NUMERIC(3, 7)
+    lat: DataTypes.NUMERIC(10, 7),
+    lng: DataTypes.NUMERIC(10, 7)
   }, {
     sequelize,
     modelName: 'Venue',
