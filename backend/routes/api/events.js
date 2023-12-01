@@ -11,21 +11,90 @@ const {
 
 } = require('../../db/models');
 
-const { check } = require("express-validator");
+const { check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { Op, or } = require("sequelize");
 const venue = require('../../db/models/venue');
 
 const router = express.Router();
 
-//Get All the Events
-router.get('/', async (req, res) => {
-    const allEvents = await Event.findAll();
+const validateGetAllQueryParams = [
+    check("page")
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Page must be a NUMBER greater than or equal to 1"),
+    check("size")
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Size must be NUMBER greater than or equal to 1"),
+    check("name")
+        .optional()
+        .isString()
+        .withMessage("Name must be a string"),
+    check("type")
+        .optional()
+        .isIn(["Online", "In person"])
+        .withMessage("Type must be Online or In Person"),
+    check("startDate")
+        .optional()
+        .isString()
+        .toDate()
+        .withMessage("Start date must be a valid datetime")
+]
 
-    return res.status(200).json({
-        Events: allEvents
+//Get All the Events
+router.get('/', validateGetAllQueryParams, handleValidationErrors, async (req, res) => {
+    let { page, size, name, type, startDate } = req.query;
+
+    if (!page) page = 1;
+
+    if (!size) size = 20;
+
+    const pageNum = Math.min(parseInt(page) || 1, 10);
+
+    const pageSize = Math.min(parseInt(size) || 20, 20);
+
+    const offset = (pageNum - 1) * pageSize;
+
+    let where = {};
+
+    if (name) {
+        where.name = name
+    }
+
+    if (type) {
+        where.type = type
+    }
+
+    if (startDate) {
+        where.startDate = {
+            [Op.gte]: new Date(startDate)
+        }
+    }
+
+    console.log(where);
+
+    const allEvents = await Event.findAll({
+        where: where,
+        include: [{
+            model: Group,
+            attributes: ["id", "name", "city", "state"]
+        }, {
+            model: Venue,
+            attributes: ["id", "city", "state"],
+        }],
+        offset,
+        limit: pageSize
     });
 
+
+    return res.status(200).json({
+        where,
+        Events: allEvents,
+        pageInfo: {
+            page: pageNum
+        }
+    })
 });
 
 //Get All Details of the Event based on Id
