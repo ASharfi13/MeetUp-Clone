@@ -6,12 +6,13 @@ const {
     Venue,
     Group,
     EventImage,
+    Attendance
 
 } = require('../../db/models');
 
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
-const { Op } = require("sequelize");
+const { Op, or } = require("sequelize");
 const venue = require('../../db/models/venue');
 
 const router = express.Router();
@@ -116,6 +117,134 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
         message: "Successfully Deleted"
     })
 })
+
+//Get all Attendees of an Event specified by an Id
+router.get("/:eventId/attendees", async (req, res) => {
+    const { eventId } = req.params;
+    const targetEvent = await Event.findByPk(eventId);
+
+    if (!targetEvent) return res.status(404).json({
+        message: "Event couldn't be found"
+    })
+
+    const allEventAttendees = await targetEvent.getAttendees();
+
+    return res.status(200).json({
+        Attendees: allEventAttendees
+    })
+})
+
+//Create or Request to Attend an Event based on the Event's Id
+router.post("/:eventId/attendance", requireAuth, async (req, res) => {
+    const { eventId } = await req.params;
+    const user = req.user;
+    const targetEvent = await Event.findByPk(eventId);
+
+    if (!targetEvent) return res.status(404).json({
+        message: "Event couldn't be found"
+    })
+
+    const eventAttendees = await targetEvent.getAttendees();
+
+    for (const attendee of eventAttendees) {
+        if (attendee.id === user.id) {
+            if (attendee.Attendance && attendee.Attendance.status === "attending") {
+                return res.status(400).json({
+                    message: "User is already an attendee of the event"
+                })
+            } else {
+                return res.status(400).json({
+                    message: "Attendance has already been requested"
+                })
+            }
+        }
+    }
+
+
+    const newAttendee = await Attendance.create({
+        eventId: eventId,
+        userId: user.id,
+        status: "pending"
+    })
+
+    return res.status(200).json(newAttendee);
+})
+
+//Change or PUT the attendance of an attendee for a event by Id
+router.put("/:eventId/attendance", requireAuth, async (req, res) => {
+    const { eventId } = req.params;
+    const targetEvent = await Event.findByPk(eventId);
+    const { userId, status } = req.body;
+
+    if (!targetEvent) return res.status(404).json({
+        message: "Event couldn't be found"
+    });
+
+    if (status === "pending") return res.status(400).json({
+        message: "Cannot change an attendance status to pending"
+    })
+
+    const targetAttendee = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: userId
+        }
+    });
+
+    if (!targetAttendee) return res.status(404).json({
+        message: "Attendance between the user and the event does not exist"
+    })
+
+    targetAttendee.status = status;
+
+    await targetAttendee.save();
+
+    return res.status(200).json(targetAttendee);
+});
+
+//Delete an Attendance to an Event specified by Id
+router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
+    const user = req.user
+    const { eventId } = req.params;
+    const targetEvent = await Event.findByPk(eventId);
+    const { userId } = req.body;
+
+    if (!targetEvent) return res.status(404).json({
+        message: "Event couldn't be found"
+    });
+
+    const targetAttendee = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: userId,
+        }
+    })
+
+    if (!targetAttendee) return res.status(404).json({
+        message: "Attendance does not exist for this User"
+    })
+
+    const organizer = await Group.findOne({
+        where: {
+            organizerId: user.id,
+            id: targetEvent.groupId
+        }
+    })
+
+    if (user.id !== userId && !organizer) {
+        return res.status(403).json({
+            message: "Only the User or Organizer may delete an Attendance"
+        })
+    }
+
+    await targetAttendee.destroy();
+
+    return res.status(200).json({
+        message: "Successfully deleted attendance from the event"
+    });
+});
+
+
 
 
 module.exports = router;

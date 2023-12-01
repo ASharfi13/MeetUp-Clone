@@ -12,15 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Attendance.belongsTo(models.Event, {
-        foreignKey: "eventId",
-        onDelete: "CASCADE",
-        hooks: true
+        foreignKey: "eventId"
       })
 
       Attendance.belongsTo(models.User, {
-        foreignKey: "userId",
-        onDelete: "CASCADE",
-        hooks: true
+        foreignKey: "userId"
       })
     }
   }
@@ -31,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         isValidStatus(value) {
-          validStatuses = ['waitlist', 'pending', 'attending'];
+          const validStatuses = ['waitlist', 'pending', 'attending'];
           if (!validStatuses.includes(value)) {
             throw new Error('Invalid Attendance Status')
           }

@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         isValidMembership(value) {
-          validMemberships = ['pending', 'co-host', 'member']
+          const validMemberships = ['pending', 'co-host', 'member'];
+          if (!validMemberships.includes(value)) {
+            throw new Error("Invalid Membership Status")
+          }
         }
       }
     }

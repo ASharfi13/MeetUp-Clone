@@ -46,6 +46,15 @@ module.exports = {
         private: false,
         city: "Oak Place",
         state: "LL"
+      },
+      {
+        organizerId: 1,
+        name: "GroupWhereUser2IsNotHere",
+        about: "When you talk about Chief Keef, put some respect on his name ya know. Don't make use wait the frick. Also hello, the kids miss you!",
+        type: "Online",
+        private: false,
+        city: "Oak Ridge",
+        state: "AA"
       }
 
     ])
