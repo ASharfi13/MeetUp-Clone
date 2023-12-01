@@ -24,7 +24,7 @@ module.exports = {
         address: "aksjbgasjgsa",
         city: "asgasg",
         state: "FG",
-        lat: 12.3421235,
+        lat: 12.3478235,
         lng: 54.2124432
       },
       {
@@ -32,16 +32,16 @@ module.exports = {
         address: "bgasjgsa",
         city: "gasg",
         state: "LP",
-        lat: 12.3424235,
-        lng: 54.2114432
+        lat: 33.3424235,
+        lng: 105.5114432
       },
       {
         groupId: 3,
         address: "akgasjgsa",
         city: "asgag",
         state: "IS",
-        lat: 12.3321235,
-        lng: 54.2124438
+        lat: 123.7621635,
+        lng: 58.2124438
       },
     ])
   },
