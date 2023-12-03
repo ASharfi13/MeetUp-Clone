@@ -37,9 +37,9 @@ module.exports = {
         status: "member",
       },
       {
-        userId: 2,
-        groupId: 1,
-        status: "member",
+        userId: 1,
+        groupId: 2,
+        status: "pending",
       },
       {
         userId: 2,
@@ -49,12 +49,22 @@ module.exports = {
       {
         userId: 3,
         groupId: 1,
-        status: "co-host"
+        status: "member"
       },
       {
         userId: 1,
-        groupId: 2,
+        groupId: 3,
         status: "pending"
+      },
+      {
+        userId: 2,
+        groupId: 1,
+        status: "co-host"
+      },
+      {
+        userId: 3,
+        groupId: 2,
+        status: "member"
       }
     ])
   },
