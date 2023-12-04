@@ -23,14 +23,39 @@ module.exports = (sequelize, DataTypes) => {
   }
   Venue.init({
     groupId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
+    address: {
+      type: DataTypes.STRING,
+      validate: {
+        isAddressEmpty(value) {
+          if (value.length === 0) {
+            throw new Error("Street Address is required")
+          }
+        }
+      }
+    },
+    city: {
+      type: DataTypes.STRING,
+      validate: {
+        isCityEmpty(value) {
+          if (value.length === 0) {
+            throw new Error("City is required")
+          }
+        }
+      }
+    },
     state: {
       type: DataTypes.STRING,
       validate: {
-        len: [2, 2],
-        isUppercase: true
-      }
+        isNotEmptyAndValidStateStr(value) {
+          if (value.length === 0) {
+            throw new Error("State is required")
+          }
+
+          if (!/^[A-Z]{2}$/.test(value)) {
+            throw new Error("State must be 2 Uppercase Letters")
+          }
+        },
+      },
     },
     lat: DataTypes.NUMERIC(10, 7),
     lng: DataTypes.NUMERIC(10, 7)

@@ -41,10 +41,8 @@ router.delete("/group-images/:imageId", requireAuth, async (req, res) => {
         }
     })
 
-    if (!userOrganizer || !userCohost) {
-        return res.status(403).json({
-            message: "Only the Co-Host or Organizer may delete a Group's Image"
-        })
+    if (!userOrganizer && !userCohost) {
+        return res.status(403).json("Forbidden")
     }
 
     await targetImage.destroy();
@@ -59,11 +57,12 @@ router.delete("/event-images/:imageId", requireAuth, async (req, res) => {
     const user = req.user;
     const { imageId } = req.params;
     const targetImage = await EventImage.findByPk(imageId);
-    const targetEvent = await Event.findByPk(targetImage.eventId)
 
     if (!targetImage) return res.status(404).json({
         message: "Event Image couldn't be found"
     })
+
+    const targetEvent = await Event.findByPk(targetImage.eventId)
 
     const userOrganizer = await Group.findOne({
         where: {
@@ -80,10 +79,8 @@ router.delete("/event-images/:imageId", requireAuth, async (req, res) => {
         }
     })
 
-    if (!userOrganizer || !userCohost) {
-        return res.status(403).json({
-            message: "Only the Co-Host or Organizer may delete an Event's Image"
-        })
+    if (!userOrganizer && !userCohost) {
+        return res.status(403).json("Forbidden")
     }
 
     await targetImage.destroy();

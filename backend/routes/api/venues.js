@@ -44,9 +44,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     })
 
     if (targetGroup.organizerId !== user.id && !cohost) {
-        return res.status(403).json({
-            message: "Not Allowed to Edit Venue!"
-        })
+        return res.status(403).json("Forbidden")
     }
 
     targetVenue.groupId = groupId || targetVenue.groupId;

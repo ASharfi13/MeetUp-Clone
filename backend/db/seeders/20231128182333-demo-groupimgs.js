@@ -32,7 +32,7 @@ module.exports = {
         preview: true
       },
       {
-        groupId: 2,
+        groupId: 3,
         url: "https://smple.info/#cor",
         preview: false
       },

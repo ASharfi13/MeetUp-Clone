@@ -42,13 +42,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   Group.init({
     organizerId: DataTypes.INTEGER,
-    name: DataTypes.STRING(60),
+    name: {
+      type: DataTypes.STRING(),
+      validate: {
+        isLessThan60Char(value) {
+          if (value.length > 60) {
+            throw new Error("Name must be 60 characters or less")
+          }
+        }
+      }
+    },
     about: {
       type: DataTypes.TEXT,
       validate: {
         isAtLeast50Char(value) {
           if (value.length < 50) {
-            throw new Error("Must be at least 50 Characters");
+            throw new Error("About must be at least 50 Characters or more");
           }
         }
       }
@@ -59,23 +68,46 @@ module.exports = (sequelize, DataTypes) => {
         isValidType(value) {
           const validTypes = ['Online', 'In person']
           if (!validTypes.includes(value)) {
-            throw new Error('Invalid Group Type. Please specifiy if Online or In person. ')
+            throw new Error('Type must be \'Online\' or \'In person\'')
           }
         }
       }
     },
-    private: DataTypes.BOOLEAN,
+    private: {
+      type: DataTypes.BOOLEAN,
+      validate: {
+        isBoolean(value) {
+          if (typeof value !== "boolean") {
+            throw new Error("Private must be a boolean")
+          }
+        }
+      }
+    },
     city: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isNotEmptyStr(value) {
+          if (value.length === 0) {
+            throw new Error("City is required")
+          }
+        }
+      }
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isUppercase: true,
-        len: [2, 2]
-      }
+        isNotEmptyAndValidStateStr(value) {
+          if (value.length === 0) {
+            throw new Error("State is required")
+          }
+
+          if (!/^[A-Z]{2}$/.test(value)) {
+            throw new Error("State must be 2 Uppercase Letters")
+          }
+        },
+      },
     }
   }, {
     sequelize,
