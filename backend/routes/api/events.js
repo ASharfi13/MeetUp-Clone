@@ -11,7 +11,7 @@ const {
 
 } = require('../../db/models');
 
-const { check, validationResult } = require("express-validator");
+const { body, check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { Op, or } = require("sequelize");
 const venue = require('../../db/models/venue');
@@ -139,8 +139,18 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
         }
     })
 
-    if (targetGroup.organizerId !== user.id && !cohost) {
-        return res.status(403).json("Forbidden")
+    const attending = await Attendance.findOne({
+        where: {
+            userId: user.id,
+            eventId: eventId,
+            status: "attending"
+        }
+    })
+
+    if (targetGroup.organizerId !== user.id && !cohost && !attending) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     const newEventImage = await EventImage.create({
@@ -153,50 +163,53 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
 })
 
 //Edit and Event based on Event's Id
-router.put("/:eventId", requireAuth, async (req, res) => {
-    const user = req.user;
-    const { eventId } = req.params;
-    const targetEvent = await Event.findByPk(eventId);
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-    const targetVenue = await Venue.findByPk(venueId);
+router.put("/:eventId", requireAuth,
+    async (req, res) => {
+        const user = req.user;
+        const { eventId } = req.params;
+        const targetEvent = await Event.findByPk(eventId);
+        const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+        const targetVenue = await Venue.findByPk(venueId);
 
-    if (!targetEvent) return res.status(404).json({
-        message: "Event couldn't be found"
-    })
-
-    if (venueId) {
-        if (!targetVenue) return res.status(404).json({
-            message: "Venue couldn't be found"
+        if (!targetEvent) return res.status(404).json({
+            message: "Event couldn't be found"
         })
-    }
 
-    const targetGroup = await Group.findByPk(targetEvent.groupId);
-
-    const cohost = await Membership.findOne({
-        where: {
-            userId: user.id,
-            groupId: targetEvent.groupId,
-            status: "co-host"
+        if (venueId) {
+            if (!targetVenue) return res.status(404).json({
+                message: "Venue couldn't be found"
+            })
         }
+
+        const targetGroup = await Group.findByPk(targetEvent.groupId);
+
+        const cohost = await Membership.findOne({
+            where: {
+                userId: user.id,
+                groupId: targetEvent.groupId,
+                status: "co-host"
+            }
+        })
+
+        if (targetGroup.organizerId !== user.id && !cohost) {
+            return res.status(403).json({
+                message: "Forbidden"
+            })
+        }
+
+        targetEvent.venueId = venueId || targetEvent.venueId;
+        targetEvent.name = name || targetEvent.name;
+        targetEvent.type = type || targetEvent.type;
+        targetEvent.capacity = capacity || targetEvent.capacity;
+        targetEvent.price = price || targetEvent.price;
+        targetEvent.description = description || targetEvent.description;
+        targetEvent.startDate = startDate || targetEvent.startDate;
+        targetEvent.endDate = endDate || targetEvent.endDate;
+
+        await targetEvent.save();
+
+        return res.status(200).json(targetEvent);
     })
-
-    if (targetGroup.organizerId !== user.id && !cohost) {
-        return res.status(403).json("Forbidden")
-    }
-
-    targetEvent.venueId = venueId || targetEvent.venueId;
-    targetEvent.name = name || targetEvent.name;
-    targetEvent.type = type || targetEvent.type;
-    targetEvent.capacity = capacity || targetEvent.capacity;
-    targetEvent.price = price || targetEvent.price;
-    targetEvent.description = description || targetEvent.description;
-    targetEvent.startDate = startDate || targetEvent.startDate;
-    targetEvent.endDate = endDate || targetEvent.endDate;
-
-    await targetEvent.save();
-
-    return res.status(200).json(targetEvent);
-})
 
 //Delete an Event Specified by Id
 router.delete("/:eventId", requireAuth, async (req, res) => {
@@ -219,7 +232,9 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
     })
 
     if (targetGroup.organizerId !== user.id && !cohost) {
-        return res.status(403).json("Forbidden")
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     await targetEvent.destroy();
@@ -238,6 +253,28 @@ router.get("/:eventId/attendees", async (req, res) => {
         message: "Event couldn't be found"
     })
 
+    const targetGroup = await Group.findByPk(targetEvent.groupId);
+
+    const cohost = await Membership.findOne({
+        where: {
+            userId: req.user.id,
+            groupId: targetEvent.groupId,
+            status: "co-host"
+        }
+    })
+
+    const specificMembers = await Membership.findAll({
+        where: {
+            groupId: targetEvent.groupId,
+            status: ["co-host", "member"]
+        }
+    });
+
+
+    if (targetGroup.organizerId !== req.user.id && !cohost) {
+        return res.status(200).json(specificMembers);
+    }
+
     const allEventAttendees = await targetEvent.getAttendees();
 
     return res.status(200).json({
@@ -248,7 +285,6 @@ router.get("/:eventId/attendees", async (req, res) => {
 //Create or Request to Attend an Event based on the Event's Id
 router.post("/:eventId/attendance", requireAuth, async (req, res) => {
     const { eventId } = await req.params;
-    const user = req.user;
     const targetEvent = await Event.findByPk(eventId);
 
     if (!targetEvent) return res.status(404).json({
@@ -258,18 +294,23 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
     const userCurrentMember = await Membership.findOne({
         where: {
             groupId: targetEvent.groupId,
-            userId: user.id
+            userId: req.user.id,
+            status: {
+                [Op.in]: ["member", "co-host"]
+            }
         }
     })
 
     if (!userCurrentMember) {
-        return res.status(403).json("Forbidden")
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     const eventAttendees = await targetEvent.getAttendees();
 
     for (const attendee of eventAttendees) {
-        if (attendee.id === user.id) {
+        if (attendee.id === req.user.id) {
             if (attendee.Attendance && attendee.Attendance.status === "attending") {
                 return res.status(400).json({
                     message: "User is already an attendee of the event"
@@ -285,7 +326,7 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
 
     const newAttendee = await Attendance.create({
         eventId: eventId,
-        userId: user.id,
+        userId: req.user.id,
         status: "pending"
     })
 
@@ -302,6 +343,8 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
         message: "Event couldn't be found"
     });
 
+    const targetGroup = await Group.findByPk(targetEvent.groupId);
+
     const targetAttendee = await Attendance.findOne({
         where: {
             eventId: eventId,
@@ -313,12 +356,6 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
         message: "Attendance between the user and the event does not exist"
     })
 
-    const organizer = await Group.findOne({
-        where: {
-            organizerId: userId
-        }
-    })
-
     if (status === "pending") return res.status(400).json({
         message: "Cannot change an attendance status to pending"
     })
@@ -327,14 +364,16 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
 
     const cohost = await Membership.findOne({
         where: {
-            userId: userId,
+            userId: req.user.id,
             groupId: targetEvent.groupId,
             status: "co-host"
         }
     })
 
-    if (!organizer && !cohost) {
-        return res.status(403).json("Forbidden")
+    if (targetGroup.organizerId !== req.user.id && !cohost) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     targetAttendee.status = status;
@@ -346,7 +385,6 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
 
 //Delete an Attendance to an Event specified by Id
 router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
-    const user = req.user
     const { eventId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
     const { userId } = req.body;
@@ -354,6 +392,8 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
     });
+
+    const targetGroup = await Group.findByPk(targetEvent.groupId);
 
     const targetAttendee = await Attendance.findOne({
         where: {
@@ -366,39 +406,29 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
         message: "Attendance does not exist for this User"
     })
 
-
-    const userCurrentMember = await Attendance.findOne({
-        where: {
-            userId: user.id,
-            eventId: eventId
-        }
-    })
-
-    if (userCurrentMember) {
-        await userCurrentMember.destroy();
-        return res.status(200).json({
-            message: "Successfully deleted attendance from event"
+    if (userId === req.user.id) {
+        const userAttending = await Attendance.findOne({
+            where: {
+                userId: req.user.id,
+                eventId: eventId,
+                status: "attending"
+            }
         })
+
+        if (userAttending) {
+            await userAttending.destroy();
+            return res.status(200).json({
+                message: "Successfully deleted YOUR attendance from event"
+            })
+        }
     }
 
+    //Permission Check
 
-    const userOrganizer = await Group.findOne({
-        where: {
-            organizerId: user.id,
-            id: targetEvent.groupId
-        }
-    })
-
-    const userCohost = await Membership.findOne({
-        where: {
-            userId: user.id,
-            groupId: targetEvent.groupId,
-            status: "co-host"
-        }
-    })
-
-    if (!userOrganizer && !userCohost) {
-        return res.status(403).json("Forbidden")
+    if (targetGroup.organizerId !== req.user.id) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     await targetAttendee.destroy();

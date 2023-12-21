@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Group.hasMany(models.Venue, {
         foreignKey: "groupId",
+        onDelete: "CASCADE",
+        hooks: true
       })
 
       Group.hasMany(models.GroupImage, {
@@ -101,10 +103,6 @@ module.exports = (sequelize, DataTypes) => {
         isNotEmptyAndValidStateStr(value) {
           if (value.length === 0) {
             throw new Error("State is required")
-          }
-
-          if (!/^[A-Z]{2}$/.test(value)) {
-            throw new Error("State must be 2 Uppercase Letters")
           }
         },
       },

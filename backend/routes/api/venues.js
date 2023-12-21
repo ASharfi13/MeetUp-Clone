@@ -8,7 +8,7 @@ const {
     Membership
 } = require('../../db/models');
 
-const { check } = require("express-validator");
+const { body, check, validationResult } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { Op } = require("sequelize");
 
@@ -23,7 +23,13 @@ router.get("/", async (req, res) => {
 
 //Edit a Venue based on Id
 
-router.put("/:venueId", requireAuth, async (req, res) => {
+router.put("/:venueId", requireAuth, [
+    body("address").isString().notEmpty(),
+    body("city").isString().notEmpty(),
+    body("state").isString().notEmpty(),
+    body("lat").isFloat().notEmpty(),
+    body("lng").isFloat().notEmpty()
+], async (req, res) => {
     const user = req.user;
     const { venueId } = req.params;
     const targetVenue = await Venue.findByPk(venueId);
@@ -44,7 +50,17 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     })
 
     if (targetGroup.organizerId !== user.id && !cohost) {
-        return res.status(403).json("Forbidden")
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    //Check the validations
+    const possibleErrors = validationResult(req);
+    if (!possibleErrors.isEmpty()) {
+        return res.status(400).json({
+            BodyValidationError: possibleErrors.array()
+        })
     }
 
     targetVenue.groupId = groupId || targetVenue.groupId;

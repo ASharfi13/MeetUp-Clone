@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Event.belongsTo(models.Group, {
-        foreignKey: "groupId",
+        foreignKey: "groupId"
       })
     }
   }
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       validate: {
-        isAtLeast50Char(value) {
+        isAtLeast5Char(value) {
           if (value.length < 5) {
             throw new Error("Must be at least 5 Characters");
           }

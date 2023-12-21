@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       })
       Venue.hasMany(models.Event, {
         foreignKey: "venueId",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
         hook: true
       })
     }
@@ -26,35 +26,19 @@ module.exports = (sequelize, DataTypes) => {
     address: {
       type: DataTypes.STRING,
       validate: {
-        isAddressEmpty(value) {
-          if (value.length === 0) {
-            throw new Error("Street Address is required")
-          }
-        }
+        notEmpty: true
       }
     },
     city: {
       type: DataTypes.STRING,
       validate: {
-        isCityEmpty(value) {
-          if (value.length === 0) {
-            throw new Error("City is required")
-          }
-        }
+        notEmpty: true
       }
     },
     state: {
       type: DataTypes.STRING,
       validate: {
-        isNotEmptyAndValidStateStr(value) {
-          if (value.length === 0) {
-            throw new Error("State is required")
-          }
-
-          if (!/^[A-Z]{2}$/.test(value)) {
-            throw new Error("State must be 2 Uppercase Letters")
-          }
-        },
+        notEmpty: true
       },
     },
     lat: DataTypes.NUMERIC(10, 7),

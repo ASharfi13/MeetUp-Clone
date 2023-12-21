@@ -42,7 +42,9 @@ router.delete("/group-images/:imageId", requireAuth, async (req, res) => {
     })
 
     if (!userOrganizer && !userCohost) {
-        return res.status(403).json("Forbidden")
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     await targetImage.destroy();
@@ -80,7 +82,9 @@ router.delete("/event-images/:imageId", requireAuth, async (req, res) => {
     })
 
     if (!userOrganizer && !userCohost) {
-        return res.status(403).json("Forbidden")
+        return res.status(403).json({
+            message: "Forbidden"
+        })
     }
 
     await targetImage.destroy();
