@@ -22,8 +22,8 @@ module.exports = {
     await Group.bulkCreate([
       {
         organizerId: 1,
-        name: "group1",
-        about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Erat nam at lectus urna duis convallis convallis. Eget dolor morbi non arcu risus quis varius quam quisque. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Pretium fusce id velit ut tortor. Ut tortor pretium viverra suspendisse potenti nullam ac tortor. Orci eu lobortis elementum nibh. A condimentum vitae sapien pellentesque habitant morbi tristique senectus. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget. Imperdiet nulla malesuada pellentesque elit eget gravida. Fermentum iaculis eu non diam phasellus vestibulum. Platea dictumst quisque sagittis purus sit amet volutpat consequat. Ut ornare lectus sit amet est placerat in egestas. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci. Libero nunc consequat interdum varius sit amet mattis vulputate enim. Diam maecenas sed enim ut sem. Odio ut enim blandit volutpat maecenas volutpat blandit. In hac habitasse platea dictumst vestibulum rhoncus. Tortor consequat id porta nibh. Nulla facilisi nullam vehicula ipsum a arcu.",
+        name: "Group 1",
+        about: "Unleashing creativity, fostering innovation – where ideas collide and brilliance thrives.",
         type: "In person",
         private: false,
         city: "Oak Lawn",
@@ -31,21 +31,21 @@ module.exports = {
       },
       {
         organizerId: 2,
-        name: "group2",
-        about: "Erat nam at lectus urna duis convallis convallis. Eget dolor morbi non arcu risus quis varius quam quisque. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Pretium fusce id velit ut tortor. Ut tortor pretium viverra suspendisse potenti nullam ac tortor. Orci eu lobortis elementum nibh. A condimentum vitae sapien pellentesque habitant morbi tristique senectus. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget. Imperdiet nulla malesuada pellentesque elit eget gravida. Fermentum iaculis eu non diam phasellus vestibulum. Platea dictumst quisque sagittis purus sit amet volutpat consequat. Ut ornare lectus sit amet est placerat in egestas. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci. Libero nunc consequat interdum varius sit amet mattis vulputate enim. Diam maecenas sed enim ut sem. Odio ut enim blandit volutpat maecenas volutpat blandit. In hac habitasse platea dictumst vestibulum rhoncus. Tortor consequat id porta nibh. Nulla facilisi nullam vehicula ipsum a arcu.",
+        name: "Group 2",
+        about: "Where quirks meet intellect, unraveling mysteries in a delightful collective introspection.",
         type: "Online",
         private: true,
-        city: "kjasbg asgas",
-        state: "AA"
+        city: "Smurfville",
+        state: "SV"
       },
       {
         organizerId: 3,
-        name: "group3",
-        about: "Pretium fusce id velit ut tortor. Ut tortor pretium viverra suspendisse potenti nullam ac tortor. Orci eu lobortis elementum nibh. A condimentum vitae sapien pellentesque habitant morbi tristique senectus. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget. Imperdiet nulla malesuada pellentesque elit eget gravida. Fermentum iaculis eu non diam phasellus vestibulum. Platea dictumst quisque sagittis purus sit amet volutpat consequat. Ut ornare lectus sit amet est placerat in egestas. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci. Libero nunc consequat interdum varius sit amet mattis vulputate enim. Diam maecenas sed enim ut sem. Odio ut enim blandit volutpat maecenas volutpat blandit. In hac habitasse platea dictumst vestibulum rhoncus. Tortor consequat id porta nibh. Nulla facilisi nullam vehicula ipsum a arcu.",
+        name: "Group 3",
+        about: "Where the funniest, qurkiest, most annoying influencers get together and play D&D.",
         type: "In person",
         private: false,
-        city: "Oak Place",
-        state: "LL"
+        city: "Dungeon's Master",
+        state: "DM"
       }
     ])
   },
@@ -61,7 +61,7 @@ module.exports = {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       name: {
-        [Op.in]: ["group1", "group2", "group3"]
+        [Op.in]: "Group"
       }
     }, {})
   }

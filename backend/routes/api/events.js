@@ -74,6 +74,9 @@ router.get('/', validateGetAllQueryParams, handleValidationErrors, async (req, r
 
     const allEvents = await Event.findAll({
         where,
+        attributes: {
+            exclude: ['description', 'capacity', 'price']
+        },
         include: [{
             model: Group,
             attributes: ["id", "name", "city", "state"]
@@ -85,15 +88,38 @@ router.get('/', validateGetAllQueryParams, handleValidationErrors, async (req, r
         limit: pageSize
     });
 
+    for (let event of allEvents) {
+        const attendCount = await Attendance.count({
+            where: {
+                eventId: event.id
+            }
+        });
+        event.setDataValue("numAttending", attendCount)
+    }
+
+    for (let event of allEvents) {
+        const previewImg = await EventImage.findOne({
+            where: {
+                eventId: event.id
+            }
+        });
+        if (previewImg) {
+            event.setDataValue("previewImage", previewImg.url)
+        } else {
+            event.setDataValue("previewImage", null);
+        }
+    }
 
     return res.status(200).json({
         Events: allEvents
     })
 });
 
+
 //Get All Details of the Event based on Id
 router.get("/:eventId", async (req, res) => {
     const { eventId } = req.params;
+
     const targetEvent = await Event.findByPk(eventId, {
         include: [
             {
@@ -111,9 +137,20 @@ router.get("/:eventId", async (req, res) => {
         ]
     });
 
+
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
     })
+
+    //Adding the Extras
+
+    const attendCount = await Attendance.count({
+        where: {
+            eventId: targetEvent.id
+        }
+    });
+
+    targetEvent.setDataValue("numMembers", attendCount)
 
     return res.status(200).json(targetEvent);
 })
@@ -263,19 +300,33 @@ router.get("/:eventId/attendees", async (req, res) => {
         }
     })
 
-    const specificMembers = await Membership.findAll({
-        where: {
-            groupId: targetEvent.groupId,
-            status: ["co-host", "member"]
-        }
+    //Specific Attendees
+
+    const arrOfAttendees = await targetEvent.getAttendees({
+        attributes: {
+            exclude: ['username']
+        },
+        joinTableAttributes: ["status"]
     });
 
-
-    if (targetGroup.organizerId !== req.user.id && !cohost) {
-        return res.status(200).json(specificMembers);
+    for (let i = 0; i < arrOfAttendees.length; i++) {
+        if (arrOfAttendees[i].Attendance.status === "pending") {
+            arrOfAttendees.splice(i, 1);
+        }
     }
 
-    const allEventAttendees = await targetEvent.getAttendees();
+    if (targetGroup.organizerId !== req.user.id && !cohost) {
+        return res.status(200).json({
+            Attendees: arrOfAttendees
+        });
+    }
+
+    const allEventAttendees = await targetEvent.getAttendees({
+        attributes: {
+            exclude: ['username']
+        },
+        joinTableAttributes: ["status"]
+    });
 
     return res.status(200).json({
         Attendees: allEventAttendees
@@ -384,10 +435,9 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
 });
 
 //Delete an Attendance to an Event specified by Id
-router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
-    const { eventId } = req.params;
+router.delete("/:eventId/attendance/:userId", requireAuth, async (req, res) => {
+    const { eventId, userId } = req.params;
     const targetEvent = await Event.findByPk(eventId);
-    const { userId } = req.body;
 
     if (!targetEvent) return res.status(404).json({
         message: "Event couldn't be found"
@@ -406,7 +456,9 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
         message: "Attendance does not exist for this User"
     })
 
-    if (userId === req.user.id) {
+    console.log(`LOOK HERE YOU GOOFY - userId: ${userId} || req.user.id: ${req.user.id}`);
+
+    if (parseInt(userId) === parseInt(req.user.id)) {
         const userAttending = await Attendance.findOne({
             where: {
                 userId: req.user.id,
@@ -418,7 +470,7 @@ router.delete("/:eventId/attendance", requireAuth, async (req, res) => {
         if (userAttending) {
             await userAttending.destroy();
             return res.status(200).json({
-                message: "Successfully deleted YOUR attendance from event"
+                message: "Successfully deleted your attendance from event"
             })
         }
     }
