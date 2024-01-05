@@ -45,67 +45,24 @@ module.exports = (sequelize, DataTypes) => {
   Group.init({
     organizerId: DataTypes.INTEGER,
     name: {
-      type: DataTypes.STRING(),
-      validate: {
-        isLessThan60Char(value) {
-          if (value.length > 60) {
-            throw new Error("Name must be 60 characters or less")
-          }
-        }
-      }
+      type: DataTypes.STRING()
     },
     about: {
-      type: DataTypes.TEXT,
-      validate: {
-        isAtLeast50Char(value) {
-          if (value.length < 50) {
-            throw new Error("About must be at least 50 Characters or more");
-          }
-        }
-      }
+      type: DataTypes.TEXT
     },
     type: {
-      type: DataTypes.STRING,
-      validate: {
-        isValidType(value) {
-          const validTypes = ['Online', 'In person']
-          if (!validTypes.includes(value)) {
-            throw new Error('Type must be \'Online\' or \'In person\'')
-          }
-        }
-      }
+      type: DataTypes.STRING
     },
     private: {
-      type: DataTypes.BOOLEAN,
-      validate: {
-        isBoolean(value) {
-          if (typeof value !== "boolean") {
-            throw new Error("Private must be a boolean")
-          }
-        }
-      }
+      type: DataTypes.BOOLEAN
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isNotEmptyStr(value) {
-          if (value.length === 0) {
-            throw new Error("City is required")
-          }
-        }
-      }
+      allowNull: false
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isNotEmptyAndValidStateStr(value) {
-          if (value.length === 0) {
-            throw new Error("State is required")
-          }
-        },
-      },
+      allowNull: false
     }
   }, {
     sequelize,

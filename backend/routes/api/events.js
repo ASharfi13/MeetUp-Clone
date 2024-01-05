@@ -7,7 +7,8 @@ const {
     Group,
     EventImage,
     Attendance,
-    Membership
+    Membership,
+    User
 
 } = require('../../db/models');
 
@@ -29,21 +30,30 @@ const validateGetAllQueryParams = [
         .withMessage("Size must be NUMBER greater than or equal to 1"),
     check("name")
         .optional()
-        .isString()
-        .withMessage("Name must be a string"),
+        .custom((val) => {
+            if (val !== undefined && !isNaN(parseInt(val))) {
+                throw new Error("Name must be a string")
+            }
+            return val;
+        }),
     check("type")
         .optional()
         .isIn(["Online", "In person"])
         .withMessage("Type must be Online or In Person"),
     check("startDate")
         .optional()
-        .isString()
-        .toDate()
-        .withMessage("Start date must be a valid datetime")
+        .custom((val) => {
+            if (val !== undefined && isNaN(Date.parse(val))) {
+                throw new Error("Start date must be a valid datetime")
+            }
+
+            return val;
+        }),
+    handleValidationErrors
 ]
 
 //Get All the Events
-router.get('/', validateGetAllQueryParams, handleValidationErrors, async (req, res) => {
+router.get('/', validateGetAllQueryParams, async (req, res) => {
     let { page, size, name, type, startDate } = req.query;
 
     if (!page) page = 1;
@@ -67,9 +77,7 @@ router.get('/', validateGetAllQueryParams, handleValidationErrors, async (req, r
     }
 
     if (startDate) {
-        where.startDate = {
-            [Op.gte]: new Date(startDate)
-        }
+        where.startDate = startDate
     }
 
     const allEvents = await Event.findAll({
@@ -124,11 +132,10 @@ router.get("/:eventId", async (req, res) => {
         include: [
             {
                 model: Group,
-                attributes: ["id", "name", "city", "state"]
+                attributes: ["id", "name", "private", "city", "state"]
             },
             {
-                model: Venue,
-                attributes: ["id", "city", "state"]
+                model: Venue
             },
             {
                 model: EventImage,
@@ -196,7 +203,16 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
         preview: preview
     })
 
-    return res.status(200).json(newEventImage);
+    const response = await EventImage.findOne({
+        where: {
+            id: newEventImage.id
+        },
+        attributes: {
+            exclude: ["eventId", "updatedAt", "createdAt"]
+        }
+    })
+
+    return res.status(200).json(response);
 })
 
 //Edit and Event based on Event's Id
@@ -234,6 +250,55 @@ router.put("/:eventId", requireAuth,
             })
         }
 
+        //Body Validation Checks
+        const currentDate = new Date();
+        const currStartDate = new Date(startDate);
+        const currEndDate = new Date(endDate);
+
+        const errObj = {
+            message: "Bad Request",
+            errors: {}
+        };
+
+        let errCount = 0;
+
+        if (!name || name.length < 5) {
+            errObj.errors.name = "Name must be at least 5 characters";
+            errCount++;
+        }
+
+        if (!type || type.length === 0 || !["Online", "In person"].includes(type)) {
+            errObj.errors.type = "Type must be Online or In person";
+            errCount++;
+        }
+
+        if (!capacity || typeof capacity !== "number") {
+            errObj.errors.capacity = "Capacity must be an integer";
+            errCount++;
+        }
+
+        if (!price || isNaN(price) || price < 0) {
+            errObj.errors.price = "Price is invalid";
+            errCount++;
+        }
+
+        if (!description || description.length === 0) {
+            errObj.errors.description = "Description is required";
+            errCount++;
+        }
+
+        if (!startDate || currStartDate <= currentDate) {
+            errObj.errors.startDate = "Start date must be in the future";
+            errCount++;
+        }
+
+        if (!endDate || currEndDate <= currStartDate) {
+            errObj.errors.endDate = "End date is less than start date"
+            errCount++;
+        }
+
+        if (errCount > 0) return res.status(400).json(errObj);
+
         targetEvent.venueId = venueId || targetEvent.venueId;
         targetEvent.name = name || targetEvent.name;
         targetEvent.type = type || targetEvent.type;
@@ -245,7 +310,16 @@ router.put("/:eventId", requireAuth,
 
         await targetEvent.save();
 
-        return res.status(200).json(targetEvent);
+        const response = await Event.findOne({
+            where: {
+                id: eventId
+            },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"]
+            }
+        })
+
+        return res.status(200).json(response);
     })
 
 //Delete an Event Specified by Id
@@ -381,7 +455,18 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
         status: "pending"
     })
 
-    return res.status(200).json(newAttendee);
+    const response = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: req.user.id,
+            status: "pending"
+        },
+        attributes: {
+            exclude: ["eventId", "updatedAt", "createdAt"]
+        }
+    })
+
+    return res.status(200).json(response);
 })
 
 //Change or PUT the attendance of an attendee for a event by Id
@@ -402,6 +487,12 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
             userId: userId
         }
     });
+
+    const memberUser = await User.findByPk(userId);
+
+    if (!memberUser) return res.status(404).json({
+        message: "User couldn't be found"
+    })
 
     if (!targetAttendee) return res.status(404).json({
         message: "Attendance between the user and the event does not exist"
@@ -431,7 +522,15 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
 
     await targetAttendee.save();
 
-    return res.status(200).json(targetAttendee);
+    const response = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: userId
+        },
+        attributes: ["id", "eventId", "userId", "status"]
+    })
+
+    return res.status(200).json(response);
 });
 
 //Delete an Attendance to an Event specified by Id
@@ -445,6 +544,8 @@ router.delete("/:eventId/attendance/:userId", requireAuth, async (req, res) => {
 
     const targetGroup = await Group.findByPk(targetEvent.groupId);
 
+    const memberUser = await User.findByPk(userId);
+
     const targetAttendee = await Attendance.findOne({
         where: {
             eventId: eventId,
@@ -452,11 +553,13 @@ router.delete("/:eventId/attendance/:userId", requireAuth, async (req, res) => {
         }
     })
 
+    if (!memberUser) return res.status(404).json({
+        message: "User couldn't be found"
+    })
+
     if (!targetAttendee) return res.status(404).json({
         message: "Attendance does not exist for this User"
     })
-
-    console.log(`LOOK HERE YOU GOOFY - userId: ${userId} || req.user.id: ${req.user.id}`);
 
     if (parseInt(userId) === parseInt(req.user.id)) {
         const userAttending = await Attendance.findOne({

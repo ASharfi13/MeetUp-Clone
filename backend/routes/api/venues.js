@@ -23,13 +23,7 @@ router.get("/", async (req, res) => {
 
 //Edit a Venue based on Id
 
-router.put("/:venueId", requireAuth, [
-    body("address").isString().notEmpty(),
-    body("city").isString().notEmpty(),
-    body("state").isString().notEmpty(),
-    body("lat").isFloat().notEmpty(),
-    body("lng").isFloat().notEmpty()
-], async (req, res) => {
+router.put("/:venueId", requireAuth, async (req, res) => {
     const user = req.user;
     const { venueId } = req.params;
     const targetVenue = await Venue.findByPk(venueId);
@@ -55,13 +49,40 @@ router.put("/:venueId", requireAuth, [
         })
     }
 
-    //Check the validations
-    const possibleErrors = validationResult(req);
-    if (!possibleErrors.isEmpty()) {
-        return res.status(400).json({
-            BodyValidationError: possibleErrors.array()
-        })
+    //Body Validation Check
+    const errObj = {
+        message: "Bad Request",
+        errors: {}
     }
+
+    let errCount = 0
+
+    if (!address || address.length === 0) {
+        errObj.errors.address = "Street address is required"
+        errCount++
+    }
+
+    if (!city || city.length === 0) {
+        errObj.errors.city = "City is required"
+        errCount++
+    }
+
+    if (!state || state.length === 0) {
+        errObj.errors.state = "State is required"
+        errCount++
+    }
+
+    if (!lat || lat > 90 || lat < -90) {
+        errObj.errors.lat = "Latitude must be within -90 and 90"
+        errCount++
+    }
+
+    if (!lng || lng > 180 || lng < -180) {
+        errObj.errors.lng = "Longitude must be within -180 and 180"
+        errCount++
+    }
+
+    if (errCount > 0) return res.status(400).json(errObj)
 
     targetVenue.groupId = groupId || targetVenue.groupId;
     targetVenue.address = address || targetVenue.address;
@@ -72,7 +93,16 @@ router.put("/:venueId", requireAuth, [
 
     await targetVenue.save();
 
-    res.json(targetVenue);
+    const response = await Venue.findOne({
+        where: {
+            id: venueId
+        },
+        attributes: {
+            exclude: ["updatedAt", "createdAt"]
+        }
+    })
+
+    res.json(response);
 })
 
 

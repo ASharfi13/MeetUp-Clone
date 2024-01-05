@@ -24,25 +24,20 @@ module.exports = (sequelize, DataTypes) => {
   Venue.init({
     groupId: DataTypes.INTEGER,
     address: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true
-      }
+      type: DataTypes.STRING
     },
     city: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true
-      }
+      type: DataTypes.STRING
     },
     state: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true
-      },
+      type: DataTypes.STRING
     },
-    lat: DataTypes.NUMERIC(10, 7),
-    lng: DataTypes.NUMERIC(10, 7)
+    lat: {
+      type: DataTypes.NUMERIC(10, 7)
+    },
+    lng: {
+      type: DataTypes.NUMERIC(10, 7)
+    }
   }, {
     sequelize,
     modelName: 'Venue',

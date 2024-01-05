@@ -18,7 +18,6 @@ const router = express.Router();
 
 //Delete an Image for a Group
 router.delete("/group-images/:imageId", requireAuth, async (req, res) => {
-    const user = req.user;
     const { imageId } = req.params;
     const targetImage = await GroupImage.findByPk(imageId);
 
@@ -28,14 +27,14 @@ router.delete("/group-images/:imageId", requireAuth, async (req, res) => {
 
     const userOrganizer = await Group.findOne({
         where: {
-            organizerId: user.id,
+            organizerId: req.user.id,
             id: targetImage.groupId
         }
     })
 
     const userCohost = await Membership.findOne({
         where: {
-            userId: user.id,
+            userId: req.user.id,
             groupId: targetImage.groupId,
             status: "co-host"
         }

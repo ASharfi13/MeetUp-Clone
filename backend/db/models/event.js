@@ -37,45 +37,21 @@ module.exports = (sequelize, DataTypes) => {
     venueId: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
     name: {
-      type: DataTypes.STRING,
-      validate: {
-        isAtLeast5Char(value) {
-          if (value.length < 5) {
-            throw new Error("Must be at least 5 Characters");
-          }
-        }
-      }
+      type: DataTypes.STRING
     },
     description: {
-      type: DataTypes.TEXT,
-      allowNull: false
+      type: DataTypes.TEXT
     },
     type: {
-      type: DataTypes.STRING,
-      isValidType(value) {
-        validTypes = ['Online', 'In person']
-        if (!validTypes.includes(value)) {
-          throw new Error('Invalid Group Type. Please specifiy if Online or In person. ')
-        }
-      }
+      type: DataTypes.STRING
     },
     capacity: DataTypes.INTEGER,
     price: DataTypes.NUMERIC(3, 2),
     startDate: {
-      type: DataTypes.DATEONLY,
-      validate: {
-        isAfter: '2023-12-4'
-      }
+      type: DataTypes.DATEONLY
     },
     endDate: {
-      type: DataTypes.DATEONLY,
-      validate: {
-        isAfterStartDate() {
-          if (this.endDate && this.startDate && this.endDate < this.startDate) {
-            throw new Error("Invalid EndDate! Please enter EndDate after Start Date!")
-          }
-        }
-      }
+      type: DataTypes.DATEONLY
     }
   }, {
     sequelize,

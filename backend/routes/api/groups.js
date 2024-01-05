@@ -9,7 +9,8 @@ const
         GroupImage,
         Event,
         Attendance,
-        EventImage
+        EventImage,
+        sequelize
 
     } = require('../../db/models');
 
@@ -57,8 +58,6 @@ router.get("/", validateGetAllQueryParams, handleValidationErrors, async (req, r
     const pageNum = Math.min(parseInt(page) || 1, 10);
 
     const pageSize = Math.min(parseInt(size) || 20, 20);
-
-    console.log("LOOK HERE BUDDY:", pageNum, pageSize);
 
     const offset = (pageNum - 1) * pageSize;
 
@@ -161,7 +160,8 @@ router.get('/:groupId', async (req, res) => {
     const targetGroup = await Group.findByPk(groupId, {
         include: [
             {
-                model: GroupImage
+                model: GroupImage,
+                attributes: ["id", "url", "preview"]
             },
             {
                 model: User,
@@ -193,6 +193,48 @@ router.get('/:groupId', async (req, res) => {
 router.post("/", requireAuth, async (req, res) => {
     let { name, about, type, private, city, state } = req.body;
     const user = req.user;
+
+    //Body Validations
+    const errObj = {
+        message: "Bad Request",
+        errors: {
+
+        }
+    }
+
+    let errCount = 0;
+
+    if (!name || name.length > 60) {
+        errObj.errors.name = "Name must be 60 characters or less";
+        errCount++;
+    }
+
+    if (!about || about.length < 50) {
+        errObj.errors.about = "About must be 50 characters or more";
+        errCount++;
+    }
+
+    if (!type || !["Online", "In person"].includes(type)) {
+        errObj.errors.type = "Type must be 'Online' or 'In person'";
+        errCount++;
+    }
+
+    if (!private || typeof private !== "boolean") {
+        errObj.errors.private = "Private must be a boolean";
+        errCount++;
+    }
+
+    if (!city || city.length === 0) {
+        errObj.errors.city = "City is required";
+        errCount++;
+    }
+
+    if (!state || state.length === 0) {
+        errObj.errors.state = "State is required";
+        errCount++;
+    }
+
+    if (errCount > 0) return res.status(400).json(errObj)
 
     let newGroup = await Group.create({
         organizerId: user.id,
@@ -231,7 +273,16 @@ router.post("/:groupId/images", requireAuth, async (req, res) => {
         preview: preview
     })
 
-    res.json(newGroupImage);
+    const response = await GroupImage.findOne({
+        where: {
+            url: url
+        },
+        attributes: {
+            exclude: ["createdAt", "updatedAt", "groupId"]
+        }
+    })
+
+    res.json(response);
 })
 
 //Edit a Group
@@ -251,6 +302,50 @@ router.put("/:groupId", requireAuth, async (req, res) => {
             message: "Forbidden"
         })
     }
+
+    //Body Validation
+    const errObj = {
+        message: "Bad Request",
+        errors: {
+
+        }
+    }
+
+    console.log(`LOOK: PRIVATE- ${typeof private}`)
+
+    let errCount = 0;
+
+    if (name.length > 60) {
+        errObj.errors.name = "Name must be 60 characters or less";
+        errCount++;
+    }
+
+    if (about.length < 50) {
+        errObj.errors.about = "About must be 50 characters or more";
+        errCount++;
+    }
+
+    if (!["Online", "In person"].includes(type)) {
+        errObj.errors.type = "Type must be 'Online' or 'In person'";
+        errCount++;
+    }
+
+    if (typeof private !== "boolean") {
+        errObj.errors.private = "Private must be a boolean";
+        errCount++;
+    }
+
+    if (city.length === 0) {
+        errObj.errors.city = "City is required";
+        errCount++;
+    }
+
+    if (state.length === 0) {
+        errObj.errors.state = "State is required";
+        errCount++;
+    }
+
+    if (errCount > 0) return res.status(400).json(errObj)
 
     targetGroup.name = name || targetGroup.name,
         targetGroup.about = about || targetGroup.about,
@@ -345,6 +440,44 @@ router.post("/:groupId/venues", requireAuth, async (req, res) => {
         })
     }
 
+    //Body Validation Checks:
+
+    const errObj = {
+        message: "Bad Request",
+        errors: {}
+    }
+
+    let errCount = 0
+
+    if (!address || address.length === 0) {
+        errObj.errors.address = "Street address is required"
+        errCount++
+    }
+
+    if (!city || city.length === 0) {
+        errObj.errors.city = "City is required"
+        errCount++
+    }
+
+    if (!state || state.length === 0) {
+        errObj.errors.state = "State is required"
+        errCount++
+    }
+
+    if (!lat || lat > 90 || lat < -90) {
+        errObj.errors.lat = "Latitude must be within -90 and 90"
+        errCount++
+    }
+
+    if (!lng || lng > 180 || lng < -180) {
+        errObj.errors.lng = "Longitude must be within -180 and 180"
+        errCount++
+    }
+
+    if (errCount > 0) return res.status(400).json(errObj)
+
+
+
     const newVenue = await Venue.create({
         groupId: groupId,
         address: address,
@@ -354,7 +487,16 @@ router.post("/:groupId/venues", requireAuth, async (req, res) => {
         lng: lng
     })
 
-    res.json(newVenue);
+    const response = await Venue.findOne({
+        where: {
+            id: newVenue.id
+        },
+        attributes: {
+            exclude: ["createdAt", "updatedAt"]
+        }
+    })
+
+    res.json(response);
 })
 
 //Get All Events of a Group based on Id
@@ -444,6 +586,55 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         })
     }
 
+    //Body Validation Checks
+    const currentDate = new Date();
+    const currStartDate = new Date(startDate);
+    const currEndDate = new Date(endDate);
+
+    const errObj = {
+        message: "Bad Request",
+        errors: {}
+    };
+
+    let errCount = 0;
+
+    if (!name || name.length < 5) {
+        errObj.errors.name = "Name must be at least 5 characters";
+        errCount++;
+    }
+
+    if (!type || type.length === 0 || !["Online", "In person"].includes(type)) {
+        errObj.errors.type = "Type must be Online or In person";
+        errCount++;
+    }
+
+    if (!capacity || typeof capacity !== "number") {
+        errObj.errors.capacity = "Capacity must be an integer";
+        errCount++;
+    }
+
+    if (!price || isNaN(price) || price < 0) {
+        errObj.errors.price = "Price is invalid";
+        errCount++;
+    }
+
+    if (!description || description.length === 0) {
+        errObj.errors.description = "Description is required";
+        errCount++;
+    }
+
+    if (!startDate || currStartDate <= currentDate) {
+        errObj.errors.startDate = "Start date must be in the future";
+        errCount++;
+    }
+
+    if (!endDate || currEndDate <= currStartDate) {
+        errObj.errors.endDate = "End date is less than start date"
+        errCount++;
+    }
+
+    if (errCount > 0) return res.status(400).json(errObj);
+
     const newEvent = await Event.create({
         groupId: groupId,
         venueId: venueId,
@@ -456,7 +647,16 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         endDate: endDate
     })
 
-    return res.status(200).json(newEvent);
+    const response = await Event.findOne({
+        where: {
+            id: newEvent.id
+        },
+        attributes: {
+            exclude: ["createdAt", "updatedAt"]
+        }
+    })
+
+    return res.status(200).json(response);
 })
 
 //Get All Members of a Group based on Group Id
@@ -544,7 +744,17 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
         status: "pending"
     })
 
-    return res.status(200).json(newMember);
+    console.log(`LOOK HERE GOOFY: ${newMember.id}`)
+
+    const response = await Membership.findOne({
+        where: {
+            userId: user.id,
+            status: "pending"
+        },
+        attributes: [[sequelize.literal('userId'), 'memberId'], 'status']
+    })
+
+    return res.status(200).json(response);
 })
 
 //Edit/Change the Status of a Member
@@ -554,6 +764,8 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
     const { memberId, status } = req.body;
 
     const targetGroup = await Group.findByPk(groupId);
+
+    const memberUser = await User.findByPk(memberId);
 
     const targetMember = await Membership.findOne({
         where: {
@@ -566,8 +778,12 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         message: "Group couldn't be found"
     });
 
-    if (!targetMember) return res.status(404).json({
+    if (!memberUser) return res.status(404).json({
         message: "User couldn't be found"
+    })
+
+    if (!targetMember) return res.status(404).json({
+        message: "Membership between the user and the group does not exist"
     });
 
     if (status === "pending") return res.status(400).json({
@@ -577,12 +793,15 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         }
     });
 
-
-    if (!status) return res.status(404).json({
-        message: "Membership between the user and the group does not exist"
-    });
-
     //Co-Host or Organizer Checks
+
+    const response = await Membership.findOne({
+        where: {
+            userId: memberId,
+            groupId: groupId
+        },
+        attributes: ['id', 'groupId', [sequelize.literal('userId'), 'memberId'], 'status']
+    })
 
     const cohost = await Membership.findOne({
         where: {
@@ -604,7 +823,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         if (targetGroup.organizerId === user.id) {
             targetMember.status = status
             await targetMember.save();
-            return res.status(200).json(targetMember);
+            return res.status(200).json(response);
         } else {
             return res.status(403).json({
                 message: "Forbidden"
@@ -613,10 +832,9 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
     }
 
     //Changing to Member
-    console.log(`LOOK HERE: - targetMember: ${targetMember}`);
     targetMember.status = status;
     await targetMember.save();
-    return res.status(200).json(targetMember)
+    return res.status(200).json(response)
 })
 
 //Delete a membership to a group specificed by id
@@ -624,6 +842,8 @@ router.delete("/:groupId/membership/:memberId", requireAuth, async (req, res) =>
     const { groupId, memberId } = req.params
 
     const targetGroup = await Group.findByPk(groupId);
+
+    const memberUser = await User.findByPk(memberId);
 
     const targetMember = await Membership.findOne({
         where: {
@@ -636,19 +856,20 @@ router.delete("/:groupId/membership/:memberId", requireAuth, async (req, res) =>
         message: "Group couldn't be found"
     })
 
-
-    if (!targetMember) return res.status(400).json({
-        message: "Validation Error",
-        errors: {
-            memberId: "User couldn't be found"
-        }
+    if (!memberUser) return res.status(404).json({
+        message: "User couldn't be found"
     })
+
+    if (!targetMember) return res.status(404).json({
+        message: "Membership does not exist for this User"
+    })
+
 
     //When deleting YOUR OWN membership
     if (parseInt(req.user.id) === parseInt(memberId)) {
         await targetMember.destroy();
         return res.status(200).json({
-            message: "Successfully deleted your membership from group"
+            message: "Successfully deleted membership from group"
         })
     }
 
@@ -659,12 +880,6 @@ router.delete("/:groupId/membership/:memberId", requireAuth, async (req, res) =>
     if (targetGroup.organizerId !== req.user.id) {
         return res.status(403).json({
             message: "Forbidden"
-        })
-    }
-
-    if (targetMember.status !== "member") {
-        return res.status(404).json({
-            message: "Membership does not exist for this User"
         })
     }
 
