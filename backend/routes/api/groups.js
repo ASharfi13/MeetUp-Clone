@@ -714,7 +714,6 @@ router.get("/:groupId/members", async (req, res) => {
 //Request a Membership for a Group based on Group's Id
 router.post("/:groupId/membership", requireAuth, async (req, res) => {
     const { groupId } = req.params;
-    const user = req.user
     const targetGroup = await Group.findByPk(groupId);
 
     if (!targetGroup) return res.status(404).json({
@@ -725,7 +724,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
 
     for (const member of groupMembers) {
 
-        if (member.username === user.username) {
+        if (member.username === req.user.username) {
             if (member.Membership && (member.Membership.status === "member" || member.Membership.status === "co-host")) {
                 return res.status(400).json({
                     message: "User is already a member"
@@ -739,7 +738,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
     }
 
     const newMember = await Membership.create({
-        userId: user.id,
+        userId: req.user.id,
         groupId: groupId,
         status: "pending"
     })
@@ -748,7 +747,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
 
     const response = await Membership.findOne({
         where: {
-            userId: user.id,
+            userId: req.user.id,
             status: "pending"
         },
         attributes: [[sequelize.literal('userId'), 'memberId'], 'status']
