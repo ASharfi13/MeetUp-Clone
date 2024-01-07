@@ -743,12 +743,10 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
         status: "pending"
     })
 
-    console.log(`LOOK HERE GOOFY: ${newMember.id}`)
-
     const response = await Membership.findOne({
         where: {
-            userId: req.user.id,
-            status: "pending"
+            createdAt: newMember.createdAt,
+            updatedAt: newMember.updatedAt
         },
         attributes: [[sequelize.literal('userId'), 'memberId'], 'status']
     })
