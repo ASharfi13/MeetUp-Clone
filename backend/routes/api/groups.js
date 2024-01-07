@@ -797,7 +797,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             userId: memberId,
             groupId: groupId
         },
-        attributes: ['id', 'groupId', [sequelize.literal('userId'), 'memberId'], 'status']
+        attributes: ['id', 'groupId', ['userId', 'memberId'], 'status']
     })
 
     const cohost = await Membership.findOne({
