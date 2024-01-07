@@ -14,10 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Membership.init({
-    userId: DataTypes.INTEGER,
-    groupId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      field: "userId"
+    },
+    groupId: {
+      type: DataTypes.INTEGER,
+      field: "groupId"
+    },
     status: {
       type: DataTypes.STRING,
+      field: "status",
       validate: {
         isValidMembership(value) {
           const validMemberships = ['pending', 'co-host', 'member'];
