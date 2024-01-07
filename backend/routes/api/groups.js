@@ -748,7 +748,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
             createdAt: newMember.createdAt,
             updatedAt: newMember.updatedAt
         },
-        attributes: [[sequelize.literal('userId'), 'memberId'], 'status']
+        attributes: [['userId', 'memberId'], 'status']
     })
 
     return res.status(200).json(response);
