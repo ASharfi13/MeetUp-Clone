@@ -841,7 +841,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         },
         attributes: ['id', 'groupId', ['userId', 'memberId'], 'status']
     })
-    
+
     return res.status(200).json(response)
 })
 

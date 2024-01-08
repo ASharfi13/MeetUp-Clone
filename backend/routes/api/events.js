@@ -500,7 +500,10 @@ router.put("/:eventId/attendance", requireAuth, async (req, res) => {
     })
 
     if (status === "pending") return res.status(400).json({
-        message: "Cannot change an attendance status to pending"
+        message: "Bad Request",
+        errors: {
+            status: "Cannot change an attendance status to pending"
+        }
     })
 
     //Can you even edit it lil bruh?
