@@ -829,6 +829,11 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         }
     }
 
+
+    //Changing to Member
+    targetMember.status = status;
+    await targetMember.save();
+
     const response = await Membership.findOne({
         where: {
             userId: memberId,
@@ -836,10 +841,7 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         },
         attributes: ['id', 'groupId', ['userId', 'memberId'], 'status']
     })
-
-    //Changing to Member
-    targetMember.status = status;
-    await targetMember.save();
+    
     return res.status(200).json(response)
 })
 
