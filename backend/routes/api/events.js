@@ -135,7 +135,8 @@ router.get("/:eventId", async (req, res) => {
                 attributes: ["id", "name", "private", "city", "state"]
             },
             {
-                model: Venue
+                model: Venue,
+                attributes: ["id", "address", "city", "state", "lat", "lng"]
             },
             {
                 model: EventImage,
@@ -157,7 +158,7 @@ router.get("/:eventId", async (req, res) => {
         }
     });
 
-    targetEvent.setDataValue("numMembers", attendCount)
+    targetEvent.setDataValue("numAttending", attendCount)
 
     return res.status(200).json(targetEvent);
 })

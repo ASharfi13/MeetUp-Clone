@@ -246,7 +246,7 @@ router.post("/", requireAuth, async (req, res) => {
         state: state
     })
 
-    res.json(newGroup)
+    res.status(201).json(newGroup)
 })
 
 //Add an Image to a Group based on the Group's Id
@@ -727,7 +727,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
         if (member.username === req.user.username) {
             if (member.Membership && (member.Membership.status === "member" || member.Membership.status === "co-host")) {
                 return res.status(400).json({
-                    message: "User is already a member"
+                    message: "User is already a member of the group"
                 });
             } else if (member.Membership && member.Membership.status !== "member") {
                 return res.status(400).json({
@@ -792,14 +792,6 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
 
     //Co-Host or Organizer Checks
 
-    const response = await Membership.findOne({
-        where: {
-            userId: memberId,
-            groupId: groupId
-        },
-        attributes: ['id', 'groupId', ['userId', 'memberId'], 'status']
-    })
-
     const cohost = await Membership.findOne({
         where: {
             userId: user.id,
@@ -820,6 +812,15 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
         if (targetGroup.organizerId === user.id) {
             targetMember.status = status
             await targetMember.save();
+
+            const response = await Membership.findOne({
+                where: {
+                    userId: memberId,
+                    groupId: groupId
+                },
+                attributes: ['id', 'groupId', ['userId', 'memberId'], 'status']
+            })
+
             return res.status(200).json(response);
         } else {
             return res.status(403).json({
@@ -827,6 +828,14 @@ router.put("/:groupId/membership", requireAuth, async (req, res) => {
             });
         }
     }
+
+    const response = await Membership.findOne({
+        where: {
+            userId: memberId,
+            groupId: groupId
+        },
+        attributes: ['id', 'groupId', ['userId', 'memberId'], 'status']
+    })
 
     //Changing to Member
     targetMember.status = status;
