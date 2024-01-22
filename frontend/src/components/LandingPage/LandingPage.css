@@ -1,0 +1,54 @@
+
+.button {
+    width: 160px;
+    height: 60px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: khaki;
+    background-color: darkgreen;
+    border-radius: 10px;
+}
+
+.LandButton {
+    display: flex;
+    justify-content: center;
+}
+
+.LandingMainTextImg {
+    display: flex;
+    justify-content: space-between;
+}
+
+.MainElements {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+.LandingHowItWorks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.HowitWorksElements {
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.LandingSubLinks {
+    display: flex;
+    justify-content: space-around;
+}
+
+.SubLink {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}

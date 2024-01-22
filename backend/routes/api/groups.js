@@ -95,6 +95,15 @@ router.get("/", validateGetAllQueryParams, handleValidationErrors, async (req, r
     }
 
     for (let group of allGroups) {
+        const eventCount = await Event.count({
+            where: {
+                groupId: group.id
+            }
+        })
+        group.setDataValue("numEvents", eventCount)
+    }
+
+    for (let group of allGroups) {
         const previewImg = await GroupImage.findOne({
             where: {
                 groupId: group.id

@@ -28,7 +28,7 @@ module.exports = {
       },
       {
         groupId: 2,
-        url: "https://samle.info/#cor",
+        url: "https://picsum.photos/200/300",
         preview: true
       },
       {
