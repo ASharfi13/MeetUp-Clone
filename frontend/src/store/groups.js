@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 export const LOAD_GROUPS = '/groups/LOAD_GROUPS';
 export const LOAD_GROUPCOMP = '/groups/LOAD_GROUPCOMP';
+export const LOAD_GROUPEVENTS = '/groups/LOAD_GROUPEVENTS';
 
 
 //Action Creators
@@ -17,6 +18,13 @@ export const loadGroupComp = (group) => {
     return {
         type: LOAD_GROUPCOMP,
         group
+    }
+}
+
+export const loadGroupEvents = (events) => {
+    return {
+        type: LOAD_GROUPEVENTS,
+        events
     }
 }
 
@@ -44,20 +52,54 @@ export const fetchGroupComp = (groupId) => async (dispatch) => {
         return group;
     }
 }
+
+export const fetchGroupEvents = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`);
+
+    if (response.ok) {
+        const events = await response.json();
+
+        dispatch(loadGroupEvents(events));
+        return events;
+    }
+}
+
+const initialState = {
+    allGroups: [],
+    currGroup: {},
+    currGroupEvents: []
+}
+
 //Group Reducer
 
-const groupReducer = (state = {}, action) => {
+const groupReducer = (state = initialState, action) => {
+    let newState;
     switch (action.type) {
         case LOAD_GROUPS: {
-            const allGroups = {}
+            const normAllGroups = {}
             action.groups.Groups.forEach((group) => {
-                allGroups[group.id] = group;
+                normAllGroups[group.id] = group;
             })
-            return allGroups;
+            newState = {
+                ...state, allGroups: { ...normAllGroups }
+            }
+            return newState;
         }
         case LOAD_GROUPCOMP: {
-            const group = action.group;
-            return group;
+            newState = {
+                ...state, currGroup: { ...action.group }
+            }
+            return newState;
+        }
+        case LOAD_GROUPEVENTS: {
+            const normGroupEvents = {}
+            action.events.Events.forEach((event) => {
+                normGroupEvents[event.id] = event;
+            })
+            newState = {
+                ...state, currGroupEvents: { ...normGroupEvents }
+            };
+            return newState;
         }
         default:
             return state;

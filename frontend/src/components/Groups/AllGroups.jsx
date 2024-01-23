@@ -8,7 +8,7 @@ import "./AllGroups.css"
 
 function AllGroups() {
     const dispatch = useDispatch();
-    const groups = useSelector((state) => Object.values(state.groups));
+    const groups = useSelector((state) => Object.values(state.groups.allGroups));
     const navigate = useNavigate();
 
     console.log("Groups", groups);

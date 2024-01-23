@@ -526,7 +526,7 @@ router.get("/:groupId/events", async (req, res) => {
 
     const groupEvents = await targetGroup.getEvents({
         attributes: {
-            exclude: ['description', 'capacity', 'price']
+            exclude: ['capacity', 'price']
         },
         include: [
             {
