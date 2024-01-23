@@ -21,7 +21,7 @@ function AllEvents() {
         const eventDate = new Date(event.startDate);
 
         return (
-            <div className="EventComponent" key={event.id} onClick={() => {
+            <div key={event.id} onClick={() => {
                 const url = `/events/${event.id}`
                 navigate(url)
             }}>
