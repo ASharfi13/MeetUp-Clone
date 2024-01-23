@@ -194,6 +194,13 @@ router.get('/:groupId', async (req, res) => {
     });
     targetGroup.setDataValue("numMembers", memberCount)
 
+    const numEvents = await Event.count({
+        where: {
+            groupId: targetGroup.id
+        }
+    });
+    targetGroup.setDataValue("numEvents", numEvents);
+
     res.json(targetGroup);
 })
 
