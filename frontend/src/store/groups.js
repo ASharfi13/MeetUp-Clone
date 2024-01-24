@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 export const LOAD_GROUPS = '/groups/LOAD_GROUPS';
 export const LOAD_GROUPCOMP = '/groups/LOAD_GROUPCOMP';
 export const LOAD_GROUPEVENTS = '/groups/LOAD_GROUPEVENTS';
+export const CREATE_ADD_GROUP = '/groups/CREATE_ADD_GROUP';
 
 
 //Action Creators
@@ -25,6 +26,13 @@ export const loadGroupEvents = (events) => {
     return {
         type: LOAD_GROUPEVENTS,
         events
+    }
+}
+
+export const createAddGroup = (group) => {
+    return {
+        type: CREATE_ADD_GROUP,
+        group
     }
 }
 
@@ -64,6 +72,23 @@ export const fetchGroupEvents = (groupId) => async (dispatch) => {
     }
 }
 
+//Create A Group Action Thuunk
+export const fetchCreateGroup = (group) => async (dispatch) => {
+    const response = await csrfFetch('/api/groups', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(group)
+    });
+
+    if (response.ok) {
+        const group = await response.json();
+        dispatch(createAddGroup(group));
+        return group;
+    }
+}
+
 const initialState = {
     allGroups: [],
     currGroup: {},
@@ -99,6 +124,13 @@ const groupReducer = (state = initialState, action) => {
             newState = {
                 ...state, currGroupEvents: { ...normGroupEvents }
             };
+            return newState;
+        }
+        case CREATE_ADD_GROUP: {
+            newState = {
+                ...state
+            }
+            newState.allGroups[action.group.id] = action.group;
             return newState;
         }
         default:

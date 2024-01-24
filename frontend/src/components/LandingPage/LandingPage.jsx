@@ -31,7 +31,7 @@ function LandingPage() {
                 </div>
                 <div className="SubLink">
                     <h3>Start A New Group Img</h3>
-                    <h3 style={{ color: "red" }}>Start A New Group Link</h3>
+                    <Link to="/groups/new">Start A New Group</Link>
                     <p>Be a Trailblazer! Start your own Group and invite all your friends! Click and create now!</p>
                 </div>
             </div>
