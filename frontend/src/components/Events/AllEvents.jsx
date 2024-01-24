@@ -8,7 +8,8 @@ import "./AllEvents.css"
 
 function AllEvents() {
     const dispatch = useDispatch();
-    const events = useSelector((state) => Object.values(state.events));
+    const events = useSelector((state) => Object.values(state.events.allEvents));
+    console.log(events); 
     const navigate = useNavigate();
 
     console.log(events);

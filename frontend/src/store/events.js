@@ -1,7 +1,7 @@
 import { csrfFetch } from "./csrf";
 
-export const LOAD_EVENTS = 'events/LOAD_EVENTS';
-export const LOAD_VENUES = 'events/LOAD_VENUES';
+export const LOAD_EVENTS = '/events/LOAD_EVENTS';
+export const LOAD_EVENT = '/events/LOAD_EVENT';
 
 //Action Creators
 
@@ -12,8 +12,11 @@ export const loadEvents = (events) => {
     };
 };
 
-export const loadVenues = (eventId) => {
-    
+export const loadEvent = (event) => {
+    return {
+        type: LOAD_EVENT,
+        event
+    }
 }
 
 
@@ -29,16 +32,44 @@ export const fetchAllEvents = () => async (dispatch) => {
     }
 }
 
+export const fetchEvent = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}`);
+
+    if (response.ok) {
+        const event = await response.json();
+
+        dispatch(loadEvent(event))
+        return event
+    }
+}
+
+
 //Events Reducer
 
-const eventReducer = (state = {}, action) => {
+const initialState = {
+    allEvents: [],
+    currEvent: {},
+    currEventGroup: {}
+}
+
+const eventReducer = (state = initialState, action) => {
+    let newState;
     switch (action.type) {
         case LOAD_EVENTS: {
-            const allEvents = {}
+            const normEvents = {}
             action.events.Events.forEach((event) => {
-                allEvents[event.id] = event;
+                normEvents[event.id] = event;
             })
-            return allEvents;
+            newState = {
+                ...state, allEvents: { ...normEvents }
+            }
+            return newState
+        }
+        case LOAD_EVENT: {
+            newState = {
+                ...state, currEvent: { ...action.event }
+            }
+            return newState;
         }
         default:
             return state
