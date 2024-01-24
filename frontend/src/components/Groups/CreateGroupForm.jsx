@@ -22,6 +22,8 @@ function CreateGroupForm() {
         "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     ];
 
+    const hello = 0;
+
     return (
         <>
             <section className="formHeader">
