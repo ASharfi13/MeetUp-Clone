@@ -269,8 +269,7 @@ router.post("/", requireAuth, async (req, res) => {
 
 router.post("/:groupId/images", requireAuth, async (req, res) => {
     const user = req.user
-    const { groupId } = req.params
-    const { url, preview } = req.body;
+    const { groupId, url, preview } = req.body;
     const targetGroup = await Group.findByPk(groupId);
 
     if (!targetGroup) return res.status(404).json({

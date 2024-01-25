@@ -1,9 +1,14 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchAllGroups, fetchCreateGroup } from "../../store/groups";
 
 function CreateGroupForm() {
     const dispatch = useDispatch();
+    const allGroups = useSelector(state => Object.values(state.groups.allGroups));
+    const navigate = useNavigate();
+
+
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [name, setName] = useState('');
@@ -12,6 +17,7 @@ function CreateGroupForm() {
     const [priv, setPriv] = useState(false);
     const [groupImg, setGroupImg] = useState('');
     const [errObj, setErrObj] = useState({});
+    const [showErrors, setShowErrors] = useState(false);
 
     const allStates = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE",
@@ -22,7 +28,51 @@ function CreateGroupForm() {
         "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     ];
 
-    const hello = 0;
+    useEffect(() => {
+        dispatch(fetchAllGroups());
+    }, [dispatch]);
+
+    useEffect(() => {
+        const submitErrObj = {};
+        if (name.length > 60) submitErrObj.nameLength = "Name must be less than 60 characters"
+        if (name.length === 0) submitErrObj.nameMissing = "Name is required"
+        if (city.length === 0) submitErrObj.cityMissing = "City Name is required"
+        if (state.length === 0) submitErrObj.stateMissing = "State is required"
+        if (description.length !== 0 && description.length < 50) submitErrObj.descriptionLength = "Description must be 50 characters or more"
+        if (description.length === 0) submitErrObj.descriptionMissing = "Description is required"
+        if (!type) submitErrObj.typeMissing = "Type is required"
+        if (groupImg.length === 0) submitErrObj.groupImgMissing = "Image URL is required"
+
+        const imgArr = groupImg.split(".");
+
+        if (groupImg.length !== 0 && !["jpeg", "png", "jpg"].includes(imgArr[imgArr.length - 1])) submitErrObj.invalidImg = "Invalid Image Url, must end in .jpg, .jpeng, .png"
+
+        setErrObj(submitErrObj);
+    }, [name, city, state, description, type, groupImg])
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        const newGroup = {
+            name,
+            description,
+            type,
+            priv,
+            city,
+            state,
+        }
+
+        if (Object.values(errObj).length === 0) {
+            dispatch(fetchCreateGroup(newGroup))
+        } else {
+            setShowErrors(true);
+        }
+    }
+
+    console.log(allGroups);
+
+
 
     return (
         <>
@@ -31,7 +81,7 @@ function CreateGroupForm() {
                 <h2>We'll walk you through a few steps to build your local community</h2>
             </section>
             <section className="mainForm">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="groupLocation">
                         <div className="locationDesc">
                             <h2>First, set your group's location.</h2>
@@ -46,7 +96,7 @@ function CreateGroupForm() {
                             >
                             </input>
                             <select value={state} onChange={e => setState(e.target.value)}>
-                                <option value="">Select a State</option>
+                                <option value="" disabled>Select a State</option>
                                 {
                                     allStates.map((state, index) => (
                                         <option key={index} value={state}> {state} </option>
@@ -54,6 +104,9 @@ function CreateGroupForm() {
                                 }
                             </select>
                         </div>
+                        {showErrors ? (
+                            <p style={{ color: "red" }}>{errObj.cityMissing} {" "} {errObj.stateMissing}</p>
+                        ) : null}
                     </div>
 
                     <div className="groupName">
@@ -67,6 +120,9 @@ function CreateGroupForm() {
                         >
                         </input>
                     </div>
+                    {showErrors ? (
+                        <p style={{ color: 'red' }}>{errObj.nameMissing} {" "} {errObj.nameLength}</p>) : null
+                    }
 
                     <div className="groupDesc">
                         <h2>Now describe what your group will be about</h2>
@@ -76,9 +132,12 @@ function CreateGroupForm() {
                             <li>Who should join?</li>
                             <li>What will you do at your events?</li>
                         </ol>
-                        <textarea rows={"10"} cols={"30"} value={description} onChange={e => setDescription(e.target.value)} placeholder="Please write at least 30 characters">
+                        <textarea rows={"10"} cols={"30"} value={description} onChange={e => setDescription(e.target.value)} placeholder="Please write at least 50 characters">
                         </textarea>
                     </div>
+                    {showErrors ? (
+                        <p style={{ color: "red" }}>{errObj.descriptionMissing} {" "} {errObj.descriptionLength}</p>
+                    ) : null}
 
                     <div className="groupFinalSteps">
                         <h2>Final Steps...</h2>
@@ -93,6 +152,11 @@ function CreateGroupForm() {
                                 }
                             </select>
                         </div>
+
+                        {showErrors ? (
+                            <p style={{ color: "red" }}> {errObj.typeMissing} </p>
+                        ) : null}
+
                         <div className="groupPrivate">
                             <p>Is this group public or private?</p>
                             <select value={priv ? "Private" : "Public"} onChange={e => {
@@ -105,6 +169,7 @@ function CreateGroupForm() {
                                 }
                             </select>
                         </div>
+
                         <div className="groupImgUrl">
                             <p>Please add an image url for your group below:</p>
                             <input
@@ -115,8 +180,13 @@ function CreateGroupForm() {
                             >
                             </input>
                         </div>
+
+                        {showErrors ? (
+                            <p style={{ color: "red" }}> {errObj.groupImgMissing} {" "} {errObj.invalidImg} </p>
+                        ) : null}
                     </div>
-                    <button>
+                    <button type="submit"
+                    >
                         Create Group
                     </button>
                 </form>

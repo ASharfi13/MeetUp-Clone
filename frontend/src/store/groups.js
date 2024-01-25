@@ -4,6 +4,7 @@ export const LOAD_GROUPS = '/groups/LOAD_GROUPS';
 export const LOAD_GROUPCOMP = '/groups/LOAD_GROUPCOMP';
 export const LOAD_GROUPEVENTS = '/groups/LOAD_GROUPEVENTS';
 export const CREATE_ADD_GROUP = '/groups/CREATE_ADD_GROUP';
+export const CREATE_ADD_GROUPIMAGE = '/groups/CREATE_ADD_GROUPIMAGE';
 
 
 //Action Creators
@@ -36,9 +37,18 @@ export const createAddGroup = (group) => {
     }
 }
 
+export const createAddGroupImage = (groupImg) => {
+    return {
+        type: CREATE_ADD_GROUPIMAGE,
+        groupImg
+    }
+}
+
 
 //Action Thunks
 
+
+//GET Thunks!
 export const fetchAllGroups = () => async (dispatch) => {
     const response = await csrfFetch('/api/groups/');
 
@@ -89,10 +99,29 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
     }
 }
 
+
+//Create Group Image
+export const fetchCreateAddGroupImage = (newGroupImg) => async (dispatch) => {
+    const response = await csrfFetch('/api/:groupId/images', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newGroupImg)
+    });
+
+    if (response.ok) {
+        const groupImg = await response.json();
+        dispatch(createAddGroupImage(groupImg));
+        return groupImg;
+    }
+}
+
 const initialState = {
     allGroups: [],
     currGroup: {},
-    currGroupEvents: []
+    currGroupEvents: [],
+    groupImages: []
 }
 
 //Group Reducer
