@@ -207,7 +207,7 @@ router.get('/:groupId', async (req, res) => {
 //Create a new Group
 
 router.post("/", requireAuth, async (req, res) => {
-    let { name, about, type, isPrivate, city, state } = req.body;
+    let { name, about, type, isPrivate, city, state, previewImg } = req.body;
     const user = req.user;
 
     //Body Validations
@@ -261,6 +261,14 @@ router.post("/", requireAuth, async (req, res) => {
         state: state
     })
 
+    if (previewImg) {
+        await GroupImage.create({
+            groupId: newGroup.id,
+            url: previewImg,
+            preview: true
+        })
+    }
+
     res.status(201).json(newGroup)
 })
 
@@ -268,7 +276,8 @@ router.post("/", requireAuth, async (req, res) => {
 
 router.post("/:groupId/images", requireAuth, async (req, res) => {
     const user = req.user
-    const { groupId, url, preview } = req.body;
+    const { groupId } = req.params;
+    const { url, preview } = req.body;
     const targetGroup = await Group.findByPk(groupId);
 
     if (!targetGroup) return res.status(404).json({
@@ -305,7 +314,7 @@ router.put("/:groupId", requireAuth, async (req, res) => {
     const user = req.user;
     const { groupId } = req.params
     const targetGroup = await Group.findByPk(groupId);
-    let { name, about, type, private, city, state } = req.body
+    let { name, about, type, isPrivate, city, state } = req.body
 
     if (!targetGroup) return res.status(404).json({
         message: "Group couldn't be found"
@@ -344,8 +353,8 @@ router.put("/:groupId", requireAuth, async (req, res) => {
         errCount++;
     }
 
-    if (typeof private !== "boolean") {
-        errObj.errors.private = "Private must be a boolean";
+    if (typeof isPrivate !== "boolean") {
+        errObj.errors.isPrivate = "Private must be a boolean";
         errCount++;
     }
 
@@ -364,7 +373,7 @@ router.put("/:groupId", requireAuth, async (req, res) => {
     targetGroup.name = name || targetGroup.name,
         targetGroup.about = about || targetGroup.about,
         targetGroup.type = type || targetGroup.type,
-        targetGroup.private = private || targetGroup.private,
+        targetGroup.isPrivate = isPrivate || targetGroup.isPrivate,
         targetGroup.city = city || targetGroup.city,
         targetGroup.state = state || targetGroup.state
 
@@ -574,8 +583,24 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
     const user = req.user;
     const { groupId } = req.params;
     const targetGroup = await Group.findByPk(groupId);
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-    const targetVenue = await Venue.findByPk(venueId);
+    let { venueId, name, type, capacity, price, description, startDate, endDate, previewImg, address, city, state } = req.body;
+
+    let eventVenue;
+
+    if (venueId === null) {
+        eventVenue = await Venue.create({
+            groupId: groupId,
+            address: address,
+            city: city,
+            state: state,
+            lat: 85,
+            lng: 120
+        })
+    }
+
+    const newVenueId = eventVenue.id;
+
+    const targetVenue = await Venue.findByPk(newVenueId);
 
     if (!targetGroup) return res.status(404).json({
         message: "Group couldn't be found"
@@ -649,9 +674,9 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
 
     if (errCount > 0) return res.status(400).json(errObj);
 
-    const newEvent = await Event.create({
+    let newEvent = await Event.create({
         groupId: groupId,
-        venueId: venueId,
+        venueId: newVenueId,
         name: name,
         type: type,
         capacity: capacity,
@@ -660,6 +685,15 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         startDate: startDate,
         endDate: endDate
     })
+
+    if (previewImg) {
+        await EventImage.create({
+            eventId: newEvent.id,
+            url: previewImg,
+            preview: true
+
+        })
+    }
 
     const response = await Event.findOne({
         where: {

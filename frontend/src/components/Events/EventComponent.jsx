@@ -1,16 +1,20 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchEvent } from "../../store/events";
+import { fetchAllEvents, fetchEvent } from "../../store/events";
 import { fetchGroupComp } from "../../store/groups";
 
 
 function EventComponent() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { eventId } = useParams();
 
     const event = useSelector(state => state.events.currEvent);
     const group = useSelector(state => state.groups.currGroup);
+    const events = useSelector(state => state.events.allEvents);
+
+    console.log("Events", events);
 
     let groupId;
 
@@ -18,9 +22,6 @@ function EventComponent() {
         groupId = event.Group.id
     )
 
-
-    console.log(event);
-    console.log("GROUP", group);
 
     const convertTime = (date) => {
         const newDate = new Date(date);
@@ -36,6 +37,7 @@ function EventComponent() {
 
 
     useEffect(() => {
+        dispatch(fetchAllEvents())
         dispatch(fetchEvent(Number(eventId)))
         dispatch(fetchGroupComp(groupId))
     }, [dispatch, eventId, groupId])
@@ -61,7 +63,7 @@ function EventComponent() {
                         <p>Start {event.startDate} • {convertTime(event.startDate)}</p>
                         <p>End {event.endDate} • {convertTime(event.endDate)}</p>
                         <p> ${event.price} </p>
-                        <p> {event.type} </p>
+                        <p> {event.type} <button onClick={e => navigate(`/events/${eventId}/edit`)}>Update</button></p>
                     </div>
                 </div>
             </section>

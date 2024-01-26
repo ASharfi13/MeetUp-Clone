@@ -27,7 +27,7 @@ module.exports = {
         type: "In person",
         private: false,
         city: "Oak Lawn",
-        state: "OL"
+        state: "IL"
       },
       {
         organizerId: 2,
@@ -36,7 +36,7 @@ module.exports = {
         type: "Online",
         private: true,
         city: "Smurfville",
-        state: "SV"
+        state: "TX"
       },
       {
         organizerId: 3,
@@ -45,7 +45,7 @@ module.exports = {
         type: "In person",
         private: false,
         city: "Dungeon's Master",
-        state: "DM"
+        state: "AL"
       }
     ])
   },

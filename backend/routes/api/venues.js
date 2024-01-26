@@ -21,6 +21,7 @@ router.get("/", async (req, res) => {
     res.json(allVenues);
 })
 
+
 //Edit a Venue based on Id
 
 router.put("/:venueId", requireAuth, async (req, res) => {

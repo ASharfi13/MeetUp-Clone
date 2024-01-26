@@ -1,7 +1,7 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllGroups, fetchCreateGroup } from "../../store/groups";
+import { fetchAllGroups, fetchCreateAddGroupImage, fetchCreateGroup } from "../../store/groups";
 
 function CreateGroupForm() {
     const dispatch = useDispatch();
@@ -61,11 +61,13 @@ function CreateGroupForm() {
             isPrivate: priv,
             city,
             state,
+            previewImg: groupImg
         }
 
         if (Object.values(errObj).length === 0) {
-            dispatch(fetchCreateGroup(newGroup))
-            console.log("newGroup", newGroup);
+            dispatch(fetchCreateGroup(newGroup)).then((group) => {
+                navigate(`/groups/${group.id}`)
+            })
         } else {
             setShowErrors(true);
         }

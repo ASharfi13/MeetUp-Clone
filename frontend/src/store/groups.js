@@ -5,6 +5,7 @@ export const LOAD_GROUPCOMP = '/groups/LOAD_GROUPCOMP';
 export const LOAD_GROUPEVENTS = '/groups/LOAD_GROUPEVENTS';
 export const CREATE_ADD_GROUP = '/groups/CREATE_ADD_GROUP';
 export const CREATE_ADD_GROUPIMAGE = '/groups/CREATE_ADD_GROUPIMAGE';
+export const UPDATE_GROUP_DETAILS = '/groups/UPDATE_GROUP_DETAILS';
 
 
 //Action Creators
@@ -41,6 +42,13 @@ export const createAddGroupImage = (groupImg) => {
     return {
         type: CREATE_ADD_GROUPIMAGE,
         groupImg
+    }
+}
+
+export const updateGroupDetails = (group) => {
+    return {
+        type: UPDATE_GROUP_DETAILS,
+        group
     }
 }
 
@@ -101,8 +109,8 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
 
 
 //Create Group Image
-export const fetchCreateAddGroupImage = (newGroupImg) => async (dispatch) => {
-    const response = await csrfFetch('/api/:groupId/images', {
+export const fetchCreateAddGroupImage = (newGroupImg, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/images`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -114,6 +122,23 @@ export const fetchCreateAddGroupImage = (newGroupImg) => async (dispatch) => {
         const groupImg = await response.json();
         dispatch(createAddGroupImage(groupImg));
         return groupImg;
+    }
+}
+
+//Update An Existing Group
+export const fetchUpdateGroupDetails = (newGroup, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newGroup)
+    });
+
+    if (response.ok) {
+        const group = await response.json();
+        dispatch(updateGroupDetails(group));
+        return group;
     }
 }
 

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupComp, fetchGroupEvents } from "../../store/groups";
@@ -38,9 +38,12 @@ function GroupComponent() {
         dispatch(fetchGroupEvents(Number(groupId)));
     }, [dispatch, groupId])
 
+    console.log("Group", group);
+
     return (
         <>
             <main>
+                <Link to='/groups'>{`<`}Groups</Link>
                 <section className="UpperMain">
                     <div>
                         <img src={url} />
@@ -55,6 +58,7 @@ function GroupComponent() {
                             </div>
                             <div>
                                 <button onClick={e => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
+                                <button onClick={e => navigate(`/groups/${groupId}/edit`)}>Update</button>
                             </div>
                         </div>
                         <div>
