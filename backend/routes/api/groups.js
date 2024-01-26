@@ -207,7 +207,7 @@ router.get('/:groupId', async (req, res) => {
 //Create a new Group
 
 router.post("/", requireAuth, async (req, res) => {
-    let { name, about, type, private, city, state } = req.body;
+    let { name, about, type, isPrivate, city, state } = req.body;
     const user = req.user;
 
     //Body Validations
@@ -235,9 +235,8 @@ router.post("/", requireAuth, async (req, res) => {
         errCount++;
     }
 
-    if (!private || typeof private !== "boolean") {
-        errObj.errors.private = "Private must be a boolean";
-        errCount++;
+    if (!isPrivate || typeof isPrivate !== "boolean") {
+        errObj.errors.isPrivate = "Private must be a boolean";
     }
 
     if (!city || city.length === 0) {
@@ -257,7 +256,7 @@ router.post("/", requireAuth, async (req, res) => {
         name: name,
         about: about,
         type: type,
-        private: private,
+        isPrivate: isPrivate,
         city: city,
         state: state
     })

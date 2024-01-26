@@ -8,6 +8,7 @@ function GroupEventDetails() {
 
     const todayDate = new Date();
 
+
     const upcomingEvents = groupEvents.filter((event) => event.startDate > todayDate.toDateString());
 
     const previousEvents = groupEvents.filter((event) => event.startDate < todayDate.toDateString());

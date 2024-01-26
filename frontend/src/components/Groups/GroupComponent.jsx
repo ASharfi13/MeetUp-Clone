@@ -11,6 +11,7 @@ function GroupComponent() {
     const { groupId } = useParams();
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups.currGroup);
+    const navigate = useNavigate();
 
     let url;
 
@@ -19,7 +20,12 @@ function GroupComponent() {
         lastName: null
     }
 
-    !group.GroupImages ? url = null : url = group.GroupImages[0].url;
+    if (!group.GroupImages || group.GroupImages.length === 0) {
+        url = null
+    } else {
+        url = group.GroupImages[0].url
+    }
+
     !group.Organizer || (
         Organizer.firstName = group.Organizer.firstName,
         Organizer.lastName = group.Organizer.lastName
@@ -41,10 +47,15 @@ function GroupComponent() {
                     </div>
                     <section className="GroupDetails">
                         <div>
-                            <h4> {group.name} </h4>
-                            <p> {group.city}, {group.state} </p>
-                            <p> {group.numEvents} Events • {group.private ? "Private" : "Public"}</p>
-                            <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>
+                            <div>
+                                <h4> {group.name} </h4>
+                                <p> {group.city}, {group.state} </p>
+                                <p> {group.numEvents} Events • {group.private ? "Private" : "Public"}</p>
+                                <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>
+                            </div>
+                            <div>
+                                <button onClick={e => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
+                            </div>
                         </div>
                         <div>
                             <button>Join Group</button>

@@ -1,7 +1,9 @@
 import { csrfFetch } from "./csrf";
+import { CREATE_ADD_GROUP } from "./groups";
 
 export const LOAD_EVENTS = '/events/LOAD_EVENTS';
 export const LOAD_EVENT = '/events/LOAD_EVENT';
+export const CREATE_ADD_EVENT = '/events/CREATE_ADD_EVENT';
 
 //Action Creators
 
@@ -19,8 +21,15 @@ export const loadEvent = (event) => {
     }
 }
 
+export const addCreateEvent = (event) => {
+    return {
+        type: CREATE_ADD_EVENT,
+        event
+    }
+}
 
 //Action Thunks
+//GET Thunks
 export const fetchAllEvents = () => async (dispatch) => {
     const response = await csrfFetch('/api/events/');
 
@@ -40,6 +49,23 @@ export const fetchEvent = (eventId) => async (dispatch) => {
 
         dispatch(loadEvent(event))
         return event
+    }
+}
+
+//CREATE ACTION THUNK
+export const fetchCreateEvent = (event, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(event)
+    });
+
+    if (response.ok) {
+        const newEvent = await response.json();
+        dispatch(addCreateEvent(newEvent));
+        return newEvent
     }
 }
 
@@ -69,6 +95,11 @@ const eventReducer = (state = initialState, action) => {
             newState = {
                 ...state, currEvent: { ...action.event }
             }
+            return newState;
+        }
+        case CREATE_ADD_EVENT: {
+            newState = { ...state };
+            newState.allEvents[action.event.id] = action.event;
             return newState;
         }
         default:

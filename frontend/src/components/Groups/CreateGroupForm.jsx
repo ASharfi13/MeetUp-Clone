@@ -56,22 +56,20 @@ function CreateGroupForm() {
 
         const newGroup = {
             name,
-            description,
+            about: description,
             type,
-            priv,
+            isPrivate: priv,
             city,
             state,
         }
 
         if (Object.values(errObj).length === 0) {
             dispatch(fetchCreateGroup(newGroup))
+            console.log("newGroup", newGroup);
         } else {
             setShowErrors(true);
         }
     }
-
-    console.log(allGroups);
-
 
 
     return (

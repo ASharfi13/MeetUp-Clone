@@ -45,7 +45,7 @@ function AllGroups() {
                         <h3> {group.name}</h3>
                         <h4> {group.city}, {group.state}</h4>
                         <p> {group.about} </p>
-                        <h5> {group.numEvents} Events • {group.private ? "Private" : "Public"} </h5>
+                        <h5> {group.numEvents} Events • {group.isPrivate ? "Private" : "Public"} </h5>
                     </div>
                 ))}
             </section>
