@@ -1,0 +1,23 @@
+.theWholeThing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 1200px;
+}
+
+.eventComp {
+    border-top: 2px solid grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.upEventButton {
+    width: 160px;
+    height: 60px;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+
+}

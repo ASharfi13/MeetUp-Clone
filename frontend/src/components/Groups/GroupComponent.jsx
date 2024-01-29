@@ -1,8 +1,9 @@
 import { useParams, useNavigate, Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchGroupComp, fetchGroupEvents } from "../../store/groups";
+import { fetchAllGroups, fetchDeleteGroup, fetchGroupComp, fetchGroupEvents } from "../../store/groups";
 import GroupEventDetails from "./GroupEventDetails";
+import "./GroupComponent.css";
 
 
 
@@ -14,6 +15,7 @@ function GroupComponent() {
     const navigate = useNavigate();
     const user = useSelector(state => state.session.user);
     const [permission, setPermission] = useState(false);
+    const groups = useSelector((state) => Object.values(state.groups.allGroups));
 
     let url;
 
@@ -38,33 +40,46 @@ function GroupComponent() {
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
         dispatch(fetchGroupEvents(Number(groupId)));
+        dispatch(fetchAllGroups());
 
-        setPermission(Number(user.id) === Number(group.organizerId))
-    }, [dispatch, groupId, user.id, group.organizerId])
+        if (user?.id && group.organizerId) setPermission(Number(user.id) === Number(group.organizerId))
+    }, [dispatch, groupId, user?.id, group.organizerId, setPermission])
+
+    const handleDeleteConfirm = () => {
+        dispatch(fetchDeleteGroup(groupId)).then(() => {
+            navigate(`/groups`);
+        })
+    }
+
 
     return (
         <>
             <main>
-                <Link to='/groups'>{`<`}Groups</Link>
+                <Link className="breadLink" to='/groups'>{`<`}Worlds</Link>
                 <section className="UpperMain">
-                    <div>
-                        <img src={url} />
-                    </div>
+                    <img className="groupImg" src={url} />
                     <section className="GroupDetails">
                         <div>
                             <div>
                                 <h4> {group.name} </h4>
                                 <p> {group.city}, {group.state} </p>
-                                <p> {group.numEvents} Events • {group.private ? "Private" : "Public"}</p>
+                                <p> Events {`(${group.numEvents})`} • {group.private === true ? "Private" : "Public"}</p>
                                 <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>
                             </div>
-                            {permission ? (<div>
-                                <button onClick={e => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
-                                <button onClick={e => navigate(`/groups/${groupId}/edit`)}>Update</button>
-                            </div>) : null}
-                        </div>
-                        <div>
-                            <button>Join Group</button>
+                            <div className="groupButtons">
+                                {user?.id !== group.organizerId && user ? (
+                                    <button style={{ backgroundColor: 'red' }} className="singleButton" onClick={e => alert("Feature Coming Soon!")}>Join Group</button>)
+                                    : null}
+                                {permission ? (<>
+                                    <button className="singleButton" onClick={e => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
+                                    <button className="singleButton" onClick={e => navigate(`/groups/${groupId}/edit`)}>Update</button>
+                                    <button className="singleButton" onClick={e => {
+                                        if (window.confirm('Are you sure you want to delete this group?')) {
+                                            handleDeleteConfirm();
+                                        }
+                                    }}>Delete</button>
+                                </>) : (<button className="singleButton" onClick={e => navigate(`/`)}>Update</button>)}
+                            </div>
                         </div>
                     </section>
                 </section>

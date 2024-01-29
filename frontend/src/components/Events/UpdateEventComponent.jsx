@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchGroupComp, fetchUpdateGroupDetails } from "../../store/groups";
-import { fetchEvent, fetchUpdateEvent, loadEvent } from "../../store/events";
+import { fetchEvent, fetchUpdateEvent } from "../../store/events";
 
 
 function UpdateEventComponent() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { eventId } = useParams();
     const event = useSelector(state => state.events.currEvent);
     const prevName = localStorage.getItem('eventName') || event.name || "";
@@ -18,7 +18,8 @@ function UpdateEventComponent() {
     const prevEndDate = localStorage.getItem('eventEndDate') || event.endDate || "";
     const prevDescription = localStorage.getItem('eventDescription') || event.description || "";
 
-    const todayDate = new Date();
+    const todayDate = useMemo(() => new Date(), [])
+
 
     const convertPrice = (price) => {
         const numPrice = Number(price);
@@ -53,14 +54,17 @@ function UpdateEventComponent() {
     }, [name, type, isPrivate, price, capacity, startDate, endDate, description])
 
     useEffect(() => {
-        dispatch(fetchEvent(Number(eventId)))
-    }, [dispatch, eventId])
+        const fetchData = async () => {
+            await fetchEvent(eventId)
+        }
+
+        fetchData();
+    }, [dispatch, eventId, event.id])
 
     useEffect(() => {
         const checkErrObj = {};
         const nwStartDate = new Date(startDate);
         const nwEndDate = new Date(endDate);
-        const todayDate = new Date();
 
         if (name.length === 0) checkErrObj.nameMissing = "Name is required"
         if (name.length < 5) checkErrObj.nameLength = "Name must be at least 5 characters"
@@ -69,7 +73,7 @@ function UpdateEventComponent() {
         if (capacity.length === 0) checkErrObj.capacityMissing = "Capacity is required"
         if (nwStartDate < todayDate) checkErrObj.invalidStartDate = "Please enter a valid start date! No previous days in the past!"
         if (nwStartDate == "Invalid Date") checkErrObj.startDateMissing = "Start date is required"
-        if (nwEndDate < nwStartDate) checkErrObj.invalidEndDate = "Please enter a valid end date that is AFTER the start date!"
+        if (nwEndDate <= nwStartDate) checkErrObj.invalidEndDate = "Please enter a valid end date that is AFTER the start date!"
         if (nwEndDate == "Invalid Date") checkErrObj.endDateMissing = "End date is required"
 
         const imgArr = eventImg.split(".");
@@ -96,7 +100,10 @@ function UpdateEventComponent() {
         }
 
         if (Object.values(errObj).length === 0) {
-            dispatch(fetchUpdateEvent(newEvent, Number(eventId)))
+            dispatch(fetchUpdateEvent(newEvent, Number(eventId))).then(() => {
+                localStorage.clear();
+                navigate(`/events/${eventId}`)
+            })
         } else {
             setShowErrors(true);
         }
@@ -149,7 +156,7 @@ function UpdateEventComponent() {
                         ) : null}
                     </div>
                     <div>
-                        <p>What's the most amount of people you can host at this event?</p>
+                        <p>What{'\''}s the most amount of people you can host at this event?</p>
                         <input type="number" placeholder="Enter Max Capacity"
                             value={capacity} onChange={e => setCapacity(e.target.value)}></input>
                         {showErrors ? (

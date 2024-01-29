@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllEvents } from "../../store/events";
 import { NavLink } from "react-router-dom";
@@ -19,24 +19,22 @@ function AllEvents() {
         const eventDate = new Date(event.startDate);
 
         return (
-            <div className="EventComponent" key={event.id} onClick={() => {
+            <div className="EventComponentSection" key={event.id} onClick={() => {
                 const url = `/events/${event.id}`
                 navigate(url)
             }}>
-                <div key={event.id} onClick={() => {
+                <div className="EventComponent" key={event.id} onClick={() => {
                     const url = `/events/${event.id}`
                     navigate(url)
                 }}>
-                    <div className="EventImg">
-                        <img src={event.previewImage} />
-                    </div>
+                    <img className="EventImg" src={event.previewImage} />
                     <div className="EventDetails">
-                        <h3> {event.name}</h3>
                         <p> {eventDate.toLocaleDateString()} • {eventDate.toLocaleTimeString("en-US", {
                             hour: "numeric",
                             minute: "numeric",
                             hour12: true
                         })} </p>
+                        <h3> {event.name}</h3>
                         <p> {event.Venue.city}, {event.Venue.state} </p>
                     </div>
                 </div>
@@ -54,14 +52,14 @@ function AllEvents() {
                     <NavLink to="/groups" style={({ isActive }) => ({
                         color: isActive ? "teal" : "grey",
                         textDecoration: isActive ? "underline" : "none"
-                    })}>Groups</NavLink>
+                    })}>Worlds</NavLink>
                     <NavLink to="/events" style={({ isActive }) => ({
                         color: isActive ? "teal" : "grey",
                         textDecoration: isActive ? "underline" : "none"
                     })}>Events</NavLink>
                 </div>
                 <div className="EventHeaderCaption">
-                    <p>Events in TheClub</p>
+                    <p> <span style={{ fontWeight: "bold" }}>Events</span> at The Cartoon Social Network</p>
                 </div>
             </section>
             {eventCompInfo}

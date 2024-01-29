@@ -23,18 +23,18 @@ module.exports = {
     await GroupImage.bulkCreate([
       {
         groupId: 1,
-        url: "https://sle.info/#cor",
-        preview: false
+        url: "https://i.ytimg.com/vi/J613wJr2lSI/maxresdefault.jpg",
+        preview: true
       },
       {
         groupId: 2,
-        url: "https://picsum.photos/200/300",
+        url: "https://static.planetminecraft.com/files/image/minecraft/project/2022/332/15262055_xl.webp",
         preview: true
       },
       {
         groupId: 3,
-        url: "https://smple.info/#cor",
-        preview: false
+        url: "https://cn.i.cdn.ti-platform.com/content/1123/showpage/dexter%27s-laboratory/ae/dexterslab-backgroundbottom.jpg",
+        preview: true
       },
     ])
   },

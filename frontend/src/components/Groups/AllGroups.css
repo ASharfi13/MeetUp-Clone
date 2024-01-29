@@ -1,5 +1,33 @@
 .GroupComponent {
+    display: flex;
+    flex-direction: column;
     border-top: 2px solid black;
     border-bottom: 2px solid black;
+    width: 60%;
+    cursor: pointer;
+}
 
+.GroupHeaderLinks {
+    display: flex;
+    height: 80px;
+    font-size: 40px;
+    width: 40%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.GroupHeaderCaption {
+    display: flex;
+    height: 80px;
+    font-size: 40px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.groupComponentSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
 }

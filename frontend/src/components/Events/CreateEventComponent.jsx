@@ -1,9 +1,9 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupComp } from "../../store/groups";
 import { fetchAllEvents, fetchCreateEvent } from "../../store/events";
-import { fetchAllVenues } from "../../store/venue";
+import "./CreateEventComponent.css";
 
 function CreateEventComponent() {
     const dispatch = useDispatch();
@@ -12,7 +12,7 @@ function CreateEventComponent() {
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const [isPrivate, setIsPrivate] = useState(false);
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [eventImg, setEventImg] = useState('');
@@ -36,9 +36,7 @@ function CreateEventComponent() {
 
     const group = useSelector(state => state.groups.currGroup)
 
-    const events = useSelector(state => Object.values(state.events.allEvents));
-
-    const todayDate = new Date();
+    const todayDate = useMemo(() => new Date(), [])
 
     const convertPrice = (price) => {
         const numPrice = Number(price);
@@ -56,8 +54,6 @@ function CreateEventComponent() {
 
         const nwStartDate = new Date(startDate);
         const nwEndDate = new Date(endDate);
-        const todayDate = new Date();
-
 
         if (name.length === 0) checkErrObj.nameMissing = "Name is required"
         if (name.length < 5) checkErrObj.nameLength = "Name must be at least 5 characters"
@@ -110,10 +106,10 @@ function CreateEventComponent() {
 
     return (
         <>
-            <h1>Create an Event for {group.name}</h1>
-            <section>
-                <form onSubmit={handleSubmit}>
-                    <div className="eventName">
+            <section className="theWholeThing">
+                <h1>Create a New Event for {group.name}</h1>
+                <form className="form" onSubmit={handleSubmit}>
+                    <div className="eventComp">
                         <p>What is the name of your event?</p>
                         <input type="text" placeholder="Event Name" value={name} onChange={e => setName(e.target.value)}>
                         </input>
@@ -121,7 +117,7 @@ function CreateEventComponent() {
                             <p style={{ color: "red" }}>{errObj.nameMissing} {' '} {errObj.nameLength}</p>
                         ) : null}
                     </div>
-                    <div className="eventDetails">
+                    <div className="eventComp">
                         <div>
                             <p>It this an in-person or online event?</p>
                             <select value={type} onChange={e => setType(e.target.value)}>
@@ -150,7 +146,7 @@ function CreateEventComponent() {
                         </div>
                         <div>
                             <p>What is the price of your Event?</p>
-                            {'$'} <input type="number" placeholder="Valid Prices range $0-999"
+                            {'$'} <input type="number" placeholder="0"
                                 value={price} onChange={e => setPrice(e.target.value)}></input>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.invalidPrice}</p>
@@ -165,7 +161,7 @@ function CreateEventComponent() {
                             ) : null}
                         </div>
                     </div>
-                    <div className="eventTimeDetails">
+                    <div className="eventComp">
                         <div>
                             <p>What time does your event start?</p>
                             <input
@@ -190,14 +186,14 @@ function CreateEventComponent() {
                             ) : null}
                         </div>
                     </div>
-                    <div className="eventImageUrl">
+                    <div className="eventComp">
                         <p>Please add an image url for your Event</p>
                         <input type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
                         {showErrors ? (
                             <p style={{ color: "red" }}>{errObj.invalidImg} {' '} {errObj.eventImgMissing}</p>
                         ) : null}
                     </div>
-                    <div className="eventDescription">
+                    <div className="eventComp">
                         <p>Please describe your event</p>
                         <textarea
                             placeholder="Please include at least 30 characters" rows={"10"} cols={"30"}
@@ -207,7 +203,7 @@ function CreateEventComponent() {
                             <p style={{ color: "red" }}> {errObj.descriptionLength}</p>
                         ) : null}
                     </div>
-                    <div className="eventLocation">
+                    <div className="eventComp">
                         <p>Please tell us where your Event is going to be located!</p>
                         <div>
                             <p>Address</p>
@@ -238,7 +234,7 @@ function CreateEventComponent() {
                             ) : null}
                         </div>
                     </div>
-                    <button type="submit">
+                    <button style={{ height: "40px" }} className="upEventButton" type="submit">
                         Create Event
                     </button>
                 </form>

@@ -1,0 +1,44 @@
+.UpperMain {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+
+.groupImg {
+    display: flex;
+    width: 50%;
+    border: 2px solid black;
+}
+
+.GroupDetails {
+    display: flex;
+    width: 45%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.groupButtons {
+    display: flex;
+    align-self: flex-end;
+}
+
+.singleButton {
+    background-color: grey;
+    color: white;
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.breadLink {
+    display: flex;
+    height: 60px;
+    font-size: 20px;
+    width: 100%;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}

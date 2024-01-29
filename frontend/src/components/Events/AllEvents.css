@@ -1,4 +1,59 @@
 .EventComponent {
     display: flex;
+    width: 60%;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 2px solid grey;
+}
+
+.EventHeaderLinks {
+    display: flex;
+    height: 80px;
+    font-size: 40px;
+    width: 40%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.EventHeaderCaption {
+    display: flex;
+    height: 80px;
+    font-size: 40px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.EventComponentSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.EventImg {
+    display: flex;
+    width: 500px;
     border: 2px solid black;
+}
+
+.EventDetails {
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    width: 38%;
+}
+
+.EventComponentSection {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 100%;
+}
+
+.EventDescription {
+    display: flex;
+    width: 60%;
+    border-bottom: 2px solid grey;
 }

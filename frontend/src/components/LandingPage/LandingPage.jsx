@@ -1,42 +1,70 @@
 import "./LandingPage.css"
-import AllGroups from "../Groups/AllGroups";
 import { Link } from "react-router-dom";
+import cartoon from "../../images/cartoon.png"
+import avatar from "../../images/avatar.png"
+import regularshow from "../../images/regularshow.png"
+import ben10 from "../../images/ben10.png"
+import OpenModalButton from "../OpenModalButton";
+import SignupFormModal from "../SignupFormModal";
+import { useSelector } from 'react-redux';
+import { useState } from "react";
+
 
 function LandingPage() {
+    const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+
+    const openSignUpModal = () => {
+        setIsSignUpOpen(true);
+    }
+
+    const closeSignUpModel = () => {
+        setIsSignUpOpen(false)
+    }
+
+    const user = useSelector(state => state.session.user);
+
 
     return (
         <>
             <div className="LandingMainTextImg">
-                <h1 className="MainElements">
-                    The Ultimate People-Meeting Platform - turn your interests into life-long friendships.
+                <h1 className="landingText">
+                    Welcome To The Cartoon Social Network! The Ultimate Cartoon Social Space where you can meet and share space with your favorite cartoon characters!
                 </h1>
-                <h1 className="MainElements">
-                    img goes here
+                <h1 className="landingImg">
+                    <img src={cartoon} alt="Cartoon Network Characters"></img>
                 </h1>
             </div>
             <div className="LandingHowItWorks">
-                <h2 className="HowitWorksElements">New at TheClub?</h2>
-                <p className="HowitWorksElements">Sign up and have the chance to find Groups & Events that align exactly with what YOU love to do! Find your Club!</p>
+                <h2>New at The Cartoon Social Network?</h2>
+                <h4 className="howItWorksText">Sign up and find Cartoon Worlds & Cartoon Events that will take you to magical world where you will have fun with your favorite cartoon characters from your childhood!</h4>
             </div>
             <div className="LandingSubLinks">
                 <div className="SubLink">
-                    <h3>See All Groups Img</h3>
-                    <Link to="/groups">See All Groups</Link>
-                    <p>Find people who share your interests! Click and find your Group!</p>
+                    <img className="linkImage" src={avatar} alt="Avatar Worlds Logo"></img>
+                    <Link className="linkText" to="/groups">See All Worlds</Link>
+                    <p>Whether you're an Air-Bender! A talking blue Cat with a Goldfish friend! Or the Grim Reaper! Come find the Cartoon World you want to explore!</p>
                 </div>
                 <div className="SubLink">
-                    <h3>Find An Event Img</h3>
-                    <h3 style={{ color: "red" }}>Find An Event Link</h3>
-                    <p>Do you love to scuba dive? Play Jazz on Piano? Hike? We got it all! Click and register now!</p>
+                    <img className="linkImage" src={regularshow} alt="Regular Show Events logo"></img>
+                    <Link className="linkText" to='/events'>Find An Event</Link>
+                    <p>Down for a one on one in Mystical Basketball? An Adventure across the Land of Ooo? A lab party at Dexter's? Click and Search through more Awesome Events!</p>
                 </div>
                 <div className="SubLink">
-                    <h3>Start A New Group Img</h3>
-                    <Link to="/groups/new">Start A New Group</Link>
-                    <p>Be a Trailblazer! Start your own Group and invite all your friends! Click and create now!</p>
+                    <img className="linkImage" src={ben10} alt="Gumball Start Logo"></img>
+                    {user !== null ? (<Link className="linkText" to={'/groups/new'} >Start A World</Link>) : (<h2 style={{ fontWeight: 400, color: 'grey' }}>Start A World</h2>)}
+                    <p>Everyone loves a good crossover! Whether you want Mandy and Courage the Cowardly dog to meet up for brunch or Gumball, Finn, and Ben10 to launch an epic battle against Vilgax! Click and Create that World!</p>
                 </div>
             </div>
             <div className="LandButton">
-                <button className="button">Join TheClub</button>
+                {/* <button className="button" >Join The Cartoon Social Network</button> */}
+                <OpenModalButton
+                    className="button"
+                    buttonText={'Join the Cartoon Social Network'}
+                    modalComponent={<SignupFormModal closeModel={closeSignUpModel} />}
+                    isOpen={isSignUpOpen}
+                    openModal={openSignUpModal}
+                    closeModel={closeSignUpModel}
+                />
             </div>
         </>
     )

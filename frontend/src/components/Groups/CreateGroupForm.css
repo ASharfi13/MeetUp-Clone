@@ -1,0 +1,26 @@
+.mainForm {
+    display: flex;
+    flex-direction: column;
+    padding-left: 60px;
+    height: 1300px;
+}
+
+.groupComp {
+    border-top: 2px solid grey;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.cpuButton {
+    width: 160px;
+    height: 60px;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+}

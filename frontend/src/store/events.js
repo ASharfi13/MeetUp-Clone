@@ -6,6 +6,7 @@ export const LOAD_EVENT = '/events/LOAD_EVENT';
 export const CREATE_ADD_EVENT = '/events/CREATE_ADD_EVENT';
 export const UPDATE_EVENT_DETAILS = '/events/UPDATE_EVENT_DETAILS';
 export const LOAD_EVENT_VENUE = '/events/LOAD_EVENT_VENUE';
+export const DELETE_EVENT = '/events/DELETE_EVENT';
 
 //Action Creators
 
@@ -41,6 +42,13 @@ export const loadEventVenue = (venue) => {
     return {
         type: LOAD_EVENT_VENUE,
         venue
+    }
+}
+
+export const deleteEvent = (eventId) => {
+    return {
+        type: DELETE_EVENT,
+        eventId
     }
 }
 
@@ -106,6 +114,19 @@ export const fetchUpdateEvent = (event, eventId) => async (dispatch) => {
     }
 }
 
+//DELETE ACTION THUNK
+export const fetchDeleteEvent = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}`, {
+        method: 'DELETE'
+    })
+
+    if (response.ok) {
+        const event = await response.json();
+        dispatch(deleteEvent(event));
+        return event;
+    }
+}
+
 
 //Events Reducer
 
@@ -138,6 +159,11 @@ const eventReducer = (state = initialState, action) => {
         case CREATE_ADD_EVENT: {
             newState = { ...state };
             newState.allEvents[action.event.id] = action.event;
+            return newState;
+        }
+        case DELETE_EVENT: {
+            newState = { ...state };
+            delete newState.allEvents[action.eventId];
             return newState;
         }
         default:

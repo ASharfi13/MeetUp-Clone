@@ -1,11 +1,11 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllGroups, fetchCreateAddGroupImage, fetchCreateGroup } from "../../store/groups";
+import { fetchAllGroups, fetchCreateGroup } from "../../store/groups";
+import "./CreateGroupForm.css";
 
 function CreateGroupForm() {
     const dispatch = useDispatch();
-    const allGroups = useSelector(state => Object.values(state.groups.allGroups));
     const navigate = useNavigate();
 
 
@@ -38,7 +38,7 @@ function CreateGroupForm() {
         if (name.length === 0) submitErrObj.nameMissing = "Name is required"
         if (city.length === 0) submitErrObj.cityMissing = "City Name is required"
         if (state.length === 0) submitErrObj.stateMissing = "State is required"
-        if (description.length !== 0 && description.length < 50) submitErrObj.descriptionLength = "Description must be 50 characters or more"
+        if (description.length !== 0 && description.length < 30) submitErrObj.descriptionLength = "Description must be 50 characters or more"
         if (description.length === 0) submitErrObj.descriptionMissing = "Description is required"
         if (!type) submitErrObj.typeMissing = "Type is required"
         if (groupImg.length === 0) submitErrObj.groupImgMissing = "Image URL is required"
@@ -76,26 +76,25 @@ function CreateGroupForm() {
 
     return (
         <>
-            <section className="formHeader">
-                <p>BECOME AN ORGANIZER</p>
-                <h2>We'll walk you through a few steps to build your local community</h2>
-            </section>
             <section className="mainForm">
-                <form onSubmit={handleSubmit}>
-                    <div className="groupLocation">
+                <p>BECOME AN ORGANIZER</p>
+                <h2>Start A New World!</h2>
+                <form className="form" onSubmit={handleSubmit}>
+                    <div className="groupComp">
                         <div className="locationDesc">
-                            <h2>First, set your group's location.</h2>
-                            <p>Meetup Groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
+                            <h2>First, set your World's location.</h2>
+                            <p>Members of your World can meet locally, both in person and online. We'll connect you with people in your area, and more can join you online.</p>
                         </div>
                         <div className="locationInput">
                             <input
+                                className="input"
                                 type="text"
                                 value={city}
                                 placeholder="City"
                                 onChange={e => setCity(e.target.value)}
                             >
                             </input>
-                            <select value={state} onChange={e => setState(e.target.value)}>
+                            <select className="input" value={state} onChange={e => setState(e.target.value)}>
                                 <option value="" disabled>Select a State</option>
                                 {
                                     allStates.map((state, index) => (
@@ -109,11 +108,12 @@ function CreateGroupForm() {
                         ) : null}
                     </div>
 
-                    <div className="groupName">
-                        <h2>What will your group's name be?</h2>
-                        <p>Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind.</p>
+                    <div className="groupComp">
+                        <h2>What will your World's name be?</h2>
+                        <p>Choose a name that will give people a clear idea of what the World is about! Feel free to get creative! You can edit this later if you change your mind.</p>
                         <input
                             type="text"
+                            className="input"
                             value={name}
                             placeholder="What's your group's name?"
                             onChange={e => setName(e.target.value)}
@@ -124,26 +124,26 @@ function CreateGroupForm() {
                         <p style={{ color: 'red' }}>{errObj.nameMissing} {" "} {errObj.nameLength}</p>) : null
                     }
 
-                    <div className="groupDesc">
-                        <h2>Now describe what your group will be about</h2>
-                        <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
+                    <div className="groupComp">
+                        <h2>Now describe what your World will be about</h2>
+                        <p>People will see this when we promote your World, but you'll be able to add to it later, too.</p>
                         <ol>
-                            <li>What's the purpose of the group?</li>
+                            <li>What's the purpose of the World?</li>
                             <li>Who should join?</li>
                             <li>What will you do at your events?</li>
                         </ol>
-                        <textarea rows={"10"} cols={"30"} value={description} onChange={e => setDescription(e.target.value)} placeholder="Please write at least 50 characters">
+                        <textarea rows={"10"} cols={"30"} value={description} onChange={e => setDescription(e.target.value)} placeholder="Please write at least 30 characters">
                         </textarea>
                     </div>
                     {showErrors ? (
                         <p style={{ color: "red" }}>{errObj.descriptionMissing} {" "} {errObj.descriptionLength}</p>
                     ) : null}
 
-                    <div className="groupFinalSteps">
+                    <div className="groupComp">
                         <h2>Final Steps...</h2>
                         <div className="groupType">
-                            <p>Is this an in person or online group?</p>
-                            <select value={type} onChange={e => setType(e.target.value)}>
+                            <p>Is this an in person or online World?</p>
+                            <select className="input" value={type} onChange={e => setType(e.target.value)}>
                                 <option value="" disabled>Select One</option>
                                 {
                                     ["Online", "In person"].map((type, index) => (
@@ -157,9 +157,9 @@ function CreateGroupForm() {
                             <p style={{ color: "red" }}> {errObj.typeMissing} </p>
                         ) : null}
 
-                        <div className="groupPrivate">
+                        <div className="groupComp">
                             <p>Is this group public or private?</p>
-                            <select value={priv ? "Private" : "Public"} onChange={e => {
+                            <select className="input" value={priv ? "Private" : "Public"} onChange={e => {
                                 e.target.value === "Private" ? setPriv(true) : setPriv(false);
                             }}>
                                 {
@@ -170,10 +170,11 @@ function CreateGroupForm() {
                             </select>
                         </div>
 
-                        <div className="groupImgUrl">
-                            <p>Please add an image url for your group below:</p>
+                        <div className="groupComp">
+                            <p>Please add an image url for your World below:</p>
                             <input
                                 type="url"
+                                className="input"
                                 placeholder="Image Url"
                                 value={groupImg}
                                 onChange={e => setGroupImg(e.target.value)}
@@ -185,9 +186,9 @@ function CreateGroupForm() {
                             <p style={{ color: "red" }}> {errObj.groupImgMissing} {" "} {errObj.invalidImg} </p>
                         ) : null}
                     </div>
-                    <button type="submit"
+                    <button className="cpuButton" type="submit"
                     >
-                        Create Group
+                        Create World!
                     </button>
                 </form>
             </section>

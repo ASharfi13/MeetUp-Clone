@@ -24,6 +24,7 @@
   width: 80px;
   height: 80px;
   padding-left: 100px;
+  text-decoration: none;
 }
 
 .profileButton {
@@ -31,12 +32,12 @@
   padding-right: 100px;
   width: 120px;
   height: 30px;
+  color: white;
 }
 
 .navLogoText {
   display: flex;
   justify-content: space-around;
-  border: 2px solid white;
   width: 550px;
 }
 

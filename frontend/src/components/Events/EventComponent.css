@@ -1,0 +1,54 @@
+.eventCompImage {
+    width: 800px;
+    height: 600px;
+    border: 2px solid black;
+}
+
+.MainEventContent {
+    display: flex;
+}
+
+.groupEventCompEvent {
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.eventGroupComp {
+    display: flex;
+    width: 100%;
+    background-color: lightgray;
+    border-radius: 10px;
+    height: 30%;
+}
+
+
+.theSidePieces {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.theTimeStuff {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 60%;
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.eventButton {
+    background-color: grey;
+    color: white;
+    height: 40px;
+    width: 95px;
+}
+
+.eventBread {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}

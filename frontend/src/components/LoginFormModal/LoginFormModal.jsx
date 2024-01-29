@@ -24,31 +24,49 @@ function LoginFormModal() {
       });
   };
 
+  const handleDemoLogin = async () => {
+    setCredential('DemoUser1');
+    setPassword('password');
+
+    try {
+      await dispatch(sessionActions.login({ credential: 'DemoUser1', password: 'password' }));
+      closeModal();
+    } catch (res) {
+      const data = await res.json();
+      if (data && data.errors) {
+        setErrors(data.errors);
+      }
+    }
+  };
+
   return (
     <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
+      <section className='wholeLogin'>
+        <form className='loginForm' onSubmit={handleSubmit}>
+          <h1>Log In</h1>
           <input
+            className='input'
             type="text"
+            placeholder='Username or Email'
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password
           <input
+            className='input'
             type="password"
             value={password}
+            placeholder='password'
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
-      </form>
+          <p className='demoUserLink' onClick={handleDemoLogin}>
+            Log In As Demo User
+          </p>
+          {errors.credential && <p>{errors.credential}</p>}
+          <button disabled={credential.length >= 4 && password.length >= 6 ? false : true} className='loginButton' type="submit">Log In</button>
+        </form>
+      </section>
     </>
   );
 }

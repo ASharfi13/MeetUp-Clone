@@ -1,22 +1,25 @@
-
 .button {
-    width: 160px;
+    width: 260px;
     height: 60px;
-    font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-    color: khaki;
-    background-color: darkgreen;
+    color: white;
+    background-color: black;
     border-radius: 10px;
 }
 
 .LandButton {
     display: flex;
+    height: 100px;
     justify-content: center;
+    align-items: center;
 }
 
 .LandingMainTextImg {
     display: flex;
     justify-content: space-between;
+    text-align: center;
+    height: 400px;
+    width: 100%;
 }
 
 .MainElements {
@@ -30,6 +33,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: white;
+    background-color: black;
 
 }
 
@@ -43,6 +48,8 @@
 .LandingSubLinks {
     display: flex;
     justify-content: space-around;
+    border: 2px solid black;
+    height: 500px;
 }
 
 .SubLink {
@@ -51,4 +58,41 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    justify-content: space-around;
+}
+
+.landingImg {
+    display: flex;
+    height: 93%;
+    width: 50%;
+    justify-content: space-around;
+}
+
+.landingText {
+    display: flex;
+    width: 50%;
+    align-items: center;
+}
+
+.howItWorksText {
+    font-weight: 300;
+}
+
+.linkImage {
+    display: flex;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+.linkText {
+    display: flex;
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+}
+
+.linkText:hover {
+    color: red;
 }

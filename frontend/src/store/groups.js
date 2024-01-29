@@ -6,6 +6,7 @@ export const LOAD_GROUPEVENTS = '/groups/LOAD_GROUPEVENTS';
 export const CREATE_ADD_GROUP = '/groups/CREATE_ADD_GROUP';
 export const CREATE_ADD_GROUPIMAGE = '/groups/CREATE_ADD_GROUPIMAGE';
 export const UPDATE_GROUP_DETAILS = '/groups/UPDATE_GROUP_DETAILS';
+export const DELETE_GROUP = '/groups/DELETE_GROUP';
 
 
 //Action Creators
@@ -49,6 +50,13 @@ export const updateGroupDetails = (group) => {
     return {
         type: UPDATE_GROUP_DETAILS,
         group
+    }
+}
+
+export const deleteGroup = (groupId) => {
+    return {
+        type: DELETE_GROUP,
+        groupId
     }
 }
 
@@ -142,6 +150,20 @@ export const fetchUpdateGroupDetails = (newGroup, groupId) => async (dispatch) =
     }
 }
 
+//Delete Group Thunk!
+
+export const fetchDeleteGroup = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: "DELETE"
+    })
+
+    if (response.ok) {
+        const group = await response.json();
+        dispatch(deleteGroup(group));
+        return group
+    }
+}
+
 const initialState = {
     allGroups: [],
     currGroup: {},
@@ -185,6 +207,11 @@ const groupReducer = (state = initialState, action) => {
                 ...state
             }
             newState.allGroups[action.group.id] = action.group;
+            return newState;
+        }
+        case DELETE_GROUP: {
+            newState = { ...state };
+            delete newState.allGroups[action.groupId];
             return newState;
         }
         default:

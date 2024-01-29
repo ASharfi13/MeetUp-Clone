@@ -1,17 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import "./GroupEventDetails.css";
 
 function GroupEventDetails() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const groupEvents = useSelector((state) => Object.values(state.groups.currGroupEvents));
 
     const todayDate = new Date();
 
 
-    const upcomingEvents = groupEvents.filter((event) => event.startDate > todayDate.toDateString());
+    const upcomingEvents = groupEvents.filter((event) => new Date(event.startDate) > todayDate);
 
-    const previousEvents = groupEvents.filter((event) => event.startDate < todayDate.toDateString());
+    const previousEvents = groupEvents.filter((event) => new Date(event.startDate) < todayDate);
 
 
     const convertTime = (date) => {
@@ -28,15 +30,18 @@ function GroupEventDetails() {
 
     return (
         <>
+            <section>
+                {groupEvents.length === 0 ? (<h1>No Upcoming Events</h1>) : null}
+            </section>
             <section className="upcomingSection">
                 {upcomingEvents.length > 0 ? (
                     <section className="events">
+                        <h3>Upcoming Events {`(${upcomingEvents.length})`} </h3>
                         {upcomingEvents.map((event) => (
-                            <div className="upcoming" key={event.id}>
-                                <h3>Upcoming Events {`(${upcomingEvents.length})`} </h3>
-                                <div className="img/details">
-                                    <img src={event.previewImage} />
-                                    <div>
+                            <div className="component" key={event.id} onClick={e => navigate(`/events/${event.id}`)}>
+                                <div className="imgDetails">
+                                    <img className="eventDetailsImg" src={event.previewImage} />
+                                    <div className="eventDetailsB">
                                         <p> {event.startDate} • {convertTime(event.startDate)}</p>
                                         <p> {event.name} </p>
                                         <p> {!event.Venue ? null : event.Venue.city}, {!event.Venue ? null : event.Venue.state} </p>
@@ -51,12 +56,12 @@ function GroupEventDetails() {
             <section className="previousSec">
                 {previousEvents.length > 0 ? (
                     <section className="events">
+                        <h3>Previous Events {`(${previousEvents.length})`} </h3>
                         {previousEvents.map((event) => (
-                            <div className="upcoming" key={event.id}>
-                                <h3>Previous Events {`(${previousEvents.length})`} </h3>
-                                <div className="img/details">
-                                    <img src={event.previewImage} />
-                                    <div>
+                            <div className="component" key={event.id} onClick={e => navigate(`/events/${event.id}`)}>
+                                <div className="imgDetails">
+                                    <img className="eventDetailsImg" src={event.previewImage} />
+                                    <div className="eventDetailsB">
                                         <p> {event.startDate} • {convertTime(event.startDate)}</p>
                                         <p> {event.name} </p>
                                         <p> {!event.Venue ? null : event.Venue.city}, {!event.Venue ? null : event.Venue.state} </p>
@@ -67,7 +72,7 @@ function GroupEventDetails() {
                         ))}
                     </section>
                 ) : null}
-            </section>
+            </section >
         </>
     )
 }
