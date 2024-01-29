@@ -26,8 +26,6 @@ function GroupEventDetails() {
         return time;
     }
 
-    console.log(groupEvents);
-
     return (
         <>
             <section className="upcomingSection">

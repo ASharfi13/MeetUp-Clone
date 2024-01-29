@@ -334,8 +334,6 @@ router.put("/:groupId", requireAuth, async (req, res) => {
         }
     }
 
-    console.log(`LOOK: PRIVATE- ${typeof private}`)
-
     let errCount = 0;
 
     if (name.length > 60) {

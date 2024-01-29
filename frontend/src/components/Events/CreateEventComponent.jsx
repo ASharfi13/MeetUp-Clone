@@ -49,13 +49,15 @@ function CreateEventComponent() {
     useEffect(() => {
         dispatch(fetchGroupComp(groupId))
         dispatch(fetchAllEvents())
-    }, [dispatch])
+    }, [dispatch, groupId])
 
     useEffect(() => {
         const checkErrObj = {};
 
         const nwStartDate = new Date(startDate);
         const nwEndDate = new Date(endDate);
+        const todayDate = new Date();
+
 
         if (name.length === 0) checkErrObj.nameMissing = "Name is required"
         if (name.length < 5) checkErrObj.nameLength = "Name must be at least 5 characters"
@@ -77,7 +79,7 @@ function CreateEventComponent() {
         if (!state || state.length === 0) checkErrObj.stateMissing = "State is required"
 
         setErrObj(checkErrObj);
-    }, [name, type, price, capacity, startDate, endDate, eventImg, description, address, city, state])
+    }, [name, type, price, capacity, startDate, endDate, eventImg, description, address, city, state, todayDate])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -105,8 +107,6 @@ function CreateEventComponent() {
             setShowErrors(true);
         }
     }
-
-    console.log(events);
 
     return (
         <>

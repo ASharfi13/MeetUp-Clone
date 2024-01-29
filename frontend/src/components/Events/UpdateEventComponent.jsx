@@ -54,12 +54,13 @@ function UpdateEventComponent() {
 
     useEffect(() => {
         dispatch(fetchEvent(Number(eventId)))
-    }, [dispatch])
+    }, [dispatch, eventId])
 
     useEffect(() => {
         const checkErrObj = {};
         const nwStartDate = new Date(startDate);
         const nwEndDate = new Date(endDate);
+        const todayDate = new Date();
 
         if (name.length === 0) checkErrObj.nameMissing = "Name is required"
         if (name.length < 5) checkErrObj.nameLength = "Name must be at least 5 characters"
@@ -77,7 +78,7 @@ function UpdateEventComponent() {
         if (description.length < 30) checkErrObj.descriptionLength = "Description must be at least 30 characters long"
 
         setErrObj(checkErrObj);
-    }, [name, type, price, capacity, startDate, endDate, eventImg, description])
+    }, [name, type, price, capacity, startDate, endDate, eventImg, description, todayDate])
 
 
     const handleSubmit = (event) => {

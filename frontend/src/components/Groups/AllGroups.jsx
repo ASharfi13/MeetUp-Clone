@@ -11,8 +11,6 @@ function AllGroups() {
     const groups = useSelector((state) => Object.values(state.groups.allGroups));
     const navigate = useNavigate();
 
-    console.log("Groups", groups);
-
     useEffect(() => {
         dispatch(fetchAllGroups());
     }, [dispatch])

@@ -15,8 +15,6 @@ function GroupComponent() {
     const user = useSelector(state => state.session.user);
     const [permission, setPermission] = useState(false);
 
-    console.log("User", user);
-
     let url;
 
     let Organizer = {
@@ -43,8 +41,6 @@ function GroupComponent() {
 
         setPermission(Number(user.id) === Number(group.organizerId))
     }, [dispatch, groupId, user.id, group.organizerId])
-
-    console.log("Group", group);
 
     return (
         <>

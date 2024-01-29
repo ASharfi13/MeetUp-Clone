@@ -65,9 +65,7 @@ function UpdateGroupComp() {
 
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)))
-    }, [dispatch])
-
-    console.log(group);
+    }, [dispatch, groupId])
 
     const handleSubmit = (event) => {
         event.preventDefault();

@@ -16,10 +16,6 @@ function EventComponent() {
     const events = useSelector(state => state.events.allEvents);
     const user = useSelector(state => state.session.user);
 
-    console.log("User", user);
-
-    console.log("Group", group);
-
     let groupId;
 
     !event.Group || (
