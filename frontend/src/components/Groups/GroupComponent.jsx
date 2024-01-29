@@ -12,6 +12,10 @@ function GroupComponent() {
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups.currGroup);
     const navigate = useNavigate();
+    const user = useSelector(state => state.session.user);
+    const [permission, setPermission] = useState(false);
+
+    console.log("User", user);
 
     let url;
 
@@ -36,7 +40,9 @@ function GroupComponent() {
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
         dispatch(fetchGroupEvents(Number(groupId)));
-    }, [dispatch, groupId])
+
+        setPermission(Number(user.id) === Number(group.organizerId))
+    }, [dispatch, groupId, user.id, group.organizerId])
 
     console.log("Group", group);
 
@@ -56,10 +62,10 @@ function GroupComponent() {
                                 <p> {group.numEvents} Events • {group.private ? "Private" : "Public"}</p>
                                 <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>
                             </div>
-                            <div>
+                            {permission ? (<div>
                                 <button onClick={e => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
                                 <button onClick={e => navigate(`/groups/${groupId}/edit`)}>Update</button>
-                            </div>
+                            </div>) : null}
                         </div>
                         <div>
                             <button>Join Group</button>

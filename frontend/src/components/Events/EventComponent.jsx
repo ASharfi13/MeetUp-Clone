@@ -9,12 +9,16 @@ function EventComponent() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { eventId } = useParams();
+    const [permission, setPermission] = useState(false);
 
     const event = useSelector(state => state.events.currEvent);
     const group = useSelector(state => state.groups.currGroup);
     const events = useSelector(state => state.events.allEvents);
+    const user = useSelector(state => state.session.user);
 
-    console.log("Events", events);
+    console.log("User", user);
+
+    console.log("Group", group);
 
     let groupId;
 
@@ -40,7 +44,9 @@ function EventComponent() {
         dispatch(fetchAllEvents())
         dispatch(fetchEvent(Number(eventId)))
         dispatch(fetchGroupComp(groupId))
-    }, [dispatch, eventId, groupId])
+
+        setPermission(Number(user.id) === Number(group.organizerId))
+    }, [dispatch, eventId, groupId, user.id, group.organizerId])
 
     return (
         <>
@@ -63,7 +69,7 @@ function EventComponent() {
                         <p>Start {event.startDate} • {convertTime(event.startDate)}</p>
                         <p>End {event.endDate} • {convertTime(event.endDate)}</p>
                         <p> ${event.price} </p>
-                        <p> {event.type} <button onClick={e => navigate(`/events/${eventId}/edit`)}>Update</button></p>
+                        {permission ? (<p> {event.type} <button onClick={e => navigate(`/events/${eventId}/edit`)}>Update</button></p>) : null}
                     </div>
                 </div>
             </section>
