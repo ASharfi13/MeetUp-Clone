@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Outlet, createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 // import LoginFormPage from './components/LoginFormPage';
 // import SignupFormPage from './components/SignupFormPage';
 import Navigation from './components/Navigation/Navigation-bonus';
@@ -72,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: '/events/:eventId/edit',
         element: <UpdateEventComponent />
+      },
+      {
+        path: '*',
+        element: <Navigate to='/' replace />
       }
       // {
       //   path: 'login',
