@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link, NavLink } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllGroups, fetchDeleteGroup, fetchGroupComp, fetchGroupEvents } from "../../store/groups";
@@ -15,7 +15,6 @@ function GroupComponent() {
     const navigate = useNavigate();
     const user = useSelector(state => state.session.user);
     const [permission, setPermission] = useState(false);
-    const groups = useSelector((state) => Object.values(state.groups.allGroups));
 
     let url;
 
@@ -35,7 +34,6 @@ function GroupComponent() {
         Organizer.lastName = group.Organizer.lastName
     )
 
-    const todayDate = new Date();
 
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
@@ -68,17 +66,17 @@ function GroupComponent() {
                             </div>
                             <div className="groupButtons">
                                 {user?.id !== group.organizerId && user ? (
-                                    <button style={{ backgroundColor: 'red' }} className="singleButton" onClick={e => alert("Feature Coming Soon!")}>Join Group</button>)
+                                    <button style={{ backgroundColor: 'red' }} className="singleButton" onClick={() => alert("Feature Coming Soon!")}>Join Group</button>)
                                     : null}
                                 {permission ? (<>
-                                    <button className="singleButton" onClick={e => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
-                                    <button className="singleButton" onClick={e => navigate(`/groups/${groupId}/edit`)}>Update</button>
-                                    <button className="singleButton" onClick={e => {
+                                    <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
+                                    <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/edit`)}>Update</button>
+                                    <button className="singleButton" onClick={() => {
                                         if (window.confirm('Are you sure you want to delete this group?')) {
                                             handleDeleteConfirm();
                                         }
                                     }}>Delete</button>
-                                </>) : (<button className="singleButton" onClick={e => navigate(`/`)}>Update</button>)}
+                                </>) : (<button className="singleButton" onClick={() => navigate(`/`)}>Update</button>)}
                             </div>
                         </div>
                     </section>
@@ -87,7 +85,7 @@ function GroupComponent() {
                     <div className="OrganizerAboutSec">
                         <h3>Organizer</h3>
                         <p> {Organizer.firstName} {Organizer.lastName} </p>
-                        <h3>What we're about</h3>
+                        <h3>What we{'\''}re about</h3>
                         <p> {group.about} </p>
                     </div>
                     <div className="UpcomingEvents">

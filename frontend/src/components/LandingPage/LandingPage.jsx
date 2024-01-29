@@ -42,12 +42,12 @@ function LandingPage() {
                 <div className="SubLink">
                     <img className="linkImage" src={avatar} alt="Avatar Worlds Logo"></img>
                     <Link className="linkText" to="/groups">See All Worlds</Link>
-                    <p>Whether you're an Air-Bender! A talking blue Cat with a Goldfish friend! Or the Grim Reaper! Come find the Cartoon World you want to explore!</p>
+                    <p>Whether you{'\''}re an Air-Bender! A talking blue Cat with a Goldfish friend! Or the Grim Reaper! Come find the Cartoon World you want to explore!</p>
                 </div>
                 <div className="SubLink">
                     <img className="linkImage" src={regularshow} alt="Regular Show Events logo"></img>
                     <Link className="linkText" to='/events'>Find An Event</Link>
-                    <p>Down for a one on one in Mystical Basketball? An Adventure across the Land of Ooo? A lab party at Dexter's? Click and Search through more Awesome Events!</p>
+                    <p>Down for a one on one in Mystical Basketball? An Adventure across the Land of Ooo? A lab party at Dexter{'\''}s? Click and Search through more Awesome Events!</p>
                 </div>
                 <div className="SubLink">
                     <img className="linkImage" src={ben10} alt="Gumball Start Logo"></img>

@@ -1,5 +1,4 @@
 import { csrfFetch } from "./csrf";
-import { CREATE_ADD_GROUP, LOAD_GROUPCOMP } from "./groups";
 
 export const LOAD_EVENTS = '/events/LOAD_EVENTS';
 export const LOAD_EVENT = '/events/LOAD_EVENT';
@@ -76,9 +75,6 @@ export const fetchEvent = (eventId) => async (dispatch) => {
     }
 }
 
-export const fetchEventVenue = (eventId) => async (dispatch) => {
-
-}
 
 //CREATE ACTION THUNK
 export const fetchCreateEvent = (event, groupId) => async (dispatch) => {

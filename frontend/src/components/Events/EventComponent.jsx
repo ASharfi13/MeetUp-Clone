@@ -69,7 +69,7 @@ function EventComponent() {
                         <p><i className="fa-regular fa-clock"></i>END {event.endDate} • {convertTime(event.endDate)}</p>
                         <p> <i className="fa-solid fa-dollar-sign"></i> {event.price === 0 ? "FREE" : event.price} </p>
                         <p> <i className="fa-solid fa-location-pin"></i> {event.type} </p>
-                        {permission && user ? (<p> {event.type} <button className="eventButton" onClick={navigate(`/events/${eventId}/edit`)}>Update</button>  <button className="eventButton" onClick={e => {
+                        {permission && user ? (<p> {event.type} <button className="eventButton" onClick={navigate(`/events/${eventId}/edit`)}>Update</button>  <button className="eventButton" onClick={() => {
                             if (window.confirm('Are you sure you want to delete this event?')) {
                                 handleDeleteEvent();
                             }

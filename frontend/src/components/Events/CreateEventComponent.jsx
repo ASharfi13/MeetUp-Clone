@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupComp } from "../../store/groups";
 import { fetchAllEvents, fetchCreateEvent } from "../../store/events";
@@ -153,7 +153,7 @@ function CreateEventComponent() {
                             ) : null}
                         </div>
                         <div>
-                            <p>What's the most amount of people you can host at this event?</p>
+                            <p>What{'\''}s the most amount of people you can host at this event?</p>
                             <input type="number" placeholder="Enter Max Capacity"
                                 value={capacity} onChange={e => setCapacity(e.target.value)}></input>
                             {showErrors ? (

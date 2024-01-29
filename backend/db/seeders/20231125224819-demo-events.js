@@ -30,8 +30,8 @@ module.exports = {
         type: "In person",
         capacity: 150,
         price: 10,
-        startDate: '2024-3-23 20:30:00',
-        endDate: '2024-4-23 24:30:00'
+        startDate: '2023-03-23',
+        endDate: '2023-04-23'
       },
       {
         venueId: 1,
@@ -41,8 +41,8 @@ module.exports = {
         type: "In person",
         capacity: 150,
         price: 15,
-        startDate: '2023-1-15 20:30:00',
-        endDate: '2023-1-16 24:30:00'
+        startDate: '2023-01-15',
+        endDate: '2023-01-16'
       },
       {
         venueId: 2,
@@ -52,8 +52,8 @@ module.exports = {
         type: "In person",
         capacity: 20,
         price: 0,
-        startDate: '2024-2-23 9:00:00',
-        endDate: '2024-2-24 9:00:00'
+        startDate: '2023-02-23',
+        endDate: '2023-02-24'
       },
       {
         venueId: 3,
@@ -63,8 +63,8 @@ module.exports = {
         type: "Online",
         capacity: 500,
         price: 25,
-        startDate: '2023-1-12 17:00:00',
-        endDate: '2023-1-13 17:00:00'
+        startDate: '2023-01-12',
+        endDate: '2023-01-13'
       },
       {
         venueId: 3,
@@ -74,8 +74,8 @@ module.exports = {
         type: "In person",
         capacity: 500,
         price: 50,
-        startDate: '2024-6-20 22:00:00',
-        endDate: '2024-6-21 22:00:00'
+        startDate: '2023-06-20',
+        endDate: '2023-06-21'
       },
     ])
   },

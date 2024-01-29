@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchAllGroups, fetchCreateGroup } from "../../store/groups";
 import "./CreateGroupForm.css";
 
@@ -82,8 +82,8 @@ function CreateGroupForm() {
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="groupComp">
                         <div className="locationDesc">
-                            <h2>First, set your World's location.</h2>
-                            <p>Members of your World can meet locally, both in person and online. We'll connect you with people in your area, and more can join you online.</p>
+                            <h2>First, set your World{'\''}s location.</h2>
+                            <p>Members of your World can meet locally, both in person and online. We{'\''}ll connect you with people in your area, and more can join you online.</p>
                         </div>
                         <div className="locationInput">
                             <input
@@ -109,7 +109,7 @@ function CreateGroupForm() {
                     </div>
 
                     <div className="groupComp">
-                        <h2>What will your World's name be?</h2>
+                        <h2>What will your World{'\''}s name be?</h2>
                         <p>Choose a name that will give people a clear idea of what the World is about! Feel free to get creative! You can edit this later if you change your mind.</p>
                         <input
                             type="text"
@@ -126,9 +126,9 @@ function CreateGroupForm() {
 
                     <div className="groupComp">
                         <h2>Now describe what your World will be about</h2>
-                        <p>People will see this when we promote your World, but you'll be able to add to it later, too.</p>
+                        <p>People will see this when we promote your World, but you{'\''}ll be able to add to it later, too.</p>
                         <ol>
-                            <li>What's the purpose of the World?</li>
+                            <li>What{'\''}s the purpose of the World?</li>
                             <li>Who should join?</li>
                             <li>What will you do at your events?</li>
                         </ol>

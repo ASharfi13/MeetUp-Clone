@@ -1,10 +1,8 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./GroupEventDetails.css";
 
 function GroupEventDetails() {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const groupEvents = useSelector((state) => Object.values(state.groups.currGroupEvents));
 
@@ -38,7 +36,7 @@ function GroupEventDetails() {
                     <section className="events">
                         <h3>Upcoming Events {`(${upcomingEvents.length})`} </h3>
                         {upcomingEvents.map((event) => (
-                            <div className="component" key={event.id} onClick={e => navigate(`/events/${event.id}`)}>
+                            <div className="component" key={event.id} onClick={() => navigate(`/events/${event.id}`)}>
                                 <div className="imgDetails">
                                     <img className="eventDetailsImg" src={event.previewImage} />
                                     <div className="eventDetailsB">
@@ -58,7 +56,7 @@ function GroupEventDetails() {
                     <section className="events">
                         <h3>Previous Events {`(${previousEvents.length})`} </h3>
                         {previousEvents.map((event) => (
-                            <div className="component" key={event.id} onClick={e => navigate(`/events/${event.id}`)}>
+                            <div className="component" key={event.id} onClick={() => navigate(`/events/${event.id}`)}>
                                 <div className="imgDetails">
                                     <img className="eventDetailsImg" src={event.previewImage} />
                                     <div className="eventDetailsB">
