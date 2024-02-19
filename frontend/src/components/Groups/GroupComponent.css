@@ -33,6 +33,10 @@
     cursor: pointer;
 }
 
+.singleButton:hover {
+    background-color: red;
+}
+
 .breadLink {
     display: flex;
     height: 60px;

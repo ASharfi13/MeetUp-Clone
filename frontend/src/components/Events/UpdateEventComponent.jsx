@@ -95,8 +95,8 @@ function UpdateEventComponent() {
             capacity: Number(capacity),
             price: convertPrice(price),
             description,
-            startDate: new Date(startDate).toString(),
-            endDate: new Date(endDate).toString()
+            startDate,
+            endDate
         }
 
         if (Object.values(errObj).length === 0) {

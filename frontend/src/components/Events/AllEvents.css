@@ -43,6 +43,7 @@
     flex-direction: column;
     height: 250px;
     width: 38%;
+    padding-left: 10px;
 }
 
 .EventComponentSection {

@@ -26,6 +26,8 @@ function GroupEventDetails() {
         return time;
     }
 
+
+
     return (
         <>
             <section>
@@ -40,7 +42,7 @@ function GroupEventDetails() {
                                 <div className="imgDetails">
                                     <img className="eventDetailsImg" src={event.previewImage} />
                                     <div className="eventDetailsB">
-                                        <p> {event.startDate} • {convertTime(event.startDate)}</p>
+                                        <p> {event.startDate.split("T")[0]} • {convertTime(event.startDate)}</p>
                                         <p> {event.name} </p>
                                         <p> {!event.Venue ? null : event.Venue.city}, {!event.Venue ? null : event.Venue.state} </p>
                                     </div>
@@ -60,7 +62,7 @@ function GroupEventDetails() {
                                 <div className="imgDetails">
                                     <img className="eventDetailsImg" src={event.previewImage} />
                                     <div className="eventDetailsB">
-                                        <p> {event.startDate} • {convertTime(event.startDate)}</p>
+                                        <p> {event.startDate.split("T")[0]} • {convertTime(event.startDate)}</p>
                                         <p> {event.name} </p>
                                         <p> {!event.Venue ? null : event.Venue.city}, {!event.Venue ? null : event.Venue.state} </p>
                                     </div>

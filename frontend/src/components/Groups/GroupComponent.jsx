@@ -66,7 +66,7 @@ function GroupComponent() {
                             </div>
                             <div className="groupButtons">
                                 {user?.id !== group.organizerId && user ? (
-                                    <button style={{ backgroundColor: 'red' }} className="singleButton" onClick={() => alert("Feature Coming Soon!")}>Join Group</button>)
+                                    <button className="singleButton" onClick={() => alert("Feature Coming Soon!")}>Join Group</button>)
                                     : null}
                                 {permission ? (<>
                                     <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>

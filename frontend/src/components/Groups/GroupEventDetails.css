@@ -19,13 +19,15 @@
     width: 60%;
     border-radius: 15px;
     cursor: pointer;
+    border: 2px solid black;
 }
 
 
 .eventDetailsImg {
     display: flex;
     width: 50%;
-    border: 2px solid black;
+    border: 1px solid black;
+    border-radius: 15px;
 }
 
 .imgDetails {
