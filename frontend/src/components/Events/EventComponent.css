@@ -1,7 +1,6 @@
 .eventRoot {
     display: flex;
     flex-direction: column;
-    border: 5px solid blueviolet;
     align-items: center;
 }
 

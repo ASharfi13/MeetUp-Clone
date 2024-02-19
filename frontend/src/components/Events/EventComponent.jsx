@@ -23,12 +23,6 @@ function EventComponent() {
         groupId = event.Group.id
     )
 
-    // {permission && user ? (<p> {event.type} <button className="eventButton" onClick={() => navigate(`/events/${eventId}/edit`)}>Update</button>  <button className="eventButton" onClick={() => {
-    //     if (window.confirm('Are you sure you want to delete this event?')) {
-    //         handleDeleteEvent();
-    //     }
-    // }}>Delete</button> </p>) : null}
-
 
     useEffect(() => {
         dispatch(fetchAllEvents())
@@ -83,6 +77,11 @@ function EventComponent() {
                             <div className="specificDetails">
                                 <i className="fa-solid fa-map-pin fa-2x"></i>
                                 <p>{event.type}</p>
+                                {permission && user ? (<p className="certifiedButtons"> <button className="eventButton" onClick={() => navigate(`/events/${eventId}/edit`)}>Update</button>  <button className="eventButton" onClick={() => {
+                                    if (window.confirm('Are you sure you want to delete this event?')) {
+                                        handleDeleteEvent();
+                                    }
+                                }}>Delete</button> </p>) : null}
                             </div>
                         </div>
                     </div>
