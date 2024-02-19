@@ -30,8 +30,8 @@ module.exports = {
         type: "In person",
         capacity: 150,
         price: 10,
-        startDate: '2023-03-23',
-        endDate: '2023-04-23'
+        startDate: '2024-03-23T20:30',
+        endDate: '2024-03-23T23:30'
       },
       {
         venueId: 1,
@@ -41,8 +41,8 @@ module.exports = {
         type: "In person",
         capacity: 150,
         price: 15,
-        startDate: '2023-01-15',
-        endDate: '2023-01-16'
+        startDate: '2023-12-20T14:30',
+        endDate: '2023-12-20T16:00'
       },
       {
         venueId: 2,
@@ -52,8 +52,8 @@ module.exports = {
         type: "In person",
         capacity: 20,
         price: 0,
-        startDate: '2023-02-23',
-        endDate: '2023-02-24'
+        startDate: '2024-02-14T15:00',
+        endDate: '2024-02-14T16:30'
       },
       {
         venueId: 3,
@@ -63,8 +63,8 @@ module.exports = {
         type: "Online",
         capacity: 500,
         price: 25,
-        startDate: '2023-01-12',
-        endDate: '2023-01-13'
+        startDate: '2023-01-12T17:30',
+        endDate: '2023-01-12T19:30'
       },
       {
         venueId: 3,
@@ -74,9 +74,75 @@ module.exports = {
         type: "In person",
         capacity: 500,
         price: 50,
-        startDate: '2023-06-20',
-        endDate: '2023-06-21'
+        startDate: '2024-02-20T17:30',
+        endDate: '2024-02-20T19:30'
       },
+      {
+        venueId: 4,
+        groupId: 4,
+        name: 'Jack\'s Black & White Movie Night',
+        description: 'Samurai Jack hosts a captivating black and white movie night, transporting viewers to an era of classic cinema magic. The ambiance is steeped in nostalgia as the flickering light of the projector illuminates the room, casting shadows reminiscent of film noir. Guests are enthralled by Jack\'s curated selection of timeless films, immersing themselves in the monochromatic world of intrigue and adventure.',
+        type: 'In person',
+        capacity: 250,
+        price: 0,
+        startDate: '2024-02-10T20:30',
+        endDate: '2024-02-10T24:30'
+      },
+      {
+        venueId: 4,
+        groupId: 4,
+        name: 'Aku\'s Disco Dance Night',
+        description: 'Aku, the malevolent demon from Samurai Jack, hosts a mesmerizing disco dance night that pulsates with dark energy and wicked beats. The dance floor is engulfed in swirling shadows as Aku\'s sinister presence looms over the revelers, adding an eerie atmosphere to the festivities. Guests are spellbound by Aku\'s hypnotic moves, blending his villainous charm with the allure of the disco era.',
+        type: 'In person',
+        capacity: '1000',
+        price: 45,
+        startDate: '2024-01-30T21:00',
+        endDate: '2024-01-30T24:00'
+      },
+      {
+        venueId: 5,
+        groupId: 5,
+        name: 'Grim\'s Seance Steak Cooking Demo',
+        description: 'In a whimsical cooking demo event, Grim, the Grim Reaper from Cartoon Network\'s Grim Adventures of Billy and Mandy, takes center stage to unveil his coveted recipe for his signature steak. With his trademark scythe in hand and a mischievous grin, Grim guides participants through each step of the cooking process, infusing the demonstration with his dark humor and unique flair. As the aroma of sizzling steak fills the air, attendees are treated to a culinary experience like no other, mastering Grim\'s secret technique for achieving the perfect sear and flavor.',
+        type: 'Online',
+        capacity: '550',
+        price: 5,
+        startDate: '2024-02-13T14:00',
+        endDate: '2024-02-13T15:00'
+      },
+      {
+        venueId: 1,
+        groupId: 5,
+        name: 'Grim\'s Hike To Benson\'s Park',
+        description: 'In this Cross-Over Event! Grim, the iconic Grim Reaper from Cartoon Network\'s Grim Adventures of Billy and Mandy, embarks on a whimsical hike to the fictional setting of Benson\'s Park from Regular Show. With his scythe in hand and an air of curiosity, Grim traverses through the surreal landscape, encountering quirky characters and unexpected challenges along the way. As he explores the park\'s eccentricities, Grim brings his trademark wit and dark humor to the adventure, adding a unique twist to the Regular Show universe.',
+        type: 'In person',
+        capacity: '10',
+        price: 500,
+        startDate: '2024-01-15T12:30',
+        endDate: '2024-01-18T8:30'
+      },
+      {
+        venueId: 6,
+        groupId: 6,
+        name: 'Eddy\'s Wealth Seminar',
+        description: 'In a lively and charismatic display, Eddy from Cartoon Network\'s Ed, Edd n Eddy hosts a dynamic wealth seminar event, aiming to impart his savvy entrepreneurial knowledge to eager participants. With his trademark scheming grin and endless enthusiasm, Eddy shares invaluable tips and tricks on how to strike it rich in the cul-de-sac economy. Attendees are captivated by Eddy\'s energetic presentation style and innovative money-making schemes, leaving inspired to embark on their own entrepreneurial endeavors.',
+        type: 'Online',
+        capacity: 1500,
+        price: 250,
+        startDate: '2024-05-12T11:30',
+        endDate: '2024-05-12T15:00'
+      },
+      {
+        venueId: 6,
+        groupId: 6,
+        name: 'Johnny & Plank\'s Backyard Date Night',
+        description: 'In a charming backyard setting, Johnny and Plank from Cartoon Network\'s Ed, Edd n Eddy host a cozy and whimsical date night event. Surrounded by twinkling lights and homemade decorations, the duo creates a romantic atmosphere for couples to enjoy quality time together. With Plank as their silent but supportive third wheel, guests revel in the warmth of friendship and the simplicity of a perfect evening under the stars.',
+        type: 'In person',
+        capacity: 35,
+        price: 15,
+        startDate: '2024-02-14T18:30',
+        endDate: '2024-02-14T22:30'
+      }
     ])
   },
 
@@ -90,8 +156,8 @@ module.exports = {
     options.tableName = "Events";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: {
-        [Op.in]: "Event"
+      groupId: {
+        [Op.in]: [1, 2, 3, 4, 5, 6]
       }
     }, {})
   }

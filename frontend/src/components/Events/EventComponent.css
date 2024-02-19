@@ -1,26 +1,44 @@
+.eventRoot {
+    display: flex;
+    flex-direction: column;
+    border: 5px solid blueviolet;
+    align-items: center;
+}
+
+.eventHeader {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
 .eventCompImage {
-    width: 800px;
-    height: 600px;
+    display: flex;
+    width: 1000px;
+    height: 400px;
     border: 2px solid black;
 }
 
 .MainEventContent {
     display: flex;
+    width: 71%;
 }
 
 .groupEventCompEvent {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border: 2px solid black;
     border-radius: 10px;
 }
 
 .eventGroupComp {
     display: flex;
+    align-items: center;
     width: 100%;
     background-color: lightgray;
     border-radius: 10px;
     height: 30%;
+    border: 2px solid grey;
+    gap: 20px;
 }
 
 
@@ -28,16 +46,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 100%;
-}
-
-.theTimeStuff {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 60%;
-    background-color: lightgray;
-    border-radius: 10px;
+    width: 800px;
 }
 
 .eventButton {
@@ -47,8 +56,44 @@
     width: 95px;
 }
 
+.eventButton:hover {
+    background-color: red;
+}
+
 .eventBread {
     text-decoration: none;
     color: black;
     font-size: 20px;
+}
+
+.eventBread:hover {
+    color: red;
+}
+
+.eventDetails {
+    width: 71%;
+}
+
+.eventTimeComp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 65%;
+    background-color: lightgray;
+    border: 2px solid grey;
+    border-radius: 10px;
+}
+
+.specificDetails {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    gap: 20px;
+}
+
+.groupDetails {
+    display: flex;
+    padding-left: 20px;
+    gap: 15px;
 }

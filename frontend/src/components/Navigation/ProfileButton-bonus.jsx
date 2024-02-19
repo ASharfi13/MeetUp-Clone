@@ -6,6 +6,7 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import { Link } from 'react-router-dom';
 import "./ProfileButton.css";
+import chowderPro from "../../images/profilelogos/chowderPro.png"
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -43,21 +44,21 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+      <button className='modalButton' onClick={toggleMenu}>
+        <img className='pfpLogo' src={chowderPro} alt='Chowder Pfp Logo' />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>Hello {user.firstName}!</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
-            <li><Link className='easyLinks' to="/groups">View Groups</Link></li>
-            <li><Link className='easyLinks' to='/events'>View Events</Link> </li>
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
-          </>
+          <div style={{ display: 'flex', flexDirection: 'column', textAlign: "center" }}>
+            <div>Hello {user.firstName}!</div>
+            <div>{user.firstName} {user.lastName}</div>
+            <div>{user.email}</div>
+            <div><Link className='easyLinks' to="/groups">View Groups</Link></div>
+            <div><Link className='easyLinks' to='/events'>View Events</Link> </div>
+            <>
+              <button style={{ width: '75px', alignSelf: 'center' }} onClick={logout}>Log Out</button>
+            </>
+          </div>
         ) : (
           <>
             <OpenModalMenuItem

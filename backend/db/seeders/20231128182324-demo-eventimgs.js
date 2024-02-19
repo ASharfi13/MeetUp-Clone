@@ -44,6 +44,36 @@ module.exports = {
         eventId: 5,
         url: "https://media.tenor.com/lRAQgoWzouMAAAAe/dexters-lab-angry.png",
         preview: true
+      },
+      {
+        eventId: 6,
+        url: 'https://sm.ign.com/ign_ap/review/s/samurai-ja/samurai-jack-season-5-review_fbks.png',
+        preview: true
+      },
+      {
+        eventId: 7,
+        url: 'https://external-preview.redd.it/5U2fklz-g120vUEzgHO3jb25K0M69C1On9MKIPe7BX8.gif?format=png8&s=1726d9cad092743c18a84b390ed685283665c388',
+        preview: true
+      },
+      {
+        eventId: 8,
+        url: 'https://sportshub.cbsistatic.com/i/2023/04/11/dd48a0d7-ec0c-443f-830e-6bd28a1cb2c7/grim-adventures-billy-mandy-revival-creator-comments.jpg',
+        preview: true
+      },
+      {
+        eventId: 9,
+        url: 'https://m.media-amazon.com/images/M/MV5BZjE4OWI3NGQtMDFkOS00YTI5LWE0MzUtMGJiZmEzNzQ1ZjNkXkEyXkFqcGdeQXVyMTI2MzY3NTA3._V1_.jpg',
+        preview: true
+      },
+      {
+        eventId: 10,
+        url: 'https://44.media.tumblr.com/cd978ad7e6e2724c1173d0c1cfc477af/bd6750fd539fc54b-ae/s540x810_f1/a79fb70b7262c954f2c57ad5eaef73658ab38344.gif',
+        preview: true
+      },
+      {
+        eventId: 11,
+        url: 'https://i.pinimg.com/736x/e4/4d/6f/e44d6f362f7e4ce36235727d7290f8b4.jpg',
+        preview: true
       }
     ])
   },
@@ -58,8 +88,8 @@ module.exports = {
     options.tableName = "EventImages";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      url: {
-        [Op.in]: ["https://sample.edu/da", "https://dample.edu/da", "https://mple.edu/da"]
+      eventId: {
+        [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       }
     }, {})
   }

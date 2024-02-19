@@ -51,15 +51,13 @@ function LandingPage() {
                 </div>
                 <div className="SubLink">
                     <img className="linkImage" src={ben10} alt="Gumball Start Logo"></img>
-                    {user !== null ? (<Link className="linkText" to={'/groups/new'} >Start A World</Link>) : (<h2 style={{ fontWeight: 400, color: 'grey' }}>Start A World</h2>)}
-                    <p>Everyone loves a good crossover! Whether you want Mandy and Courage the Cowardly dog to meet up for brunch or Gumball, Finn, and Ben10 to launch an epic battle against Vilgax! Click and Create that World!</p>
+                    {user !== null ? (<Link className="linkText" to={'/groups/new'} >Start A World</Link>) : (<h1 style={{ fontWeight: 400, color: 'grey' }}>Start A World</h1>)}
+                    <p>Everyone loves a good crossover! Have you ever imagined Gumball, Finn, and Ben10 launching an epic battle against Vilgax! Click and Create that World Now!</p>
                 </div>
             </div>
             <div className="LandButton">
-                {/* <button className="button" >Join The Cartoon Social Network</button> */}
                 <OpenModalButton
-                    className="button"
-                    buttonText={'Join the Cartoon Social Network'}
+                    buttonText={'Join CN Network'}
                     modalComponent={<SignupFormModal closeModel={closeSignUpModel} />}
                     isOpen={isSignUpOpen}
                     openModal={openSignUpModal}

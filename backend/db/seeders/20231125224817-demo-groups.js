@@ -26,7 +26,7 @@ module.exports = {
         about: "In the thrilling world of the Regular Show, the park is like Disneyland for oddballs, where even the squirrels wear sunglasses and plot world domination. Mordecai, a perpetually bored blue jay, and Rigby, a raccoon with a Ph.D. in slacking off, have job titles that make no sense, and their boss, Benson, is a walking embodiment of coffee-fueled frustration. The talking gumball machine, Pops, floats around the park, blissfully unaware of the chaos that ensues daily. Lastly, Muscle Man and his oh-so-charming buddy, High-Five Ghost, are the epitome of sophistication, with their profound insights into life. Nonetheless, this gang finds themselves in the most insane predictaments, anything can happen",
         type: "In person",
         private: true,
-        city: "The Park",
+        city: "The Regular Park",
         state: "CA"
       },
       {
@@ -40,12 +40,39 @@ module.exports = {
       },
       {
         organizerId: 3,
-        name: "Dexter's Lab",
+        name: "Dexter\'s Lab",
         about: "Step into the wacky world of Dexter's Laboratory, a place where Dexter, a child prodigy with a lab that defies the laws of physics, conducts experiments that could make Einstein scratch his head. Dexter's annoyingly charming sister, Dee Dee, is the perpetual disruptor of his scientific endeavors, turning his high-tech haven into a chaotic playground. Their mom, simply known as Mom, is the epitome of parental obliviousness, and their dad, Dad, is a classic example of the dad-joke aficionado. Dexter's nemesis and neighbor, Mandark, with his wild hair and maniacal laughter, is the yin to Dexter's yang, creating a rivalry that puts even the best sibling squabbles to shame. In this animated haven of madness and genius, Dexter's Laboratory is not just a room but a sanctuary where chaos and creativity collide.",
         type: "Online",
         private: true,
-        city: "Dex's Lab",
+        city: "Dex\'s House",
         state: "AL"
+      },
+      {
+        organizerId: 1,
+        name: 'Aku City (Future)',
+        about: 'Aku City is a dystopian metropolis ruled by the malevolent shape-shifting demon, Aku, in the cartoon network program, Samurai Jack. It serves as a dark reflection of the world under Aku\'s oppressive reign, characterized by towering skyscrapers, polluted skies, and a pervasive sense of fear. The city is teeming with crime and corruption, with Aku\'s influence reaching every corner, instilling a sense of hopelessness among its inhabitants. Despite its technological advancements, Aku City is devoid of any semblance of freedom or justice, serving as a stark reminder of the villain\'s tyrannical grip on the world. Throughout Samurai Jack\'s journey, Aku City stands as a formidable obstacle, symbolizing the struggle against Aku\'s tyranny and the quest for liberation.',
+        type: 'Online',
+        private: false,
+        city: "Aku City",
+        state: 'AK'
+      },
+      {
+        organizerId: 2,
+        name: 'Endsville Elementary School',
+        about: 'Endsville is a fictional town featured in Cartoon Network\'s program, The Grim Adventures of Billy and Mandy. It serves as the primary setting for the series, portraying a quirky and eccentric community where supernatural occurrences are a common sight. The town is depicted as a blend of suburban charm and dark humor, with its residents often encountering bizarre creatures and otherworldly phenomena. Despite its ominous name, Endsville exudes a unique charm with its colorful and diverse population, ranging from eccentric neighbors to peculiar monsters. The town\'s streets are filled with peculiar landmarks and establishments, reflecting the show\'s whimsical and macabre tone. Endsville serves as the backdrop for the misadventures of the titular characters, Billy, Mandy, and the Grim Reaper, as they navigate through bizarre escapades and confront various challenges.',
+        type: 'In person',
+        private: false,
+        city: 'EndsVille',
+        state: 'TX'
+      },
+      {
+        organizerId: 3,
+        name: 'The Ed Cul-De-Sac',
+        about: 'The cul-de-sac is a central location in Cartoon Network\'s program, Ed, Edd n Eddy, serving as the main setting for the misadventures of the titular characters. It is a suburban neighborhood characterized by rows of colorful houses and a sense of camaraderie among its young residents. The cul-de-sac is where Ed, Edd, and Eddy, along with their group of friends, embark on various schemes and escapades in pursuit of jawbreakers. Despite its idyllic appearance, the cul-de-sac is also home to numerous quirky and eccentric characters, each adding to the neighborhood\'s charm and humor. Throughout the series, the cul-de-sac serves as the backdrop for the trio\'s hilarious antics and their interactions with the colorful cast of characters.',
+        type: 'In person',
+        private: true,
+        city: "Peach Creak",
+        state: 'NY'
       }
     ])
   },
@@ -61,7 +88,7 @@ module.exports = {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       name: {
-        [Op.in]: "Group"
+        [Op.in]: ["Benson's Park", "The Imaginary House", "Dexter\'s Lab", 'Aku City (Future)', 'Endsville', 'The Ed Cul-De-Sac',]
       }
     }, {})
   }

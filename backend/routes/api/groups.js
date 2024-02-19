@@ -596,9 +596,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         })
     }
 
-    const newVenueId = eventVenue.id;
-
-    const targetVenue = await Venue.findByPk(newVenueId);
+    const targetVenue = await Venue.findByPk(venueId || eventVenue.id);
 
     if (!targetGroup) return res.status(404).json({
         message: "Group couldn't be found"
@@ -660,28 +658,45 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         errCount++;
     }
 
-    if (!startDate || currStartDate <= currentDate) {
+    if (isNaN(currStartDate) || isNaN(currEndDate)) {
+        errObj.errors.invalidDates = "Start and/or End Date are invalid";
+        errCount++;
+    }
+
+    if (!currStartDate || currStartDate <= currentDate) {
         errObj.errors.startDate = "Start date must be in the future";
         errCount++;
     }
 
-    if (!endDate || currEndDate <= currStartDate) {
+    if (!currEndDate || currEndDate <= currStartDate) {
         errObj.errors.endDate = "End date is less than start date"
         errCount++;
     }
 
     if (errCount > 0) return res.status(400).json(errObj);
 
+    const convertDate = (date) => {
+        const newDate = new Date(date);
+
+        const year = newDate.getFullYear();
+        const month = String(newDate.getMonth() + 1).padStart(2, "0");
+        const day = String(newDate.getDate()).padStart(2, "0");
+        const hours = String(newDate.getHours()).padStart(2, "0");
+        const minutes = String(newDate.getMinutes()).padStart(2, "0");
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`
+    }
+
     let newEvent = await Event.create({
         groupId: groupId,
-        venueId: newVenueId,
+        venueId: venueId || eventVenue.id,
         name: name,
         type: type,
         capacity: capacity,
         price: price,
         description: description,
-        startDate: startDate,
-        endDate: endDate
+        startDate: convertDate(currStartDate),
+        endDate: convertDate(currEndDate)
     })
 
     if (previewImg) {

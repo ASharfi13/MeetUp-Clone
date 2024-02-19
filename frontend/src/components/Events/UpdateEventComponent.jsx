@@ -27,20 +27,20 @@ function UpdateEventComponent() {
         return numPrice.toFixed(2);
     }
 
+
     const [name, setName] = useState(prevName);
     const [type, setType] = useState(prevType);
     const [isPrivate, setIsPrivate] = useState(prevPrivate);
     const [price, setPrice] = useState(prevPrice);
     const [capacity, setCapacity] = useState(prevCapacity);
+
     let [startDate, setStartDate] = useState(prevStartDate);
     let [endDate, setEndDate] = useState(prevEndDate);
+
     const [eventImg, setEventImg] = useState('');
     const [description, setDescription] = useState(prevDescription);
     const [showErrors, setShowErrors] = useState(false);
     const [errObj, setErrObj] = useState({});
-
-    startDate = startDate.includes("T") ? startDate : `${startDate}T00:00`;
-    endDate = endDate.includes("T") ? endDate : `${endDate}T00:00`;
 
     useEffect(() => {
         localStorage.setItem('eventName', name);
@@ -95,8 +95,8 @@ function UpdateEventComponent() {
             capacity: Number(capacity),
             price: convertPrice(price),
             description,
-            startDate,
-            endDate
+            startDate: new Date(startDate).toString(),
+            endDate: new Date(endDate).toString()
         }
 
         if (Object.values(errObj).length === 0) {
@@ -108,7 +108,6 @@ function UpdateEventComponent() {
             setShowErrors(true);
         }
     }
-
 
 
     return (

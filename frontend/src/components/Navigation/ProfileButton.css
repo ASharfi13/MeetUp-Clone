@@ -3,3 +3,7 @@
     color: white;
     background-color: black;
 }
+
+.easyLinks:hover {
+    color: red;
+}

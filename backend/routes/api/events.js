@@ -252,9 +252,9 @@ router.put("/:eventId", requireAuth,
         }
 
         //Body Validation Checks
-        const currentDate = new Date();
-        const currStartDate = new Date(startDate);
-        const currEndDate = new Date(endDate);
+        const currentDate = Date.parse(new Date());
+        const newStartDate = Date.parse(startDate);
+        const newEndDate = Date.parse(endDate);
 
         const errObj = {
             message: "Bad Request",
@@ -288,17 +288,36 @@ router.put("/:eventId", requireAuth,
             errCount++;
         }
 
-        if (!startDate || currStartDate <= currentDate) {
+        //Ensure correct Date Parsing
+
+        if (isNaN(newStartDate) || isNaN(newEndDate)) {
+            errObj.errors.invalidDate = "Start or End Date is Invalid";
+            errCount++;
+        }
+
+        if (!newStartDate || newStartDate <= currentDate) {
             errObj.errors.startDate = "Start date must be in the future";
             errCount++;
         }
 
-        if (!endDate || currEndDate <= currStartDate) {
+        if (!newEndDate || newEndDate <= currentDate) {
             errObj.errors.endDate = "End date is less than start date"
             errCount++;
         }
 
         if (errCount > 0) return res.status(400).json(errObj);
+
+        const convertDate = (date) => {
+            const newDate = new Date(date);
+
+            const year = newDate.getFullYear();
+            const month = String(newDate.getMonth() + 1).padStart(2, "0");
+            const day = String(newDate.getDate()).padStart(2, "0");
+            const hours = String(newDate.getHours()).padStart(2, "0");
+            const minutes = String(newDate.getMinutes()).padStart(2, "0");
+
+            return `${year}-${month}-${day}T${hours}:${minutes}`
+        }
 
         targetEvent.venueId = venueId || targetEvent.venueId;
         targetEvent.name = name || targetEvent.name;
@@ -306,10 +325,12 @@ router.put("/:eventId", requireAuth,
         targetEvent.capacity = capacity || targetEvent.capacity;
         targetEvent.price = price || targetEvent.price;
         targetEvent.description = description || targetEvent.description;
-        targetEvent.startDate = startDate || targetEvent.startDate;
-        targetEvent.endDate = endDate || targetEvent.endDate;
+        targetEvent.startDate = convertDate(newStartDate) || targetEvent.startDate;
+        targetEvent.endDate = convertDate(newEndDate) || targetEvent.endDate;
 
         await targetEvent.save();
+
+
 
         const response = await Event.findOne({
             where: {

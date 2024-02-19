@@ -48,10 +48,10 @@ module.exports = (sequelize, DataTypes) => {
     capacity: DataTypes.INTEGER,
     price: DataTypes.NUMERIC(3, 2),
     startDate: {
-      type: DataTypes.DATEONLY
+      type: DataTypes.STRING
     },
     endDate: {
-      type: DataTypes.DATEONLY
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
