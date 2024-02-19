@@ -54,10 +54,10 @@ module.exports = {
         type: Sequelize.NUMERIC(7, 2)
       },
       startDate: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.STRING
       },
       endDate: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
