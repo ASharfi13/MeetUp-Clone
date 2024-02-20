@@ -15,31 +15,31 @@ function AllEvents() {
         dispatch(fetchAllEvents())
     }, [dispatch])
 
-    let eventCompInfo = events.map((event) => {
-        const eventDate = new Date(event.startDate);
+    let eventCompInfo = events?.map((event) => {
+        const eventDate = new Date(event?.startDate);
 
         return (
-            <div className="EventComponentSection" key={event.id} onClick={() => {
-                const url = `/events/${event.id}`
+            <div className="EventComponentSection" key={event?.id} onClick={() => {
+                const url = `/events/${event?.id}`
                 navigate(url)
             }}>
-                <div className="EventComponent" key={event.id} onClick={() => {
-                    const url = `/events/${event.id}`
+                <div className="EventComponent" key={event?.id} onClick={() => {
+                    const url = `/events/${event?.id}`
                     navigate(url)
                 }}>
-                    <img className="EventImg" src={event.previewImage} />
+                    <img className="EventImg" src={event?.previewImage} />
                     <div className="EventDetails">
                         <p> {eventDate.toLocaleDateString()} • {eventDate.toLocaleTimeString("en-US", {
                             hour: "numeric",
                             minute: "numeric",
                             hour12: true
                         })} </p>
-                        <h3> {event.name}</h3>
-                        <p> {event.Venue.city}, {event.Venue.state} </p>
+                        <h3> {event?.name}</h3>
+                        <p> {event?.Venue?.city}, {event?.Venue?.state} </p>
                     </div>
                 </div>
                 <div className="EventDescription">
-                    <p>{event.description}</p>
+                    <p>{event?.description}</p>
                 </div>
             </div>
         )

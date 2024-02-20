@@ -56,13 +56,13 @@ function LandingPage() {
                 </div>
             </div>
             <div className="LandButton">
-                <OpenModalButton
+                {!user ? <OpenModalButton
                     buttonText={'Join CN Network'}
                     modalComponent={<SignupFormModal closeModel={closeSignUpModel} />}
                     isOpen={isSignUpOpen}
                     openModal={openSignUpModal}
                     closeModel={closeSignUpModel}
-                />
+                /> : null}
             </div>
         </>
     )

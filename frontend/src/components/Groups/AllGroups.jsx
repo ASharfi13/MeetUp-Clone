@@ -34,16 +34,16 @@ function AllGroups() {
             </section>
 
             <section className="groupComponentSection">
-                {groups.map((group) => (
-                    <div className="GroupComponent" key={group.id} onClick={() => {
-                        const url = `/groups/${group.id}`
+                {groups?.map((group) => (
+                    <div className="GroupComponent" key={group?.id} onClick={() => {
+                        const url = `/groups/${group?.id}`
                         navigate(url)
                     }}>
-                        <img src={group.previewImage} />
-                        <h3> {group.name}</h3>
-                        <p> {group.city}, {group.state}</p>
-                        <p> {group.about} </p>
-                        <h5> {group.numEvents} Events • {group.isPrivate ? "Private" : "Public"} </h5>
+                        <img src={group?.previewImage} />
+                        <h3> {group?.name}</h3>
+                        <p> {group?.city}, {group.state}</p>
+                        <p> {group?.about} </p>
+                        <h5> {group?.numEvents} Events • {group?.isPrivate ? "Private" : "Public"} </h5>
                     </div>
                 ))}
             </section>
