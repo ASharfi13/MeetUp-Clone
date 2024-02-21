@@ -1,5 +1,4 @@
 .formUpdateTitle {
-    border: 2px solid black;
     width: 400px;
     display: flex;
     justify-content: center;
@@ -8,9 +7,23 @@
 .updateFormComponent {
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
     width: 1200px;
     padding-left: 40px;
     padding-right: 40px;
     padding-bottom: 40px;
+}
+
+.standardInput {
+    width: 250px;
+    height: 30px;
+}
+
+.updateButtonDiv {
+    display: flex;
+    margin-top: 20px;
+}
+
+.updateIndividualComponent {
+    border-top: 2px solid black;
+    margin-top: 20px;
 }

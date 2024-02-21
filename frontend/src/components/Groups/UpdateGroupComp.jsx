@@ -97,7 +97,7 @@ function UpdateGroupComp() {
                 <h1>We{'\''}ll walk you through a few steps to update your World{'\''}s information</h1>
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="groupComp">
-                        <h1>First, set your group{'\''}s location</h1>
+                        <h1>First, set your world{'\''}s location</h1>
                         <p>Worlds meet locally, in-person and online. We{'\''}ll connect you with people in your area, and more can join you online.</p>
                         <input
                             type="text"

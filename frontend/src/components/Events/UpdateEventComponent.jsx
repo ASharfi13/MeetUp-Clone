@@ -116,14 +116,14 @@ function UpdateEventComponent() {
             <div className="mainForm">
                 <h1 className="formUpdateTitle">Update your Event</h1>
                 <form className="updateFormComponent" onSubmit={handleSubmit}>
-                    <div className="groupName">
-                        <h2>What is the name of your event</h2>
-                        <input type="text" value={name} onChange={e => setName(e.target.value)}>
+                    <div className="updateIndividualComponent">
+                        <p>What is the name of your event</p>
+                        <input className="standardInput" type="text" value={name} onChange={e => setName(e.target.value)}>
                         </input>
                     </div>
-                    <div className="eventDetails">
+                    <div className="updateIndividualComponent">
                         <div>
-                            <h2>It this an in-person or online event?</h2>
+                            <p>It this an in-person or online event?</p>
                             <select value={type} onChange={e => setType(e.target.value)}>
                                 <option value='' disabled>Select One</option>
                                 {
@@ -165,7 +165,7 @@ function UpdateEventComponent() {
                             ) : null}
                         </div>
                     </div>
-                    <div className="eventTimeDetails">
+                    <div className="updateIndividualComponent">
                         <div>
                             <p>What time does your event start?</p>
                             <input
@@ -190,14 +190,14 @@ function UpdateEventComponent() {
                             ) : null}
                         </div>
                     </div>
-                    <div className="eventImageUrl">
+                    <div className="updateIndividualComponent">
                         <p>Please add an image url for your Event</p>
                         <input type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
                         {showErrors ? (
                             <p style={{ color: "red" }}>{errObj.invalidImg} {' '} {errObj.eventImgMissing}</p>
                         ) : null}
                     </div>
-                    <div className="eventDescription">
+                    <div className="updateIndividualComponent">
                         <p>Please describe your event</p>
                         <textarea
                             placeholder="Please include at least 30 characters" rows={"10"} cols={"30"}
@@ -207,7 +207,9 @@ function UpdateEventComponent() {
                             <p style={{ color: "red" }}> {errObj.descriptionLength}</p>
                         ) : null}
                     </div>
-                    <button type="submit">Update</button>
+                    <div className="updateButtonDiv">
+                        <button className="cpuButton" type="submit">Update</button>
+                    </div>
                 </form>
             </div>
         </>

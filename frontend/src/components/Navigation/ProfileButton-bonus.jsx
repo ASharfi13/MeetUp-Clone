@@ -49,14 +49,19 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
-          <div style={{ display: 'flex', flexDirection: 'column', textAlign: "center" }}>
-            <div>Hello {user.firstName}!</div>
-            <div>{user.firstName} {user.lastName}</div>
-            <div>{user.email}</div>
-            <div><Link className='easyLinks' to="/groups">View Groups</Link></div>
-            <div><Link className='easyLinks' to='/events'>View Events</Link> </div>
+          <div style={{ display: 'flex', textAlign: "center", padding: "10px" }}>
+            <div className='profileComponents'>
+              <div>Hello {user.firstName}!</div>
+              <div>{user.firstName} {user.lastName}</div>
+              <div>{user.email}</div>
+            </div>
+            <div className='profileComponents'>
+              <div><Link className='easyLinks' to="/groups">View Groups</Link></div>
+              <div><Link className='easyLinks' to='/events'>View Events</Link> </div>
+              <div><Link className='easyLinks' to='/groups/new'>Create A World</Link></div>
+              <button className='logOutButton' onClick={logout}>Log Out</button>
+            </div>
             <>
-              <button style={{ width: '75px', alignSelf: 'center' }} onClick={logout}>Log Out</button>
             </>
           </div>
         ) : (

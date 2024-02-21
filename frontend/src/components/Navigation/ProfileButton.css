@@ -7,3 +7,24 @@
 .easyLinks:hover {
     color: red;
 }
+
+.profileComponents {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 5px;
+    justify-content: space-around;
+    align-items: center;
+    width: 120px;
+    height: 100px;
+}
+
+.logOutButton {
+    width: 75px;
+    align-self: center;
+    height: 30px;
+}
+
+.logOutButton:hover {
+    background-color: lightgreen;
+}

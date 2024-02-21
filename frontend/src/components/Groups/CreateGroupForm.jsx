@@ -115,7 +115,7 @@ function CreateGroupForm() {
                             type="text"
                             className="input"
                             value={name}
-                            placeholder="What's your group's name?"
+                            placeholder="What's your World's name?"
                             onChange={e => setName(e.target.value)}
                         >
                         </input>
@@ -158,7 +158,7 @@ function CreateGroupForm() {
                         ) : null}
 
                         <div className="groupComp">
-                            <p>Is this group public or private?</p>
+                            <p>Is this World public or private?</p>
                             <select className="input" value={priv ? "Private" : "Public"} onChange={e => {
                                 e.target.value === "Private" ? setPriv(true) : setPriv(false);
                             }}>
