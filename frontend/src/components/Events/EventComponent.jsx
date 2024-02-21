@@ -65,7 +65,7 @@ function EventComponent() {
                                     <p>START <span>{event.startDate ? event.startDate.split('T')[0] : null} • {event.startDate ? new Date(event.startDate).toLocaleTimeString("en-US", {
                                         hour: 'numeric', minute: 'numeric', hour12: true
                                     }) : null}</span></p>
-                                    <p>END <span>{event.endDate ? event.startDate.split('T')[0] : null} • {event.startDate ? new Date(event.endDate).toLocaleTimeString('en-US', {
+                                    <p>END <span>{event.endDate ? event.endDate.split('T')[0] : null} • {event.endDate ? new Date(event.endDate).toLocaleTimeString('en-US', {
                                         hour: 'numeric', minute: 'numeric', hour12: true
                                     }) : null}</span></p>
                                 </div>

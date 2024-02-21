@@ -119,7 +119,7 @@ module.exports = {
         capacity: '10',
         price: 500,
         startDate: '2024-01-15T12:30',
-        endDate: '2024-01-18T8:30'
+        endDate: '2024-01-18T08:30'
       },
       {
         venueId: 6,
