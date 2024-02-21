@@ -9,9 +9,9 @@ function GroupEventDetails() {
     const todayDate = new Date();
 
 
-    const upcomingEvents = groupEvents?.filter((event) => new Date(event.startDate) > todayDate);
+    const upcomingEvents = groupEvents.filter((event) => new Date(event?.startDate) > todayDate);
 
-    const previousEvents = groupEvents?.filter((event) => new Date(event.startDate) < todayDate);
+    const previousEvents = groupEvents.filter((event) => new Date(event?.startDate) < todayDate);
 
 
     const convertTime = (date) => {
@@ -29,7 +29,7 @@ function GroupEventDetails() {
 
 
     return (
-        <>
+        <div className="AllEvents">
             <section>
                 {groupEvents?.length === 0 ? (<h1>No Upcoming Events</h1>) : null}
             </section>
@@ -51,7 +51,7 @@ function GroupEventDetails() {
                             </div>
                         ))}
                     </section>
-                ) : null}
+                ) : <h1>No Upcoming Events</h1>}
             </section>
             <section className="previousSec">
                 {previousEvents?.length > 0 ? (
@@ -71,9 +71,10 @@ function GroupEventDetails() {
                             </div>
                         ))}
                     </section>
-                ) : null}
+                ) : <h1>No Previous Events</h1>}
             </section >
-        </>
+
+        </div>
     )
 }
 

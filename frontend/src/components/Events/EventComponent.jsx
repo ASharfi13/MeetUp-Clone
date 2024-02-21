@@ -47,7 +47,7 @@ function EventComponent() {
                     <p>Hosted by {!group.Organizer ? null : group.Organizer.firstName} {!group.Organizer ? null : group.Organizer.lastName}</p>
                 </div>
                 <section className="MainEventContent">
-                    <img className="eventCompImage" src={!event.EventImages ? null : event.EventImages[0].url} />
+                    <img style={{ maxHeight: '1000px', maxWidth: '600px' }} className="eventCompImage" src={!event.EventImages ? null : event.EventImages[0].url} />
                     <div className="theSidePieces">
                         <div className="eventGroupComp">
                             <div className="groupDetails">

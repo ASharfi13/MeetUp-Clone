@@ -1,0 +1,16 @@
+.formUpdateTitle {
+    border: 2px solid black;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.updateFormComponent {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    width: 1200px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+}

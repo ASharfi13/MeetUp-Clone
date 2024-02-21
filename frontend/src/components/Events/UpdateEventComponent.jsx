@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchEvent, fetchUpdateEvent } from "../../store/events";
+import "./UpdateEventComponent.css";
 
 
 function UpdateEventComponent() {
@@ -112,101 +113,103 @@ function UpdateEventComponent() {
 
     return (
         <>
-            <h1>Update your Event</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="groupName">
-                    <p>What is the name of your event</p>
-                    <input type="text" value={name} onChange={e => setName(e.target.value)}>
-                    </input>
-                </div>
-                <div className="eventDetails">
-                    <div>
-                        <p>It this an in-person or online event?</p>
-                        <select value={type} onChange={e => setType(e.target.value)}>
-                            <option value='' disabled>Select One</option>
-                            {
-                                ["Online", "In person"].map((type, index) => (
-                                    <option key={index} value={type}> {type} </option>
-                                ))
-                            }
-                        </select>
-                        {showErrors ? (
-                            <p style={{ color: "red" }}> {errObj.typeMissing} </p>
-                        ) : null}
-                    </div>
-                    <div>
-                        <p>Is this event private or public?</p>
-                        <select value={isPrivate ? "Private" : "Public"} onChange={e => {
-                            e.target.value === "Private" ? setIsPrivate(true) : setIsPrivate(false);
-                        }}>
-                            {
-                                ["Private", "Public"].map((choice, index) => (
-                                    <option key={index} value={choice}> {choice} </option>
-                                ))
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <p>What is the price of your Event?</p>
-                        {'$'} <input type="number" placeholder="Valid Prices range $0-999"
-                            value={price} onChange={e => setPrice(e.target.value)}></input>
-                        {showErrors ? (
-                            <p style={{ color: "red" }}>{errObj.invalidPrice}</p>
-                        ) : null}
-                    </div>
-                    <div>
-                        <p>What{'\''}s the most amount of people you can host at this event?</p>
-                        <input type="number" placeholder="Enter Max Capacity"
-                            value={capacity} onChange={e => setCapacity(e.target.value)}></input>
-                        {showErrors ? (
-                            <p style={{ color: "red" }}>{errObj.capacityMissing}</p>
-                        ) : null}
-                    </div>
-                </div>
-                <div className="eventTimeDetails">
-                    <div>
-                        <p>What time does your event start?</p>
-                        <input
-                            type="datetime-local"
-                            value={startDate}
-                            onChange={e => setStartDate(e.target.value)}
-                        >
+            <div className="mainForm">
+                <h1 className="formUpdateTitle">Update your Event</h1>
+                <form className="updateFormComponent" onSubmit={handleSubmit}>
+                    <div className="groupName">
+                        <h2>What is the name of your event</h2>
+                        <input type="text" value={name} onChange={e => setName(e.target.value)}>
                         </input>
+                    </div>
+                    <div className="eventDetails">
+                        <div>
+                            <h2>It this an in-person or online event?</h2>
+                            <select value={type} onChange={e => setType(e.target.value)}>
+                                <option value='' disabled>Select One</option>
+                                {
+                                    ["Online", "In person"].map((type, index) => (
+                                        <option key={index} value={type}> {type} </option>
+                                    ))
+                                }
+                            </select>
+                            {showErrors ? (
+                                <p style={{ color: "red" }}> {errObj.typeMissing} </p>
+                            ) : null}
+                        </div>
+                        <div>
+                            <p>Is this event private or public?</p>
+                            <select value={isPrivate ? "Private" : "Public"} onChange={e => {
+                                e.target.value === "Private" ? setIsPrivate(true) : setIsPrivate(false);
+                            }}>
+                                {
+                                    ["Private", "Public"].map((choice, index) => (
+                                        <option key={index} value={choice}> {choice} </option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <p>What is the price of your Event?</p>
+                            {'$'} <input type="number" placeholder="Valid Prices range $0-999"
+                                value={price} onChange={e => setPrice(e.target.value)}></input>
+                            {showErrors ? (
+                                <p style={{ color: "red" }}>{errObj.invalidPrice}</p>
+                            ) : null}
+                        </div>
+                        <div>
+                            <p>What{'\''}s the most amount of people you can host at this event?</p>
+                            <input type="number" placeholder="Enter Max Capacity"
+                                value={capacity} onChange={e => setCapacity(e.target.value)}></input>
+                            {showErrors ? (
+                                <p style={{ color: "red" }}>{errObj.capacityMissing}</p>
+                            ) : null}
+                        </div>
+                    </div>
+                    <div className="eventTimeDetails">
+                        <div>
+                            <p>What time does your event start?</p>
+                            <input
+                                type="datetime-local"
+                                value={startDate}
+                                onChange={e => setStartDate(e.target.value)}
+                            >
+                            </input>
+                            {showErrors ? (
+                                <p style={{ color: "red" }}>{errObj.invalidStartDate} {' '} {errObj.startDateMissing}</p>
+                            ) : null}
+                        </div>
+                        <div>
+                            <p>What time does your event end?</p>
+                            <input type="datetime-local"
+                                value={endDate}
+                                onChange={e => setEndDate(e.target.value)}
+                            >
+                            </input>
+                            {showErrors ? (
+                                <p style={{ color: "red" }}>{errObj.invalidEndDate} {' '} {errObj.endDateMissing}</p>
+                            ) : null}
+                        </div>
+                    </div>
+                    <div className="eventImageUrl">
+                        <p>Please add an image url for your Event</p>
+                        <input type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
                         {showErrors ? (
-                            <p style={{ color: "red" }}>{errObj.invalidStartDate} {' '} {errObj.startDateMissing}</p>
+                            <p style={{ color: "red" }}>{errObj.invalidImg} {' '} {errObj.eventImgMissing}</p>
                         ) : null}
                     </div>
-                    <div>
-                        <p>What time does your event end?</p>
-                        <input type="datetime-local"
-                            value={endDate}
-                            onChange={e => setEndDate(e.target.value)}
-                        >
-                        </input>
+                    <div className="eventDescription">
+                        <p>Please describe your event</p>
+                        <textarea
+                            placeholder="Please include at least 30 characters" rows={"10"} cols={"30"}
+                            value={description} onChange={e => setDescription(e.target.value)}>
+                        </textarea>
                         {showErrors ? (
-                            <p style={{ color: "red" }}>{errObj.invalidEndDate} {' '} {errObj.endDateMissing}</p>
+                            <p style={{ color: "red" }}> {errObj.descriptionLength}</p>
                         ) : null}
                     </div>
-                </div>
-                <div className="eventImageUrl">
-                    <p>Please add an image url for your Event</p>
-                    <input type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
-                    {showErrors ? (
-                        <p style={{ color: "red" }}>{errObj.invalidImg} {' '} {errObj.eventImgMissing}</p>
-                    ) : null}
-                </div>
-                <div className="eventDescription">
-                    <p>Please describe your event</p>
-                    <textarea
-                        placeholder="Please include at least 30 characters" rows={"10"} cols={"30"}
-                        value={description} onChange={e => setDescription(e.target.value)}>
-                    </textarea>
-                    {showErrors ? (
-                        <p style={{ color: "red" }}> {errObj.descriptionLength}</p>
-                    ) : null}
-                </div>
-                <button type="submit">Update</button>
-            </form>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
         </>
     )
 }

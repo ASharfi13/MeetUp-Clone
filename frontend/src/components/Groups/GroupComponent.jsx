@@ -53,44 +53,44 @@ function GroupComponent() {
     return (
         <>
             <main>
-                <Link className="breadLink" to='/groups'>{`<`}Worlds</Link>
-                <section className="UpperMain">
-                    <img className="groupImg" src={url} />
-                    <section className="GroupDetails">
-                        <div>
+                <div className="EntireUpperHalf">
+                    <Link className="breadLink" to='/groups'>{`<`}Worlds</Link>
+                    <section className="UpperMain">
+                        <img className="groupImg" src={url} />
+                        <section className="GroupDetails">
                             <div>
-                                <h4> {group.name} </h4>
-                                <p> {group.city}, {group.state} </p>
-                                <p> Events {`(${group.numEvents})`} • {group.private === true ? "Private" : "Public"}</p>
-                                <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>
+                                <div className="innerGDetails">
+                                    <h4> {group.name} </h4>
+                                    <p> {group.city}, {group.state} </p>
+                                    <p> Events {`(${group.numEvents})`} • {group.private === true ? "Private" : "Public"}</p>
+                                    <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>
+                                </div>
+                                <div className="groupButtons">
+                                    {user?.id !== group.organizerId && user ? (
+                                        <button className="singleButton" onClick={() => alert("Feature Coming Soon!")}>Join Group</button>)
+                                        : null}
+                                    {permission ? (<div className="specialButtons">
+                                        <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
+                                        <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/edit`)}>Update</button>
+                                        <button className="singleButton" onClick={() => {
+                                            if (window.confirm('Are you sure you want to delete this group?')) {
+                                                handleDeleteConfirm();
+                                            }
+                                        }}>Delete</button>
+                                    </div>) : null}
+                                </div>
                             </div>
-                            <div className="groupButtons">
-                                {user?.id !== group.organizerId && user ? (
-                                    <button className="singleButton" onClick={() => alert("Feature Coming Soon!")}>Join Group</button>)
-                                    : null}
-                                {permission ? (<>
-                                    <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/events/new`)}>Create Event</button>
-                                    <button className="singleButton" onClick={() => navigate(`/groups/${groupId}/edit`)}>Update</button>
-                                    <button className="singleButton" onClick={() => {
-                                        if (window.confirm('Are you sure you want to delete this group?')) {
-                                            handleDeleteConfirm();
-                                        }
-                                    }}>Delete</button>
-                                </>) : (<button className="singleButton" onClick={() => navigate(`/`)}>Update</button>)}
-                            </div>
-                        </div>
+                        </section>
                     </section>
-                </section>
-                <section className="LowerMain">
                     <div className="OrganizerAboutSec">
                         <h3>Organizer</h3>
                         <p> {Organizer.firstName} {Organizer.lastName} </p>
                         <h3>What we{'\''}re about</h3>
                         <p> {group.about} </p>
                     </div>
-                    <div className="UpcomingEvents">
-                        <GroupEventDetails />
-                    </div>
+                </div>
+                <section>
+                    <GroupEventDetails />
                 </section>
             </main>
         </>
