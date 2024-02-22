@@ -4,7 +4,9 @@
     cursor: pointer;
     align-items: center;
     justify-content: space-between;
-    border-top: 2px solid grey;
+    border-top: 2px solid black;
+    margin: 20px;
+    padding: 40px;
 }
 
 .EventHeaderLinks {
@@ -56,5 +58,4 @@
 .EventDescription {
     display: flex;
     width: 60%;
-    border-bottom: 2px solid grey;
 }

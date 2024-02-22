@@ -95,6 +95,8 @@ export const fetchGroupEvents = (groupId) => async (dispatch) => {
 
         dispatch(loadGroupEvents(events));
         return events;
+    } else {
+        dispatch(loadGroupEvents({ Events: {} }))
     }
 }
 

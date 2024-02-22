@@ -1,7 +1,7 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllGroups, fetchDeleteGroup, fetchGroupComp, fetchGroupEvents } from "../../store/groups";
+import { fetchDeleteGroup, fetchGroupComp, fetchGroupEvents } from "../../store/groups";
 import GroupEventDetails from "./GroupEventDetails";
 import "./GroupComponent.css";
 
@@ -15,6 +15,8 @@ function GroupComponent() {
     const navigate = useNavigate();
     const user = useSelector(state => state.session.user);
     const [permission, setPermission] = useState(false);
+
+    const groupEvents = useSelector(state => state.groups.currGroupEvents);
 
     let url;
 
@@ -38,16 +40,18 @@ function GroupComponent() {
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
         dispatch(fetchGroupEvents(Number(groupId)));
-        dispatch(fetchAllGroups());
-
         if (user?.id && group.organizerId) setPermission(Number(user.id) === Number(group.organizerId))
     }, [dispatch, groupId, user?.id, group.organizerId, setPermission])
+
+    ////////
 
     const handleDeleteConfirm = () => {
         dispatch(fetchDeleteGroup(groupId)).then(() => {
             navigate(`/groups`);
         })
     }
+
+    console.log("GroupEvents", groupEvents);
 
 
     return (

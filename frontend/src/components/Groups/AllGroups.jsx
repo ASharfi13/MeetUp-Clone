@@ -15,6 +15,8 @@ function AllGroups() {
         dispatch(fetchAllGroups());
     }, [dispatch])
 
+    console.log(groups);
+
     return (
         <>
             <section className="GroupHeader">
@@ -43,7 +45,7 @@ function AllGroups() {
                         <h3> {group?.name}</h3>
                         <p> {group?.city}, {group.state}</p>
                         <p> {group?.about} </p>
-                        <h5> {group?.numEvents} Events • {group?.isPrivate ? "Private" : "Public"} </h5>
+                        <h5> {group?.numEvents} Events • {group?.private ? "Private" : "Public"} </h5>
                     </div>
                 ))}
             </section>

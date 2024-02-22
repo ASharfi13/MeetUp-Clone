@@ -30,12 +30,13 @@
 .eventGroupComp {
     display: flex;
     align-items: center;
-    width: 100%;
+    min-width: 405px;
     background-color: lightgray;
     border-radius: 10px;
-    height: 30%;
+    min-height: 140px;
     border: 2px solid grey;
     gap: 20px;
+    margin-bottom: 10px;
 }
 
 

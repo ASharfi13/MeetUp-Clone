@@ -1,17 +1,30 @@
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import "./GroupEventDetails.css";
+import { useEffect } from "react";
+import { fetchGroupEvents } from "../../store/groups";
 
 function GroupEventDetails() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { groupId } = useParams();
+
+    useEffect(() => {
+        dispatch(fetchGroupEvents(Number(groupId)))
+    }, [dispatch, groupId])
+
+    //////////
+
     const groupEvents = useSelector((state) => Object.values(state.groups.currGroupEvents));
 
     const todayDate = new Date();
 
+    const upcomingEvents = groupEvents ? groupEvents.filter((event) => new Date(event?.startDate) > todayDate) : [];
 
-    const upcomingEvents = groupEvents.filter((event) => new Date(event?.startDate) > todayDate);
+    const previousEvents = groupEvents ? groupEvents.filter((event) => new Date(event?.startDate) < todayDate) : [];
 
-    const previousEvents = groupEvents.filter((event) => new Date(event?.startDate) < todayDate);
+    ////////
 
 
     const convertTime = (date) => {
@@ -26,15 +39,10 @@ function GroupEventDetails() {
         return time;
     }
 
-
-
     return (
         <div className="AllEvents">
-            <section>
-                {groupEvents?.length === 0 ? (<h1>No Upcoming Events</h1>) : null}
-            </section>
-            <section className="upcomingSection">
-                {upcomingEvents.length > 0 ? (
+            {upcomingEvents.length > 0 && (
+                <section className="upcomingSection">
                     <section className="events">
                         <h3>Upcoming Events {`(${upcomingEvents?.length})`} </h3>
                         {upcomingEvents?.map((event) => (
@@ -51,10 +59,10 @@ function GroupEventDetails() {
                             </div>
                         ))}
                     </section>
-                ) : <h1>No Upcoming Events</h1>}
-            </section>
-            <section className="previousSec">
-                {previousEvents?.length > 0 ? (
+                </section>
+            )}
+            {previousEvents?.length > 0 && (
+                <section className="previousSec">
                     <section className="events">
                         <h3>Previous Events {`(${previousEvents?.length})`} </h3>
                         {previousEvents?.map((event) => (
@@ -71,9 +79,8 @@ function GroupEventDetails() {
                             </div>
                         ))}
                     </section>
-                ) : <h1>No Previous Events</h1>}
-            </section >
-
+                </section >
+            )}
         </div>
     )
 }
