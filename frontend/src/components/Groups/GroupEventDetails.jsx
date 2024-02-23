@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./GroupEventDetails.css";
 import { useEffect } from "react";
 import { fetchGroupEvents, clearGroupEvents } from "../../store/groups";
+import groupDetailsBackDrop from "../../images/groupEvents.png"
 
 function GroupEventDetails() {
     const navigate = useNavigate();
@@ -44,13 +45,13 @@ function GroupEventDetails() {
     }
 
     return (
-        <div className="AllEvents">
+        <div style={{ backgroundImage: `url(${groupDetailsBackDrop})` }} className="AllEvents">
             {upcomingEvents.length > 0 && (
                 <section className="upcomingSection">
                     <section className="events">
-                        <h3>Upcoming Events {`(${upcomingEvents?.length})`} </h3>
+                        <h3 style={{ color: "#EE1A7A" }}>Upcoming Events {`(${upcomingEvents?.length})`} </h3>
                         {upcomingEvents?.map((event) => (
-                            <div className="component" key={event?.id} onClick={() => navigate(`/events/${event?.id}`)}>
+                            <div style={{ boxShadow: "-10px -10px #EE1A7A" }} className="component" key={event?.id} onClick={() => navigate(`/events/${event?.id}`)}>
                                 <div className="imgDetails">
                                     <img className="eventDetailsImg" src={event?.previewImage} />
                                     <div className="eventDetailsB">
@@ -68,9 +69,9 @@ function GroupEventDetails() {
             {previousEvents?.length > 0 && (
                 <section className="previousSec">
                     <section className="events">
-                        <h3>Previous Events {`(${previousEvents?.length})`} </h3>
+                        <h3 style={{ color: "#1889F2" }}>Previous Events {`(${previousEvents?.length})`} </h3>
                         {previousEvents?.map((event) => (
-                            <div className="component" key={event?.id} onClick={() => navigate(`/events/${event?.id}`)}>
+                            <div style={{ boxShadow: "10px 10px #1889F2" }} className="component" key={event?.id} onClick={() => navigate(`/events/${event?.id}`)}>
                                 <div className="imgDetails">
                                     <img className="eventDetailsImg" src={event?.previewImage} />
                                     <div className="eventDetailsB">

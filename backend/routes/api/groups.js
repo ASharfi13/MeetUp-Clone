@@ -266,7 +266,8 @@ router.post("/", requireAuth, async (req, res) => {
         type: type,
         isPrivate: isPrivate,
         city: city,
-        state: state
+        state: state,
+        backgroundImg
     })
 
     if (previewImg) {
@@ -374,10 +375,6 @@ router.put("/:groupId", requireAuth, async (req, res) => {
         errCount++;
     }
 
-    if (!backgroundImg) {
-        errObj.errors.backgroundImgNone = "Background Img Url is required"
-    }
-
     if (!["jpeg", "png", "jpg"].includes(backgroundImg[backgroundImg.length - 1])) {
         errObj.errors.backgroundImgInvalid = "Background Img Url is Invalid"
     }
@@ -390,6 +387,7 @@ router.put("/:groupId", requireAuth, async (req, res) => {
         targetGroup.isPrivate = isPrivate || targetGroup.isPrivate,
         targetGroup.city = city || targetGroup.city,
         targetGroup.state = state || targetGroup.state
+    targetGroup.backgroundImg = backgroundImg || targetGroup.backgroundImg
 
     await targetGroup.save()
 

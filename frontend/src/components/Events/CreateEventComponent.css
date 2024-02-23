@@ -1,8 +1,18 @@
+.createEventRoot {
+    display: flex;
+    justify-content: center;
+    border-bottom: 40px solid black;
+}
+
 .theWholeThing {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 1200px;
+    width: 50%;
+    background-color: white;
+    box-shadow: -35px 25px black;
+    border: 5px solid black;
+    margin: 40px;
 }
 
 .eventComp {
@@ -10,6 +20,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 15px;
 }
 
 .upEventButton {
@@ -19,5 +30,9 @@
     color: white;
     background-color: black;
     border-radius: 10px;
+}
 
+.upEventButton:hover {
+    box-shadow: -5px 5px #00C2FF;
+    color: gold;
 }

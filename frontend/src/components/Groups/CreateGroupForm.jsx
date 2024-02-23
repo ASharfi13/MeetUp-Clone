@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAllGroups, fetchCreateGroup } from "../../store/groups";
 import "./CreateGroupForm.css";
+import createBackground from "../../images/createBackground.png";
 
 function CreateGroupForm() {
     const dispatch = useDispatch();
@@ -44,7 +45,10 @@ function CreateGroupForm() {
         if (!type) submitErrObj.typeMissing = "Type is required"
         if (groupImg.length === 0) submitErrObj.groupImgMissing = "Image URL is required"
         if (backgroundImg.length === 0) submitErrObj.backgroundImgNone = "Background Image Url is required"
-        if (backgroundImg.length !== 0 && !["jpeg", "png", "jpg"].includes(backgroundImg[backgroundImg.length - 1])) submitErrObj.backgroundImgInvalid = "Invalid Background Image Url, must end in .jpg, .jpeg, .png"
+
+        const backgroundImgUrl = backgroundImg.split(".");
+
+        if (backgroundImg.length !== 0 && !["jpeg", "png", "jpg"].includes(backgroundImgUrl[backgroundImgUrl.length - 1])) submitErrObj.backgroundImgInvalid = "Invalid Background Image Url, must end in .jpg, .jpeg, .png"
 
         const imgArr = groupImg.split(".");
 
@@ -79,7 +83,7 @@ function CreateGroupForm() {
 
 
     return (
-        <>
+        <div style={{ backgroundImage: `url(${createBackground})` }} className="rootMainForm">
             <section className="mainForm">
                 <p>BECOME AN ORGANIZER</p>
                 <h2>Start A New World!</h2>
@@ -98,7 +102,7 @@ function CreateGroupForm() {
                                 onChange={e => setCity(e.target.value)}
                             >
                             </input>
-                            <select className="input" value={state} onChange={e => setState(e.target.value)}>
+                            <select style={{ marginLeft: "10px", width: "30%" }} className="input" value={state} onChange={e => setState(e.target.value)}>
                                 <option value="" disabled>Select a State</option>
                                 {
                                     allStates.map((state, index) => (
@@ -117,6 +121,7 @@ function CreateGroupForm() {
                         <p>Choose a name that will give people a clear idea of what the World is about! Feel free to get creative! You can edit this later if you change your mind.</p>
                         <input
                             type="text"
+                            style={{ marginLeft: "10px" }}
                             className="input"
                             value={name}
                             placeholder="What's your World's name?"
@@ -136,7 +141,7 @@ function CreateGroupForm() {
                             <li>Who should join?</li>
                             <li>What will you do at your events?</li>
                         </ol>
-                        <textarea rows={"10"} cols={"30"} value={description} onChange={e => setDescription(e.target.value)} placeholder="Please write at least 30 characters">
+                        <textarea className="createDescText" rows={"10"} cols={"30"} value={description} onChange={e => setDescription(e.target.value)} placeholder="Please write at least 30 characters">
                         </textarea>
                     </div>
                     {showErrors ? (
@@ -147,7 +152,7 @@ function CreateGroupForm() {
                         <h2>Final Steps...</h2>
                         <div className="groupType">
                             <p>Is this an in person or online World?</p>
-                            <select className="input" value={type} onChange={e => setType(e.target.value)}>
+                            <select style={{ marginLeft: "10px" }} className="input" value={type} onChange={e => setType(e.target.value)}>
                                 <option value="" disabled>Select One</option>
                                 {
                                     ["Online", "In person"].map((type, index) => (
@@ -161,9 +166,9 @@ function CreateGroupForm() {
                             <p style={{ color: "red" }}> {errObj.typeMissing} </p>
                         ) : null}
 
-                        <div className="groupComp">
+                        <div>
                             <p>Is this World public or private?</p>
-                            <select className="input" value={priv ? "Private" : "Public"} onChange={e => {
+                            <select style={{ marginLeft: "10px" }} className="input" value={priv ? "Private" : "Public"} onChange={e => {
                                 e.target.value === "Private" ? setPriv(true) : setPriv(false);
                             }}>
                                 {
@@ -174,9 +179,10 @@ function CreateGroupForm() {
                             </select>
                         </div>
 
-                        <div className="groupComp">
+                        <div>
                             <p>Please add an image url for your World below:</p>
                             <input
+                                style={{ marginLeft: "10px" }}
                                 type="url"
                                 className="input"
                                 placeholder="Image Url"
@@ -190,9 +196,10 @@ function CreateGroupForm() {
                             <p style={{ color: "red" }}> {errObj.groupImgMissing} {" "} {errObj.invalidImg} </p>
                         ) : null}
 
-                        <div className="groupComp">
+                        <div>
                             <p>Please add an image url for the background of the page! It's recommended you choose an image from Cartoon Network Backgrounds!</p>
                             <input
+                                style={{ marginLeft: "10px" }}
                                 type="url"
                                 className="input"
                                 placeholder="Background Image Url"
@@ -206,13 +213,15 @@ function CreateGroupForm() {
                             <p style={{ color: 'red' }}>{errObj.backgroundImgNone} {" "} {errObj.backgroundImgInvalid}</p>
                         ) : null}
                     </div>
-                    <button className="cpuButton" type="submit"
-                    >
-                        Create World!
-                    </button>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <button className="cpuButton" type="submit"
+                        >
+                            Create World!
+                        </button>
+                    </div>
                 </form>
             </section>
-        </>
+        </div>
     )
 }
 

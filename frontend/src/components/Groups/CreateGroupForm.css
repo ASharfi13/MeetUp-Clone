@@ -1,12 +1,17 @@
 .mainForm {
     display: flex;
     flex-direction: column;
-    padding-left: 60px;
-    height: 1300px;
+    margin-left: 80px;
+    margin-right: 80px;
+    padding: 30px;
+    background-color: white;
+    border: 5px solid black;
+    margin-bottom: 40px;
 }
 
 .groupComp {
     border-top: 2px solid grey;
+    margin-bottom: 30px;
 }
 
 .form {
@@ -22,5 +27,27 @@
     font-weight: bold;
     color: white;
     background-color: black;
-    border-radius: 10px;
+}
+
+.cpuButton:hover {
+    box-shadow: -5px 5px #EB00B1;
+    color: gold;
+}
+
+.locationInput {
+    display: flex;
+    width: fit-content;
+    padding: 10px;
+    align-items: center;
+}
+
+.createDescText {
+    margin-left: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 40%;
+}
+
+.rootMainForm {
+    border-bottom: 40px solid black;
 }

@@ -4,15 +4,37 @@
     align-items: center;
 }
 
+.eventDetailsRoot {
+    border-bottom: 40px solid black;
+}
+
 .eventHeader {
     display: flex;
     flex-direction: column;
     width: 70%;
 }
 
+.eventName {
+    width: fit-content;
+    padding: 20px;
+    color: white;
+    background-color: black;
+    box-shadow: -26px -10px #FEE11A, 26px 15px #FF69DA;
+}
+
+.eventHostDetails {
+    width: fit-content;
+    padding: 10px;
+    color: #FEE11A;
+    background-color: black;
+    box-shadow: 10px 5px;
+}
+
 .eventCompImage {
     display: flex;
     border: 2px solid black;
+    box-shadow: -10px 5px black;
+
 }
 
 .MainEventContent {
@@ -24,19 +46,20 @@
     width: 80px;
     height: 80px;
     border: 2px solid black;
-    border-radius: 10px;
+    box-shadow: -5px 5px;
 }
 
 .eventGroupComp {
     display: flex;
     align-items: center;
     min-width: 405px;
-    background-color: lightgray;
-    border-radius: 10px;
+    background-color: white;
     min-height: 140px;
-    border: 2px solid grey;
+    border: 2px solid black;
     gap: 20px;
     margin-bottom: 10px;
+    box-shadow: -5px 5px black;
+
 }
 
 
@@ -78,20 +101,53 @@
     align-items: center;
     justify-content: space-around;
     height: 65%;
-    background-color: lightgray;
-    border: 2px solid grey;
-    border-radius: 10px;
+    background-color: white;
+    border: 2px solid black;
+    box-shadow: -5px 5px black;
 }
 
 .specificDetails {
     display: flex;
     align-items: center;
-    width: 90%;
+    width: 95%;
     gap: 20px;
+    color: black;
+    margin-bottom: 8px;
 }
 
 .groupDetails {
     display: flex;
     padding-left: 20px;
     gap: 15px;
+}
+
+.icons {
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 45%;
+    background-color: black;
+}
+
+.StartEnd {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.detailsEventBottom {
+    width: fit-content;
+    padding: 15px;
+    background-color: black;
+    color: white;
+    box-shadow: -10px 10px #FF69DA;
+}
+
+.detailsEventText {
+    border: 2px solid black;
+    padding: 20px;
+    background-color: white;
+    box-shadow: -10px 10px #FF69DA;
+    font-size: 20px;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 40px;
 }

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupComp } from "../../store/groups";
 import { fetchAllEvents, fetchCreateEvent } from "../../store/events";
 import "./CreateEventComponent.css";
+import createBackground from "../../images/createBackground.png"
 
 function CreateEventComponent() {
     const dispatch = useDispatch();
@@ -105,13 +106,13 @@ function CreateEventComponent() {
     }
 
     return (
-        <>
+        <div style={{ backgroundImage: `url(${createBackground})` }} className="createEventRoot">
             <section className="theWholeThing">
                 <h1>Create a New Event for {group.name}</h1>
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="eventComp">
                         <p>What is the name of your event?</p>
-                        <input type="text" placeholder="Event Name" value={name} onChange={e => setName(e.target.value)}>
+                        <input className="input" type="text" placeholder="Event Name" value={name} onChange={e => setName(e.target.value)}>
                         </input>
                         {showErrors ? (
                             <p style={{ color: "red" }}>{errObj.nameMissing} {' '} {errObj.nameLength}</p>
@@ -120,7 +121,7 @@ function CreateEventComponent() {
                     <div className="eventComp">
                         <div>
                             <p>It this an in-person or online event?</p>
-                            <select value={type} onChange={e => setType(e.target.value)}>
+                            <select className="input" value={type} onChange={e => setType(e.target.value)}>
                                 <option value='' disabled>Select One</option>
                                 {
                                     ["Online", "In person"].map((type, index) => (
@@ -134,7 +135,7 @@ function CreateEventComponent() {
                         </div>
                         <div>
                             <p>Is this event private or public?</p>
-                            <select value={isPrivate ? "Private" : "Public"} onChange={e => {
+                            <select className="input" value={isPrivate ? "Private" : "Public"} onChange={e => {
                                 e.target.value === "Private" ? setIsPrivate(true) : setIsPrivate(false);
                             }}>
                                 {
@@ -146,7 +147,7 @@ function CreateEventComponent() {
                         </div>
                         <div>
                             <p>What is the price of your Event?</p>
-                            {'$'} <input type="number" placeholder="0"
+                            {'$'} <input style={{ width: "20%" }} className="input" type="number" placeholder="0"
                                 value={price} onChange={e => setPrice(e.target.value)}></input>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.invalidPrice}</p>
@@ -154,7 +155,7 @@ function CreateEventComponent() {
                         </div>
                         <div>
                             <p>What{'\''}s the most amount of people you can host at this event?</p>
-                            <input type="number" placeholder="Enter Max Capacity"
+                            <input className="input" type="number" placeholder="Enter Max Capacity"
                                 value={capacity} onChange={e => setCapacity(e.target.value)}></input>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.capacityMissing}</p>
@@ -165,6 +166,7 @@ function CreateEventComponent() {
                         <div>
                             <p>What time does your event start?</p>
                             <input
+                                className="input"
                                 type="datetime-local"
                                 value={startDate}
                                 onChange={e => setStartDate(e.target.value)}
@@ -177,6 +179,7 @@ function CreateEventComponent() {
                         <div>
                             <p>What time does your event end?</p>
                             <input type="datetime-local"
+                                className="input"
                                 value={endDate}
                                 onChange={e => setEndDate(e.target.value)}
                             >
@@ -188,7 +191,7 @@ function CreateEventComponent() {
                     </div>
                     <div className="eventComp">
                         <p>Please add an image url for your Event</p>
-                        <input type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
+                        <input className="input" type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
                         {showErrors ? (
                             <p style={{ color: "red" }}>{errObj.invalidImg} {' '} {errObj.eventImgMissing}</p>
                         ) : null}
@@ -196,6 +199,8 @@ function CreateEventComponent() {
                     <div className="eventComp">
                         <p>Please describe your event</p>
                         <textarea
+                            style={{ width: "100%", height: "150px" }}
+                            className="input"
                             placeholder="Please include at least 30 characters" rows={"10"} cols={"30"}
                             value={description} onChange={e => setDescription(e.target.value)}>
                         </textarea>
@@ -207,39 +212,45 @@ function CreateEventComponent() {
                         <p>Please tell us where your Event is going to be located!</p>
                         <div>
                             <p>Address</p>
-                            <input type="text" value={address} onChange={e => setAddress(e.target.value)}></input>
+                            <input className="input" type="text" value={address} onChange={e => setAddress(e.target.value)}></input>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.addressMissing}</p>
                             ) : null}
                         </div>
                         <div>
                             <p>City, State</p>
-                            <input
-                                type="text"
-                                value={city}
-                                placeholder="City"
-                                onChange={e => setCity(e.target.value)}
-                            >
-                            </input>
-                            <select value={state} onChange={e => setState(e.target.value)}>
-                                <option value="" disabled>Select a State</option>
-                                {
-                                    allStates.map((state, index) => (
-                                        <option key={index} value={state}> {state} </option>
-                                    ))
-                                }
-                            </select>
+                            <div style={{ display: "flex" }}>
+                                <input
+                                    className="input"
+                                    style={{ width: "50%" }}
+                                    type="text"
+                                    value={city}
+                                    placeholder="City"
+                                    onChange={e => setCity(e.target.value)}
+                                >
+                                </input>
+                                <select style={{ width: "30%", marginLeft: "10px" }} className="input" value={state} onChange={e => setState(e.target.value)}>
+                                    <option value="" disabled>Select a State</option>
+                                    {
+                                        allStates.map((state, index) => (
+                                            <option key={index} value={state}> {state} </option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.cityMissing} {" "} {errObj.stateMissing}</p>
                             ) : null}
                         </div>
                     </div>
-                    <button style={{ height: "40px" }} className="upEventButton" type="submit">
-                        Create Event
-                    </button>
+                    <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
+                        <button className="upEventButton" type="submit">
+                            Create Event
+                        </button>
+                    </div>
                 </form>
             </section>
-        </>
+        </div>
     )
 }
 

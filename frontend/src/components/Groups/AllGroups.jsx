@@ -46,7 +46,7 @@ function AllGroups() {
                             <div className="GroupCompDetails">
                                 <h2> {group?.name}</h2>
                                 <p style={{ fontWeight: 'bold' }}> {group?.city}, {group.state}</p>
-                                <p style={{ lineHeight: '1.25' }}> {group?.about} </p>
+                                <p style={{ lineHeight: '1.25', fontSize: '14px' }}> {group?.about} </p>
                                 <h5> {group?.numEvents} Events • {group?.private ? "Private" : "Public"} </h5>
                             </div>
                         </div>

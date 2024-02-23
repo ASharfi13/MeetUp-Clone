@@ -1,6 +1,6 @@
 import "./LandingPage.css"
 import { Link } from "react-router-dom";
-import cartoon from "../../images/allCartoons.png"
+import cartoon from "../../images/landingImage.png"
 import avatar from "../../images/worldsLandingPic.png"
 import regularshow from "../../images/eventsLandingPic.png"
 import ben10 from "../../images/startWorldLandingPic.png"
@@ -31,7 +31,7 @@ function LandingPage() {
                     Welcome To The Cartoon Social Network! The Ultimate Cartoon Social Space where you can meet and share space with your favorite cartoon characters!
                 </h1>
                 <h1 className="landingImg">
-                    <img style={{ width: "350px", height: '350px' }} src={cartoon} alt="Cartoon Network Characters"></img>
+                    <img style={{ width: "450px", height: '350px' }} src={cartoon} alt="Cartoon Network Characters"></img>
                 </h1>
             </div>
             <div className="LandingHowItWorks">

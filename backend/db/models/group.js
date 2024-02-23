@@ -66,7 +66,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     backgroundImg: {
       type: DataTypes.STRING,
-      allowNull: false
     }
   }, {
     sequelize,

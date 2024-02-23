@@ -28,7 +28,7 @@ module.exports = {
         private: true,
         city: "The Regular Park",
         state: "CA",
-        backgroundImg: "https://cutewallpaper.org/22/regular-show-wallpapers/76896723.jpg"
+        backgroundImg: "https://i.pinimg.com/originals/d2/1d/34/d21d34159140d25f86ed3701827c7282.jpg"
       },
       {
         organizerId: 2,

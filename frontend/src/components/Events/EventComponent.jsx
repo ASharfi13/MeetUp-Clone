@@ -6,6 +6,7 @@ import { fetchGroupComp } from "../../store/groups";
 import { GoClockFill } from "react-icons/go";
 import { FaSackDollar } from "react-icons/fa6";
 import { FaMapPin } from "react-icons/fa";
+import eventDetailsBackground from "../../images/backgrounds/landingPageBackPick.png"
 
 
 
@@ -45,12 +46,12 @@ function EventComponent() {
     }
 
     return (
-        <>
+        <div style={{ backgroundImage: `url(${eventDetailsBackground})` }} className="eventDetailsRoot">
             <div className="eventRoot">
                 <div className="eventHeader">
                     <p> {`<`} <Link className="eventBread" to="/events">Events</Link></p>
-                    <h1> {event.name} </h1>
-                    <p>Hosted by {!group.Organizer ? null : group.Organizer.firstName} {!group.Organizer ? null : group.Organizer.lastName}</p>
+                    <h1 className="eventName"> {event.name} </h1>
+                    <p className="eventHostDetails">Hosted by {!group.Organizer ? null : group.Organizer.firstName} {!group.Organizer ? null : group.Organizer.lastName}</p>
                 </div>
                 <section className="MainEventContent">
                     <img style={{ maxHeight: '1000px', maxWidth: '580px', minWidth: '580px', marginRight: '10px' }} className="eventCompImage" src={!event.EventImages ? null : event.EventImages[0].url} />
@@ -59,30 +60,30 @@ function EventComponent() {
                             <div className="groupDetails">
                                 <img className="groupEventCompEvent" src={!group.GroupImages ? null : group.GroupImages[0].url} />
                                 <div>
-                                    <p> {group.name} </p>
-                                    <p> {group.private ? "Private" : "Public"} </p>
+                                    <p style={{ fontWeight: 'bold' }}> {group.name} </p>
+                                    <p style={{ fontStyle: "italic", fontSize: "20px" }}> {group.private ? "Private" : "Public"} </p>
                                 </div>
                             </div>
                         </div>
                         <div className="eventTimeComp">
                             <div className="specificDetails">
-                                <GoClockFill size={40} />
+                                <GoClockFill color="#0080FF" size={40} className="icons" />
                                 <div className="eventStartEndDates">
-                                    <p>START <span>{event.startDate ? event.startDate.split('T')[0] : null} • {event.startDate ? new Date(event.startDate).toLocaleTimeString("en-US", {
+                                    <p> <span className="StartEnd">START</span> <span>{event.startDate ? event.startDate.split('T')[0] : null} • {event.startDate ? new Date(event.startDate).toLocaleTimeString("en-US", {
                                         hour: 'numeric', minute: 'numeric', hour12: true
                                     }) : null}</span></p>
-                                    <p>END <span>{event.endDate ? event.endDate.split('T')[0] : null} • {event.endDate ? new Date(event.endDate).toLocaleTimeString('en-US', {
+                                    <p> <span className="StartEnd">END</span> <span>{event.endDate ? event.endDate.split('T')[0] : null} • {event.endDate ? new Date(event.endDate).toLocaleTimeString('en-US', {
                                         hour: 'numeric', minute: 'numeric', hour12: true
                                     }) : null}</span></p>
                                 </div>
                             </div>
                             <div className="specificDetails">
-                                <FaSackDollar size={40} />
-                                <p>{event.price === 0 ? "FREE" : event.price}</p>
+                                <FaSackDollar color="#FF007F" size={40} className="icons" />
+                                <p style={{ fontSize: "30px", fontStyle: "italic" }}>{event.price === 0 ? "FREE" : `$${event.price}`}</p>
                             </div>
                             <div className="specificDetails">
-                                <FaMapPin size={40} />
-                                <p>{event.type}</p>
+                                <FaMapPin color="#FEE118" size={40} className="icons" />
+                                <p style={{ fontSize: "20px" }}>{event.type}</p>
                                 {permission && user ? (<p className="certifiedButtons"> <button className="eventButton" onClick={() => navigate(`/events/${eventId}/edit`)}>Update</button>  <button className="eventButton" onClick={() => {
                                     if (window.confirm('Are you sure you want to delete this event?')) {
                                         handleDeleteEvent();
@@ -93,13 +94,13 @@ function EventComponent() {
                     </div>
                 </section>
                 <section className="eventDetails">
-                    <h3>Details</h3>
-                    <p>
+                    <h2 className="detailsEventBottom">Details</h2>
+                    <p className="detailsEventText">
                         {event.description}
                     </p>
                 </section>
             </div>
-        </>
+        </div>
     )
 }
 

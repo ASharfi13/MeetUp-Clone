@@ -45,7 +45,6 @@ module.exports = {
       },
       backgroundImg: {
         type: Sequelize.STRING,
-        allowNull: false
       },
       createdAt: {
         allowNull: false,

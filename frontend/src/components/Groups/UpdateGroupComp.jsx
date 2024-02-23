@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchGroupComp, fetchUpdateGroupDetails } from "../../store/groups";
 import "./UpdateGroupComp.css";
+import updateBackgroundImg from "../../images/backgrounds/landingPageBackPick.png"
 
 function UpdateGroupComp() {
     const dispatch = useDispatch();
@@ -15,6 +16,9 @@ function UpdateGroupComp() {
     const prevDescription = localStorage.getItem('description') || group.about || "";
     const prevType = localStorage.getItem('type') || group.type;
     const prevPrivate = localStorage.getItem('isPrivate') || group.private
+    const prevBackgroundImg = localStorage.getItem("backgroundImg") || group.backgroundImg;
+
+    console.log(prevBackgroundImg);
 
     const allStates = [
         "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE",
@@ -34,6 +38,7 @@ function UpdateGroupComp() {
     const [type, setType] = useState(prevType);
     const [isPrivate, setIsPrivate] = useState(prevPrivate);
     const [addImg, setAddImg] = useState('');
+    const [backgroundImg, setBackgroundImg] = useState(prevBackgroundImg);
     const [showErrors, setShowErrors] = useState(false);
     const [errObj, setErrObj] = useState({});
 
@@ -44,7 +49,8 @@ function UpdateGroupComp() {
         localStorage.setItem("description", description);
         localStorage.setItem("type", type);
         localStorage.setItem("isPrivate", isPrivate);
-    }, [city, state, name, description, type, isPrivate])
+        localStorage.setItem("backgroundImg", backgroundImg);
+    }, [city, state, name, description, type, isPrivate, backgroundImg])
 
     //////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,8 +68,12 @@ function UpdateGroupComp() {
 
         if (addImg.length !== 0 && !["jpeg", "png", "jpg"].includes(imgArr[imgArr.length - 1])) submitErrObj.invalidImg = "Invalid Image Url, must end in .jpg, .jpeng, .png"
 
+        const backgroundImgUrl = backgroundImg.split(".");
+
+        if (!["jpeg", "png", "jpg"].includes(backgroundImgUrl[backgroundImgUrl.length - 1])) submitErrObj.backgroundImgInvalid = "Invalid Background Image Url, must end in .jpg, .jpeg, .png"
+
         setErrObj(submitErrObj);
-    }, [name, city, state, description, type, addImg])
+    }, [name, city, state, description, type, addImg, backgroundImg])
 
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)))
@@ -79,6 +89,7 @@ function UpdateGroupComp() {
             isPrivate: JSON.parse(isPrivate),
             city,
             state,
+            backgroundImg
         }
 
         if (Object.values(errObj).length === 0) {
@@ -91,7 +102,7 @@ function UpdateGroupComp() {
     }
 
     return (
-        <>
+        <div style={{ backgroundImage: `url(${updateBackgroundImg})`, borderBottom: "40px solid black" }}>
             <section className="mainForm">
                 <p>UPDATE YOUR WORLD{'\''}S INFORMATION</p>
                 <h1>We{'\''}ll walk you through a few steps to update your World{'\''}s information</h1>
@@ -100,13 +111,14 @@ function UpdateGroupComp() {
                         <h1>First, set your world{'\''}s location</h1>
                         <p>Worlds meet locally, in-person and online. We{'\''}ll connect you with people in your area, and more can join you online.</p>
                         <input
+                            className="input"
                             type="text"
                             value={city}
                             placeholder="City"
                             onChange={e => setCity(e.target.value)}
                         >
                         </input>
-                        <select value={state} onChange={e => setState(e.target.value)}>
+                        <select style={{ width: "10%", marginLeft: "10px" }} className="input" value={state} onChange={e => setState(e.target.value)}>
                             <option value="" disabled>Select a State</option>
                             {
                                 allStates.map((state, index) => (
@@ -122,6 +134,7 @@ function UpdateGroupComp() {
                         <h1>What is the name of your World?</h1>
                         <p>Choose a name that will give people a clear idea of what the World is about. Feel free to get creative!</p>
                         <input
+                            className="input"
                             type="text"
                             value={name}
                             placeholder="What's your group's name?"
@@ -150,7 +163,7 @@ function UpdateGroupComp() {
                         <h2>Final Steps...</h2>
                         <div className="groupType">
                             <p>Is this an in person or online World?</p>
-                            <select value={type} onChange={e => setType(e.target.value)}>
+                            <select className="input" value={type} onChange={e => setType(e.target.value)}>
                                 <option value="" disabled>Select One</option>
                                 {
                                     ["Online", "In person"].map((type, index) => (
@@ -165,7 +178,7 @@ function UpdateGroupComp() {
 
                         <div className="groupPrivate">
                             <p>Is this World public or private?</p>
-                            <select value={isPrivate ? "Private" : "Public"} onChange={e => {
+                            <select className="input" value={isPrivate ? "Private" : "Public"} onChange={e => {
                                 setIsPrivate(e.target.value === "Private")
                             }}>
                                 <option value='' disabled>Select One</option>
@@ -179,6 +192,7 @@ function UpdateGroupComp() {
                         <div className="groupImgUrl">
                             <p>Please add an image url for your World below:</p>
                             <input
+                                className="input"
                                 type="url"
                                 placeholder="Image Url"
                                 value={addImg}
@@ -189,11 +203,27 @@ function UpdateGroupComp() {
                                 <p style={{ color: "red" }}> {errObj.invalidImg} </p>
                             ) : null}
                         </div>
+                        <div>
+                            <p>Change the background Image with a new Image Url!</p>
+                            <input
+                                className="input"
+                                type="url"
+                                placeholder="Background Image Url"
+                                value={backgroundImg}
+                                onChange={e => setBackgroundImg(e.target.value)}
+                            >
+                            </input>
+                            {showErrors ? (
+                                <p style={{ color: "red" }}>{errObj.backgroundImgInvalid}</p>
+                            ) : null}
+                        </div>
                     </div>
-                    <button className="cpuButton" type="submit">Update</button>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <button className="cpuButton" type="submit">Update</button>
+                    </div>
                 </form>
             </section>
-        </>
+        </div>
     )
 }
 

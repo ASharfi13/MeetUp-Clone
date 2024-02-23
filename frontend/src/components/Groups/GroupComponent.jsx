@@ -64,12 +64,17 @@ function GroupComponent() {
     return (
         <>
             <main>
-                <div className="EntireUpperHalf">
+                <div style={{
+                    backgroundImage: `url(${backgroundImgUrl})`,
+                    backgroundSize: "cover",
+                    width: "100%",
+                    height: "100%"
+                }} className="EntireUpperHalf">
                     <Link className="breadLink" to='/groups'>{`<`}Worlds</Link>
                     <section className="UpperMain">
                         <img className="groupImg" src={url} />
                         <section className="GroupDetails">
-                            <div>
+                            <div className="GroupDetailsButtons">
                                 <div className="innerGDetails">
                                     <h4> {group.name} </h4>
                                     <p> {group.city}, {group.state} </p>

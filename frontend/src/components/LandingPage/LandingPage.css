@@ -1,5 +1,5 @@
 .landRoot {
-    background-image: url('../../images/backgrounds/landingPageBackPick.png');
+    background-image: url('../../images/backgrounds/altLandingPageBack.png');
 }
 
 .button {
@@ -45,10 +45,9 @@
     align-items: center;
     color: black;
     background-color: white;
-    width: 100%;
-    border-top: 10px solid black;
-    border-bottom: 10px solid black;
+    width: 99%;
     margin-bottom: 30px;
+    border: 10px solid black;
 }
 
 .HowitWorksElements {
@@ -78,8 +77,8 @@
 .landingImg {
     display: flex;
     justify-content: space-around;
-    border: 1px solid black;
-    box-shadow: -26px -10px black, 26px 15px #FF69DA;
+    border: 5px solid #61B8FF;
+    box-shadow: -26px -10px #FF69DA, 26px 15px black;
 }
 
 .landingText {
@@ -102,8 +101,8 @@
     display: flex;
     height: 300px;
     width: 300px;
-    border: 2px solid black;
-    box-shadow: -10px 10px black, 15px -10px black;
+    border: 10px solid black;
+    box-shadow: -10px 10px #61B8FF, 15px -10px #FF69DA;
     background: linear-gradient(to right, #ff0134, #b2bdf5);
 
 }
@@ -112,8 +111,8 @@
     display: flex;
     height: 300px;
     width: 300px;
-    border: 2px solid black;
-    box-shadow: -10px 10px black, 15px -10px black;
+    border: 10px solid black;
+    box-shadow: -10px 10px #FF69DA, 15px -10px #61B8FF;
     background: radial-gradient(rgb(255, 0, 0), #6af8c9 20%, rgb(0, 127, 38));
 }
 
@@ -121,8 +120,8 @@
     display: flex;
     height: 300px;
     width: 300px;
-    border: 2px solid black;
-    box-shadow: -10px 10px black, 15px -10px black;
+    border: 10px solid black;
+    box-shadow: -10px 10px #61B8FF, 15px -10px #FF69DA;
     background: radial-gradient(circle farthest-side, #fceabb, #f8b500);
 }
 
@@ -130,16 +129,15 @@
     display: flex;
     font-size: 30px;
     text-decoration: none;
-    color: black;
-    background-color: white;
-    margin-top: 60px;
+    color: white;
+    background-color: black;
+    margin-top: 40px;
     padding: 15px;
-    box-shadow: -7px -12px black, 10px 12px black;
-
+    line-height: 1.25;
 }
 
 .linkText:hover {
-    color: red;
+    color: limegreen;
 }
 
 .linkDescription {
@@ -148,7 +146,5 @@
     padding: 10px;
     width: 300px;
     font-size: 18px;
-    font-weight: 250;
     background-color: white;
-    border-radius: 15px;
 }
