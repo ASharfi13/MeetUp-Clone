@@ -36,6 +36,12 @@ function GroupComponent() {
         Organizer.lastName = group.Organizer.lastName
     )
 
+    let backgroundImgUrl;
+
+    group.backgroundImg ? backgroundImgUrl = group.backgroundImg : null;
+
+    console.log(backgroundImgUrl);
+
 
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
