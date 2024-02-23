@@ -197,7 +197,7 @@ function CreateGroupForm() {
                         ) : null}
 
                         <div>
-                            <p>Please add an image url for the background of the page! It's recommended you choose an image from Cartoon Network Backgrounds!</p>
+                            <p>Please add an image url for the background of the page! It{'\''}s recommended you choose an image from Cartoon Network Backgrounds!</p>
                             <input
                                 style={{ marginLeft: "10px" }}
                                 type="url"
