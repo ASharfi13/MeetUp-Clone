@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "express-validator": "^7.0.1"
+    "express-validator": "^7.0.1",
+    "react-icons": "^5.0.1"
   },
   "name": "meetup-clone",
   "description": "<!--!!START SILENT --> # Ahmed Meetup Clone <!--!!END --> <!--!!ADD --> <!-- # `<name of application here>` --> <!--!!END_ADD -->",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "install": "npm --prefix backend install backend",
     "dev:backend": "npm install --prefix backend start",

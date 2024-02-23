@@ -1,11 +1,17 @@
 .GroupComponent {
     display: flex;
     flex-direction: column;
-    border-top: 2px solid black;
+    border: 2px solid black;
     width: 60%;
     cursor: pointer;
     margin: 20px;
     padding: 40px;
+    background-color: white;
+    box-shadow: -26px 15px #FF69DA;
+}
+
+.GroupComponent:hover {
+    box-shadow: -26px 15px #FEE11A;
 }
 
 .GroupHeaderLinks {
@@ -31,4 +37,18 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
+}
+
+.GroupCompImg {
+    border: 2px solid black;
+    max-width: 500px;
+    min-width: 550px;
+}
+
+.GroupImgDetails {
+    display: flex;
+}
+
+.GroupCompDetails {
+    margin-left: 20px;
 }

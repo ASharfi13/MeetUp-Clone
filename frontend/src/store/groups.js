@@ -7,6 +7,7 @@ export const CREATE_ADD_GROUP = '/groups/CREATE_ADD_GROUP';
 export const CREATE_ADD_GROUPIMAGE = '/groups/CREATE_ADD_GROUPIMAGE';
 export const UPDATE_GROUP_DETAILS = '/groups/UPDATE_GROUP_DETAILS';
 export const DELETE_GROUP = '/groups/DELETE_GROUP';
+export const CLEAR_GROUP_EVENTS = '/groups/CLEAR_GROUP_EVENTS';
 
 
 //Action Creators
@@ -60,6 +61,13 @@ export const deleteGroup = (groupId) => {
     }
 }
 
+export const clearGroupEvents = (events) => {
+    return {
+        type: CLEAR_GROUP_EVENTS,
+        payload: events
+    }
+}
+
 
 //Action Thunks
 
@@ -95,8 +103,6 @@ export const fetchGroupEvents = (groupId) => async (dispatch) => {
 
         dispatch(loadGroupEvents(events));
         return events;
-    } else {
-        dispatch(loadGroupEvents({ Events: {} }))
     }
 }
 
@@ -215,6 +221,9 @@ const groupReducer = (state = initialState, action) => {
             newState = { ...state };
             delete newState.allGroups[action.groupId];
             return newState;
+        }
+        case CLEAR_GROUP_EVENTS: {
+            return newState = { ...state, currGroupEvents: { ...action.payload } };
         }
         default:
             return state;

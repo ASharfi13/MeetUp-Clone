@@ -23,30 +23,32 @@ function AllEvents() {
                 const url = `/events/${event?.id}`
                 navigate(url)
             }}>
-                <div className="EventComponent" key={event?.id} onClick={() => {
-                    const url = `/events/${event?.id}`
-                    navigate(url)
-                }}>
-                    <img className="EventImg" src={event?.previewImage} />
-                    <div className="EventDetails">
-                        <p> {eventDate.toLocaleDateString()} • {eventDate.toLocaleTimeString("en-US", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            hour12: true
-                        })} </p>
-                        <h3> {event?.name}</h3>
-                        <p> {event?.Venue?.city}, {event?.Venue?.state} </p>
+                <div className="EventWholeComponent">
+                    <div className="EventComponent" key={event?.id} onClick={() => {
+                        const url = `/events/${event?.id}`
+                        navigate(url)
+                    }}>
+                        <img className="EventImg" src={event?.previewImage} />
+                        <div className="EventDetails">
+                            <p> {eventDate.toLocaleDateString()} • {eventDate.toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true
+                            })} </p>
+                            <h2> {event?.name}</h2>
+                            <p> {event?.Venue?.city}, {event?.Venue?.state} </p>
+                        </div>
                     </div>
-                </div>
-                <div className="EventDescription">
-                    <p>{event?.description}</p>
+                    <div className="EventDescription">
+                        <p>{event?.description}</p>
+                    </div>
                 </div>
             </div>
         )
     })
 
     return (
-        <>
+        <div className="allEventsRoot">
             <section className="EventHeader">
                 <div className="EventHeaderLinks">
                     <NavLink to="/groups" style={({ isActive }) => ({
@@ -58,12 +60,14 @@ function AllEvents() {
                         textDecoration: isActive ? "underline" : "none"
                     })}>Events</NavLink>
                 </div>
-                <div className="EventHeaderCaption">
-                    <p> <span style={{ fontWeight: "bold" }}>Events</span> at The Cartoon Social Network</p>
-                </div>
             </section>
+            <div className="EventHeaderCaption">
+                <p className="EventHeaderCaptionText"> <span style={{ fontWeight: "bold" }}>Events</span> at The Cartoon Social Network</p>
+            </div>
             {eventCompInfo}
-        </>
+            <div className="LandButton">
+            </div>
+        </div>
     )
 }
 

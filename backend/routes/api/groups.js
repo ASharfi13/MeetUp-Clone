@@ -207,7 +207,7 @@ router.get('/:groupId', async (req, res) => {
 //Create a new Group
 
 router.post("/", requireAuth, async (req, res) => {
-    let { name, about, type, isPrivate, city, state, previewImg } = req.body;
+    let { name, about, type, isPrivate, city, state, previewImg, backgroundImg } = req.body;
     const user = req.user;
 
     //Body Validations
@@ -247,6 +247,14 @@ router.post("/", requireAuth, async (req, res) => {
     if (!state || state.length === 0) {
         errObj.errors.state = "State is required";
         errCount++;
+    }
+
+    if (!backgroundImg) {
+        errObj.errors.backgroundImgNone = "Background Img Url is required"
+    }
+
+    if (!["jpeg", "png", "jpg"].includes(backgroundImg[backgroundImg.length - 1])) {
+        errObj.errors.backgroundImgInvalid = "Background Img Url is Invalid"
     }
 
     if (errCount > 0) return res.status(400).json(errObj)
@@ -314,7 +322,7 @@ router.put("/:groupId", requireAuth, async (req, res) => {
     const user = req.user;
     const { groupId } = req.params
     const targetGroup = await Group.findByPk(groupId);
-    let { name, about, type, isPrivate, city, state } = req.body
+    let { name, about, type, isPrivate, city, state, backgroundImg } = req.body
 
     if (!targetGroup) return res.status(404).json({
         message: "Group couldn't be found"
@@ -364,6 +372,14 @@ router.put("/:groupId", requireAuth, async (req, res) => {
     if (state.length === 0) {
         errObj.errors.state = "State is required";
         errCount++;
+    }
+
+    if (!backgroundImg) {
+        errObj.errors.backgroundImgNone = "Background Img Url is required"
+    }
+
+    if (!["jpeg", "png", "jpg"].includes(backgroundImg[backgroundImg.length - 1])) {
+        errObj.errors.backgroundImgInvalid = "Background Img Url is Invalid"
     }
 
     if (errCount > 0) return res.status(400).json(errObj)

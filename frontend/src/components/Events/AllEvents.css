@@ -1,11 +1,18 @@
+.allEventsRoot {
+    background-image: url('../../images/eventWorldBackground.png');
+}
+
+.EventHeader {
+    height: 140px;
+    padding-top: 40px;
+}
+
 .EventComponent {
     display: flex;
-    width: 60%;
+    width: 90%;
     cursor: pointer;
     align-items: center;
     justify-content: space-between;
-    border-top: 2px solid black;
-    margin: 20px;
     padding: 40px;
 }
 
@@ -13,18 +20,29 @@
     display: flex;
     height: 80px;
     font-size: 40px;
-    width: 40%;
-    justify-content: space-evenly;
+    width: 30%;
+    justify-content: space-around;
     align-items: center;
+    margin-left: 260px;
+    background-color: white;
+    box-shadow: -26px -10px #FEE11A, 26px 15px #FF69DA;
+    border: 2px solid black;
 }
 
 .EventHeaderCaption {
     display: flex;
-    height: 80px;
+    height: 140px;
     font-size: 40px;
     width: 100%;
     justify-content: center;
     align-items: center;
+}
+
+.EventHeaderCaptionText {
+    padding: 25px;
+    background-color: white;
+    box-shadow: -26px -10px #FEE11A, 26px 15px #FF69DA;
+    border: 2px solid black;
 }
 
 .EventComponentSection {
@@ -32,20 +50,22 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
+    margin-top: 40px;
 }
 
 .EventImg {
     display: flex;
-    width: 500px;
+    min-width: 480px;
+    max-width: 480px;
     border: 2px solid black;
 }
 
 .EventDetails {
     display: flex;
     flex-direction: column;
-    height: 250px;
-    width: 38%;
-    padding-left: 10px;
+    height: 100%;
+    width: 100%;
+    margin-left: 20px;
 }
 
 .EventComponentSection {
@@ -57,5 +77,21 @@
 
 .EventDescription {
     display: flex;
-    width: 60%;
+    width: 90%;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.EventWholeComponent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid black;
+    width: 50%;
+    background-color: white;
+    box-shadow: -26px 15px #FF69DA;
+}
+
+.EventWholeComponent:hover {
+    box-shadow: -26px 15px #FEE11A;
 }

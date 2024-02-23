@@ -27,7 +27,8 @@ module.exports = {
         type: "In person",
         private: true,
         city: "The Regular Park",
-        state: "CA"
+        state: "CA",
+        backgroundImg: "https://cutewallpaper.org/22/regular-show-wallpapers/76896723.jpg"
       },
       {
         organizerId: 2,
@@ -36,7 +37,8 @@ module.exports = {
         type: "Online",
         private: false,
         city: "Mac's Imagination",
-        state: "IL"
+        state: "IL",
+        backgroundImg: "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd6fe3b9d-f0d7-46cc-98c9-b53bbdb52f49_4071x2351.png"
       },
       {
         organizerId: 3,
@@ -45,7 +47,8 @@ module.exports = {
         type: "Online",
         private: true,
         city: "Dex\'s House",
-        state: "AL"
+        state: "AL",
+        backgroundImg: "https://cn.i.cdn.ti-platform.com/content/1123/showpage/dexter%27s-laboratory/ae/dexterslab-backgroundbottom.jpg"
       },
       {
         organizerId: 1,
@@ -54,7 +57,8 @@ module.exports = {
         type: 'Online',
         private: false,
         city: "Aku City",
-        state: 'AK'
+        state: 'AK',
+        backgroundImg: "https://pbs.twimg.com/media/CtcVxYDXYAEcUPP.jpg"
       },
       {
         organizerId: 2,
@@ -63,7 +67,8 @@ module.exports = {
         type: 'In person',
         private: false,
         city: 'EndsVille',
-        state: 'TX'
+        state: 'TX',
+        backgroundImg: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cdad7155817045.56099addbc356.jpg"
       },
       {
         organizerId: 3,
@@ -72,7 +77,8 @@ module.exports = {
         type: 'In person',
         private: true,
         city: "Peach Creak",
-        state: 'NY'
+        state: 'NY',
+        backgroundImg: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/9c9443e8-f672-4253-80de-cb3e826a1f9a/d5h3kvz-84a81649-dc1a-4d91-a466-6e5191105ceb.png"
       }
     ])
   },

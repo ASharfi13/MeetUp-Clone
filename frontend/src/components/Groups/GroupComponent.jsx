@@ -1,7 +1,7 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchDeleteGroup, fetchGroupComp, fetchGroupEvents } from "../../store/groups";
+import { fetchDeleteGroup, fetchGroupComp } from "../../store/groups";
 import GroupEventDetails from "./GroupEventDetails";
 import "./GroupComponent.css";
 
@@ -39,7 +39,6 @@ function GroupComponent() {
 
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
-        dispatch(fetchGroupEvents(Number(groupId)));
         if (user?.id && group.organizerId) setPermission(Number(user.id) === Number(group.organizerId))
     }, [dispatch, groupId, user?.id, group.organizerId, setPermission])
 
@@ -52,6 +51,8 @@ function GroupComponent() {
     }
 
     console.log("GroupEvents", groupEvents);
+
+    console.log("Group", group)
 
 
     return (

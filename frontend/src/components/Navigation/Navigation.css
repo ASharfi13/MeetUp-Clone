@@ -14,9 +14,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid black;
   height: 120px;
   background-color: black;
+  width: 100%;
 }
 
 .navLogo {

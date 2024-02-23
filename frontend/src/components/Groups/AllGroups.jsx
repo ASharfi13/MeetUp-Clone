@@ -18,9 +18,9 @@ function AllGroups() {
     console.log(groups);
 
     return (
-        <>
-            <section className="GroupHeader">
-                <div className="GroupHeaderLinks">
+        <div className="allEventsRoot">
+            <section className="EventHeader">
+                <div className="EventHeaderLinks">
                     <NavLink to="/groups" style={({ isActive }) => ({
                         color: isActive ? "teal" : "grey",
                         textDecoration: isActive ? "underline" : "none"
@@ -30,26 +30,32 @@ function AllGroups() {
                         textDecoration: isActive ? "underline" : "none"
                     })}>Events</NavLink>
                 </div>
-                <div className="GroupHeaderCaption">
-                    <p> <span style={{ fontWeight: 'bold' }}>Worlds</span> at The Cartoon Social Network</p>
-                </div>
             </section>
 
             <section className="groupComponentSection">
+                <div className="EventHeaderCaption">
+                    <p className="EventHeaderCaptionText"> <span style={{ fontWeight: 'bold' }}>Worlds</span> at The Cartoon Social Network</p>
+                </div>
                 {groups?.map((group) => (
                     <div className="GroupComponent" key={group?.id} onClick={() => {
                         const url = `/groups/${group?.id}`
                         navigate(url)
                     }}>
-                        <img src={group?.previewImage} />
-                        <h3> {group?.name}</h3>
-                        <p> {group?.city}, {group.state}</p>
-                        <p> {group?.about} </p>
-                        <h5> {group?.numEvents} Events • {group?.private ? "Private" : "Public"} </h5>
+                        <div className="GroupImgDetails">
+                            <img className="GroupCompImg" src={group?.previewImage} />
+                            <div className="GroupCompDetails">
+                                <h2> {group?.name}</h2>
+                                <p style={{ fontWeight: 'bold' }}> {group?.city}, {group.state}</p>
+                                <p style={{ lineHeight: '1.25' }}> {group?.about} </p>
+                                <h5> {group?.numEvents} Events • {group?.private ? "Private" : "Public"} </h5>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </section>
-        </>
+            <div className="LandButton">
+            </div>
+        </div>
     )
 }
 

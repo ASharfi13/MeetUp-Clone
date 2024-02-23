@@ -63,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    backgroundImg: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,

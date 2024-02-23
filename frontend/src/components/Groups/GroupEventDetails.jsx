@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./GroupEventDetails.css";
 import { useEffect } from "react";
-import { fetchGroupEvents } from "../../store/groups";
+import { fetchGroupEvents, clearGroupEvents } from "../../store/groups";
 
 function GroupEventDetails() {
     const navigate = useNavigate();
@@ -12,6 +12,10 @@ function GroupEventDetails() {
 
     useEffect(() => {
         dispatch(fetchGroupEvents(Number(groupId)))
+
+        return () => {
+            dispatch(clearGroupEvents({}));
+        }
     }, [dispatch, groupId])
 
     //////////

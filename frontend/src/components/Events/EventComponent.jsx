@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllEvents, fetchEvent, fetchDeleteEvent } from "../../store/events";
 import { fetchGroupComp } from "../../store/groups";
+import { GoClockFill } from "react-icons/go";
+import { FaSackDollar } from "react-icons/fa6";
+import { FaMapPin } from "react-icons/fa";
+
+
+
 import "./EventComponent.css";
 
 function EventComponent() {
@@ -60,7 +66,7 @@ function EventComponent() {
                         </div>
                         <div className="eventTimeComp">
                             <div className="specificDetails">
-                                <i className="fa-solid fa-clock fa-2x"></i>
+                                <GoClockFill size={40} />
                                 <div className="eventStartEndDates">
                                     <p>START <span>{event.startDate ? event.startDate.split('T')[0] : null} • {event.startDate ? new Date(event.startDate).toLocaleTimeString("en-US", {
                                         hour: 'numeric', minute: 'numeric', hour12: true
@@ -71,11 +77,11 @@ function EventComponent() {
                                 </div>
                             </div>
                             <div className="specificDetails">
-                                <i className="fa-solid fa-dollar-sign fa-2x"></i>
+                                <FaSackDollar size={40} />
                                 <p>{event.price === 0 ? "FREE" : event.price}</p>
                             </div>
                             <div className="specificDetails">
-                                <i className="fa-solid fa-map-pin fa-2x"></i>
+                                <FaMapPin size={40} />
                                 <p>{event.type}</p>
                                 {permission && user ? (<p className="certifiedButtons"> <button className="eventButton" onClick={() => navigate(`/events/${eventId}/edit`)}>Update</button>  <button className="eventButton" onClick={() => {
                                     if (window.confirm('Are you sure you want to delete this event?')) {

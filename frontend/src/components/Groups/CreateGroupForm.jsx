@@ -16,6 +16,7 @@ function CreateGroupForm() {
     const [type, setType] = useState('');
     const [priv, setPriv] = useState(false);
     const [groupImg, setGroupImg] = useState('');
+    const [backgroundImg, setBackgroundImg] = useState("");
     const [errObj, setErrObj] = useState({});
     const [showErrors, setShowErrors] = useState(false);
 
@@ -42,13 +43,15 @@ function CreateGroupForm() {
         if (description.length === 0) submitErrObj.descriptionMissing = "Description is required"
         if (!type) submitErrObj.typeMissing = "Type is required"
         if (groupImg.length === 0) submitErrObj.groupImgMissing = "Image URL is required"
+        if (backgroundImg.length === 0) submitErrObj.backgroundImgNone = "Background Image Url is required"
+        if (backgroundImg.length !== 0 && !["jpeg", "png", "jpg"].includes(backgroundImg[backgroundImg.length - 1])) submitErrObj.backgroundImgInvalid = "Invalid Background Image Url, must end in .jpg, .jpeg, .png"
 
         const imgArr = groupImg.split(".");
 
-        if (groupImg.length !== 0 && !["jpeg", "png", "jpg"].includes(imgArr[imgArr.length - 1])) submitErrObj.invalidImg = "Invalid Image Url, must end in .jpg, .jpeng, .png"
+        if (groupImg.length !== 0 && !["jpeg", "png", "jpg"].includes(imgArr[imgArr.length - 1])) submitErrObj.invalidImg = "Invalid Image Url, must end in .jpg, .jpeg, .png"
 
         setErrObj(submitErrObj);
-    }, [name, city, state, description, type, groupImg])
+    }, [name, city, state, description, type, groupImg, backgroundImg])
 
 
     const handleSubmit = (event) => {
@@ -61,7 +64,8 @@ function CreateGroupForm() {
             isPrivate: priv,
             city,
             state,
-            previewImg: groupImg
+            previewImg: groupImg,
+            backgroundImg
         }
 
         if (Object.values(errObj).length === 0) {
@@ -184,6 +188,22 @@ function CreateGroupForm() {
 
                         {showErrors ? (
                             <p style={{ color: "red" }}> {errObj.groupImgMissing} {" "} {errObj.invalidImg} </p>
+                        ) : null}
+
+                        <div className="groupComp">
+                            <p>Please add an image url for the background of the page! It's recommended you choose an image from Cartoon Network Backgrounds!</p>
+                            <input
+                                type="url"
+                                className="input"
+                                placeholder="Background Image Url"
+                                value={backgroundImg}
+                                onChange={e => setBackgroundImg(e.target.value)}
+                            >
+                            </input>
+                        </div>
+
+                        {showErrors ? (
+                            <p style={{ color: 'red' }}>{errObj.backgroundImgNone} {" "} {errObj.backgroundImgInvalid}</p>
                         ) : null}
                     </div>
                     <button className="cpuButton" type="submit"
