@@ -56,13 +56,14 @@
   display: inline-block;
   height: 90px;
   width: 170px;
-  border-radius: 35px;
   color: black;
-  background-color: white;
+  background-color: #62B8FF;
+  border: 2px solid black;
+  border-radius: 5px;
 }
 
 .modalButton:hover {
-  background-color: lightgreen;
+  background-color: #FC69DA;
 }
 
 .modalText {
@@ -71,6 +72,7 @@
   justify-content: center;
   font-size: 25px;
   font-style: italic;
+  color: whitesmoke;
 }
 
 .pfpLogo {

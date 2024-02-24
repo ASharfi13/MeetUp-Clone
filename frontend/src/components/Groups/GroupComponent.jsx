@@ -16,8 +16,6 @@ function GroupComponent() {
     const user = useSelector(state => state.session.user);
     const [permission, setPermission] = useState(false);
 
-    const groupEvents = useSelector(state => state.groups.currGroupEvents);
-
     let url;
 
     let Organizer = {
@@ -40,9 +38,6 @@ function GroupComponent() {
 
     group.backgroundImg ? backgroundImgUrl = group.backgroundImg : null;
 
-    console.log(backgroundImgUrl);
-
-
     useEffect(() => {
         dispatch(fetchGroupComp(Number(groupId)));
         if (user?.id && group.organizerId) setPermission(Number(user.id) === Number(group.organizerId))
@@ -55,10 +50,6 @@ function GroupComponent() {
             navigate(`/groups`);
         })
     }
-
-    console.log("GroupEvents", groupEvents);
-
-    console.log("Group", group)
 
 
     return (
@@ -76,7 +67,7 @@ function GroupComponent() {
                         <section className="GroupDetails">
                             <div className="GroupDetailsButtons">
                                 <div className="innerGDetails">
-                                    <h4> {group.name} </h4>
+                                    <h4 style={{ fontSize: "20px" }}> {group.name} </h4>
                                     <p> {group.city}, {group.state} </p>
                                     <p> Events {`(${group.numEvents})`} • {group.private === true ? "Private" : "Public"}</p>
                                     <p> Organized by {Organizer.firstName} {Organizer.lastName}</p>

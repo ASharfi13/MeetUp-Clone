@@ -6,7 +6,8 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import { Link, useNavigate } from 'react-router-dom';
 import "./ProfileButton.css";
-import chowderPro from "../../images/profilelogos/chowderPro.png"
+import { FaUserCircle } from "react-icons/fa";
+
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button className='modalButton' onClick={toggleMenu}>
-        <img className='pfpLogo' src={chowderPro} alt='Chowder Pfp Logo' />
+        <FaUserCircle size={60} color='black'/>
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
@@ -58,7 +59,7 @@ function ProfileButton({ user }) {
               <div>{user.email}</div>
             </div>
             <div className='profileComponents'>
-              <div><Link className='easyLinks' to="/groups">View Groups</Link></div>
+              <div><Link className='easyLinks' to="/groups">View Worlds</Link></div>
               <div><Link className='easyLinks' to='/events'>View Events</Link> </div>
               <div><Link className='easyLinks' to='/groups/new'>Create A World</Link></div>
               <button className='logOutButton' onClick={logout}>Log Out</button>

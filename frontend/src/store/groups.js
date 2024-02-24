@@ -143,6 +143,7 @@ export const fetchCreateAddGroupImage = (newGroupImg, groupId) => async (dispatc
 
 //Update An Existing Group
 export const fetchUpdateGroupDetails = (newGroup, groupId) => async (dispatch) => {
+    console.log("Thunk", newGroup);
     const response = await csrfFetch(`/api/groups/${groupId}`, {
         method: 'PUT',
         headers: {

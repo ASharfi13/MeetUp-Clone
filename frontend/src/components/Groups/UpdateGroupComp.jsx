@@ -86,7 +86,7 @@ function UpdateGroupComp() {
             name,
             about: description,
             type,
-            isPrivate: JSON.parse(isPrivate),
+            "private": isPrivate,
             city,
             state,
             backgroundImg
@@ -100,6 +100,19 @@ function UpdateGroupComp() {
             setShowErrors(true);
         }
     }
+
+    const newGroup = {
+        name,
+        about: description,
+        type,
+        "private": isPrivate,
+        city,
+        state,
+        backgroundImg
+    }
+
+
+    console.log(newGroup)
 
     return (
         <div style={{ backgroundImage: `url(${updateBackgroundImg})`, borderBottom: "40px solid black" }}>

@@ -323,7 +323,7 @@ router.put("/:groupId", requireAuth, async (req, res) => {
     const user = req.user;
     const { groupId } = req.params
     const targetGroup = await Group.findByPk(groupId);
-    let { name, about, type, isPrivate, city, state, backgroundImg } = req.body
+    let { name, about, type, private, city, state, backgroundImg } = req.body
 
     if (!targetGroup) return res.status(404).json({
         message: "Group couldn't be found"
@@ -334,6 +334,8 @@ router.put("/:groupId", requireAuth, async (req, res) => {
             message: "Forbidden"
         })
     }
+
+    console.log('**** PLEASE LOOK HERE FOR THE ORIGINAL TARGET GROUP OBJECT ********', targetGroup);
 
     //Body Validation
     const errObj = {
@@ -360,7 +362,7 @@ router.put("/:groupId", requireAuth, async (req, res) => {
         errCount++;
     }
 
-    if (typeof isPrivate !== "boolean") {
+    if (typeof private !== "boolean") {
         errObj.errors.isPrivate = "Private must be a boolean";
         errCount++;
     }
@@ -384,12 +386,18 @@ router.put("/:groupId", requireAuth, async (req, res) => {
     targetGroup.name = name || targetGroup.name,
         targetGroup.about = about || targetGroup.about,
         targetGroup.type = type || targetGroup.type,
-        targetGroup.isPrivate = isPrivate || targetGroup.isPrivate,
         targetGroup.city = city || targetGroup.city,
         targetGroup.state = state || targetGroup.state
     targetGroup.backgroundImg = backgroundImg || targetGroup.backgroundImg
+    typeof private === "boolean" ? targetGroup.private = private : targetGroup.private = targetGroup.private
 
-    await targetGroup.save()
+    console.log("**** PREVIOUS TARGET GROUP OBJ PRIVATE", targetGroup.private, "***** ISPRIVATE VALUE FROM FORM", private, "&&", typeof private)
+
+    await targetGroup.save();
+
+    console.log("**** NEW TARGET GROUP OBJ PRIVATE ", targetGroup.private, "***** ISPRIVATE VALUE FROM FORM ", private);
+
+    console.log("***&&&**** LOOK", targetGroup);
 
     res.json(targetGroup);
 })
