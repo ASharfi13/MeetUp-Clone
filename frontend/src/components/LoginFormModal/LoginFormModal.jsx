@@ -63,7 +63,7 @@ function LoginFormModal() {
           <p className='demoUserLink' onClick={handleDemoLogin}>
             Log In As Demo User
           </p>
-          {errors.credential && <p>{errors.credential}</p>}
+          {errors.credential && <p className='errorText'>{errors.credential}</p>}
           <button disabled={credential.length >= 4 && password.length >= 6 ? false : true} className='loginButton' type="submit">Log In</button>
         </form>
       </section>

@@ -57,13 +57,13 @@
   height: 90px;
   width: 170px;
   color: black;
-  background-color: #62B8FF;
+  background-color: black;
   border: 2px solid black;
-  border-radius: 5px;
-}
-
-.modalButton:hover {
-  background-color: #FC69DA;
+  border-right: 5px solid #FC69DA;
+  border-bottom: 5px solid #FC69DA;
+  border-top: 5px solid #62B8FF;
+  border-left: 5px solid #62B8FF;
+  cursor: pointer;
 }
 
 .modalText {
@@ -73,6 +73,10 @@
   font-size: 25px;
   font-style: italic;
   color: whitesmoke;
+}
+
+.modalText:hover {
+  color: gold;
 }
 
 .pfpLogo {

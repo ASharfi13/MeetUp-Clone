@@ -27,6 +27,7 @@
     font-weight: bold;
     color: white;
     background-color: black;
+    cursor: pointer;
 }
 
 .cpuButton:hover {

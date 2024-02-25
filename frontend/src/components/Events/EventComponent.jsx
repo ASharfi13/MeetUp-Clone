@@ -7,6 +7,7 @@ import { GoClockFill } from "react-icons/go";
 import { FaSackDollar } from "react-icons/fa6";
 import { FaMapPin } from "react-icons/fa";
 import eventDetailsBackground from "../../images/backgrounds/landingPageBackPick.png"
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 
 
@@ -49,7 +50,7 @@ function EventComponent() {
         <div style={{ backgroundImage: `url(${eventDetailsBackground})` }} className="eventDetailsRoot">
             <div className="eventRoot">
                 <div className="eventHeader">
-                    <p> {`<`} <Link className="eventBread" to="/events">Events</Link></p>
+                    <p><Link className="breadLink" to="/events"><FaLongArrowAltLeft size={40} />Events</Link></p>
                     <h1 className="eventName"> {event.name} </h1>
                     <p className="eventHostDetails">Hosted by {!group.Organizer ? null : group.Organizer.firstName} {!group.Organizer ? null : group.Organizer.lastName}</p>
                 </div>

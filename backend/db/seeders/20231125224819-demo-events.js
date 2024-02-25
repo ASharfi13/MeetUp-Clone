@@ -86,7 +86,7 @@ module.exports = {
         capacity: 250,
         price: 0,
         startDate: '2024-02-10T20:30',
-        endDate: '2024-02-10T00:30'
+        endDate: '2024-02-11T00:30'
       },
       {
         venueId: 4,
@@ -97,7 +97,7 @@ module.exports = {
         capacity: '1000',
         price: 45,
         startDate: '2024-01-30T21:00',
-        endDate: '2024-01-30T00:00'
+        endDate: '2024-01-31T00:00'
       },
       {
         venueId: 5,

@@ -1,4 +1,9 @@
 .wholeSignUp {
-    height: 500px;
+    height: fit-content;
     width: 600px;
+}
+
+.errorText {
+    color: red;
+    font-size: small;
 }

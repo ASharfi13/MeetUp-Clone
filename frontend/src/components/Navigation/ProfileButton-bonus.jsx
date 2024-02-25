@@ -48,7 +48,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button className='modalButton' onClick={toggleMenu}>
-        <FaUserCircle size={60} color='black'/>
+        <FaUserCircle size={60} color='#c2edf9' />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (

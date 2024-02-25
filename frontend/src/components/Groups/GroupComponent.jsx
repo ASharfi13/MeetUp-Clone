@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchDeleteGroup, fetchGroupComp } from "../../store/groups";
 import GroupEventDetails from "./GroupEventDetails";
 import "./GroupComponent.css";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 
 
@@ -61,7 +62,9 @@ function GroupComponent() {
                     width: "100%",
                     height: "100%"
                 }} className="EntireUpperHalf">
-                    <Link className="breadLink" to='/groups'>{`<`}Worlds</Link>
+                    <div style={{ width: "80%" }}>
+                        <Link className="breadLink" to='/groups'><FaLongArrowAltLeft size={40} /> Worlds</Link>
+                    </div>
                     <section className="UpperMain">
                         <img className="groupImg" src={url} />
                         <section className="GroupDetails">
