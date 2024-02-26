@@ -3,6 +3,8 @@ import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchEvent, fetchUpdateEvent } from "../../store/events";
 import "./UpdateEventComponent.css";
+import updateBackgroundImg from "../../images/backgrounds/landingPageBackPick.png"
+
 
 
 function UpdateEventComponent() {
@@ -112,19 +114,19 @@ function UpdateEventComponent() {
 
 
     return (
-        <>
+        <div style={{ backgroundImage: `url(${updateBackgroundImg})`, borderBottom: "40px solid black" }}>
             <div className="mainForm">
                 <h1 className="formUpdateTitle">Update your Event</h1>
                 <form className="updateFormComponent" onSubmit={handleSubmit}>
                     <div className="updateIndividualComponent">
                         <p>What is the name of your event</p>
-                        <input className="standardInput" type="text" value={name} onChange={e => setName(e.target.value)}>
+                        <input className="input" type="text" value={name} onChange={e => setName(e.target.value)}>
                         </input>
                     </div>
                     <div className="updateIndividualComponent">
                         <div>
                             <p>It this an in-person or online event?</p>
-                            <select value={type} onChange={e => setType(e.target.value)}>
+                            <select className="input" value={type} onChange={e => setType(e.target.value)}>
                                 <option value='' disabled>Select One</option>
                                 {
                                     ["Online", "In person"].map((type, index) => (
@@ -138,7 +140,7 @@ function UpdateEventComponent() {
                         </div>
                         <div>
                             <p>Is this event private or public?</p>
-                            <select value={isPrivate ? "Private" : "Public"} onChange={e => {
+                            <select className="input" value={isPrivate ? "Private" : "Public"} onChange={e => {
                                 e.target.value === "Private" ? setIsPrivate(true) : setIsPrivate(false);
                             }}>
                                 {
@@ -150,7 +152,7 @@ function UpdateEventComponent() {
                         </div>
                         <div>
                             <p>What is the price of your Event?</p>
-                            {'$'} <input type="number" placeholder="Valid Prices range $0-999"
+                            {'$'} <input style={{ width: "10%" }} className="input" type="number" placeholder="Valid Prices range $0-999"
                                 value={price} onChange={e => setPrice(e.target.value)}></input>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.invalidPrice}</p>
@@ -158,7 +160,7 @@ function UpdateEventComponent() {
                         </div>
                         <div>
                             <p>What{'\''}s the most amount of people you can host at this event?</p>
-                            <input type="number" placeholder="Enter Max Capacity"
+                            <input style={{ width: "10%" }} className="input" type="number" placeholder="Enter Max Capacity"
                                 value={capacity} onChange={e => setCapacity(e.target.value)}></input>
                             {showErrors ? (
                                 <p style={{ color: "red" }}>{errObj.capacityMissing}</p>
@@ -169,6 +171,8 @@ function UpdateEventComponent() {
                         <div>
                             <p>What time does your event start?</p>
                             <input
+                                style={{ width: "20%" }}
+                                className="input"
                                 type="datetime-local"
                                 value={startDate}
                                 onChange={e => setStartDate(e.target.value)}
@@ -180,7 +184,10 @@ function UpdateEventComponent() {
                         </div>
                         <div>
                             <p>What time does your event end?</p>
-                            <input type="datetime-local"
+                            <input
+                                style={{ width: "20%" }}
+                                className="input"
+                                type="datetime-local"
                                 value={endDate}
                                 onChange={e => setEndDate(e.target.value)}
                             >
@@ -192,7 +199,7 @@ function UpdateEventComponent() {
                     </div>
                     <div className="updateIndividualComponent">
                         <p>Please add an image url for your Event</p>
-                        <input type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
+                        <input className="input" type="url" placeholder="Image Url" value={eventImg} onChange={e => setEventImg(e.target.value)}></input>
                         {showErrors ? (
                             <p style={{ color: "red" }}>{errObj.invalidImg} {' '} {errObj.eventImgMissing}</p>
                         ) : null}
@@ -200,6 +207,7 @@ function UpdateEventComponent() {
                     <div className="updateIndividualComponent">
                         <p>Please describe your event</p>
                         <textarea
+                            className="createDescText"
                             placeholder="Please include at least 30 characters" rows={"10"} cols={"30"}
                             value={description} onChange={e => setDescription(e.target.value)}>
                         </textarea>
@@ -212,7 +220,7 @@ function UpdateEventComponent() {
                     </div>
                 </form>
             </div>
-        </>
+        </div>
     )
 }
 

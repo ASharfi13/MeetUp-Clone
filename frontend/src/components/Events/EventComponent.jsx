@@ -80,7 +80,7 @@ function EventComponent() {
                             </div>
                             <div className="specificDetails">
                                 <FaSackDollar color="#FF007F" size={40} className="icons" />
-                                <p style={{ fontSize: "30px", fontStyle: "italic" }}>{event.price === 0 ? "FREE" : `$${event.price}`}</p>
+                                <p style={{ fontSize: "30px", fontStyle: "italic" }}>{event.price == 0.00 ? "FREE" : `$${event.price}`}</p>
                             </div>
                             <div className="specificDetails">
                                 <FaMapPin color="#FEE118" size={40} className="icons" />
